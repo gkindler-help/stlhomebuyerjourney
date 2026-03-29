@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Home Buyer Journey · Chapter 4 · Pre-Offer Strategy</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EEE14BZT9P"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-EEE14BZT9P');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+html,body{margin:0;padding:0;background:var(--bg);}
+body{overflow:hidden;}
+#app{width:100%;height:100%;}
+.app{max-width:100%;}
+@media (min-width:768px){.app{max-width:540px;}}
+@media (min-width:1024px){.app{max-width:640px;}}
+.stage{min-height:0;}
+.scene-caption{padding-bottom:calc(18px + env(safe-area-inset-bottom, 0px));}
+.bnav{padding-bottom:calc(12px + env(safe-area-inset-bottom, 0px));}
+.ftr{padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));}
+.interrupt-card{max-width:348px;}
+.choice-card-response{white-space:normal;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var CHAPTER_NUM = 4;
+var CHAPTER_LABEL = 'Pre-Offer Strategy';
+var PREV_FILE = '03-interior.html';
+var PHOTOS={
+  exterior: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  desk:     'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=85',
+  phone:    'https://images.unsplash.com/photo-1423345420913-c18a9d51f541?w=900&q=85',
+  comps:    'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=900&q=85',
+  zillow:   'https://images.unsplash.com/photo-1460472178825-e5240623afd5?w=900&q=85',
+  negotiate:'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&q=85',
+  keys:     'https://images.unsplash.com/photo-1560184897-ae75f418493e?w=900&q=85'
+};
+
+var SCENES=[
+
+// 0 — NO PRESSURE
+{
+  bg:PHOTOS.exterior,
+  george:'serious',
+  room:'Offer Strategy',
+  title:'You will never feel pressure from me.',
+  sub:'Not to write higher. Not to move faster.',
+  drawerLabel:'Here is how I approach every offer.',
+  interrupt:{
+    title:'You will never feel pressure from me.',
+    text:'Not to write a higher purchase price. Not to move faster than you are comfortable. My job is to get you every piece of information I can find — then let you decide.',
+    btnText:'Show me how you work',
+    openDrawerOnDismiss:true
+  },
+  choices:[
+    {label:'So what will you actually tell me to offer?',
+     response:'I will tell you what I think the home is worth and what the market will likely land on — within a $10,000 range. I will also tell you what the appraiser will probably say. What you write is your call. I give you the picture.',
+    },
+    {label:'What if I want to offer less than list?',
+     response:'Then we look at whether the data backs it up. If the comps say the home is overpriced, I show you that and we write accordingly. If the market is competitive and it is priced right, I show you that too. I do not talk you into anything. I show you the numbers.',
+    },
+    {label:'What information do you pull before we tour?',
+     response:'Days on market, price history, how many showings were already on the calendar before we booked, and what Zillow is showing for views and saves. By the time we walk in the door I already have a read on how competitive this home is.',
+     deep:{title:'Why most agents skip this',body:'Most agents check the price and drive to the showing. I check the showing service, the price history, and the Zillow stats before I leave my office. A home with 3 days on market and 800 views is a completely different situation than one with 3 days on market and 60 views. The number tells you what room you are walking into.'}
+    }
+  ]
+},
+
+// 1 — BEFORE DURING AFTER
+{
+  bg:PHOTOS.desk,
+  george:'serious',
+  room:'Before We Walk In',
+  title:'I am tracking three windows.',
+  sub:'Before the showing. During. And the minute we leave.',
+  drawerLabel:'Before, during, and after — here is what I watch.',
+  interrupt:{
+    title:'Most agents show up and open the door.',
+    text:'I am collecting information before we get there, while we are there, and the minute we leave. All of it feeds the offer.',
+    btnText:'Walk me through it',
+    openDrawerOnDismiss:true
+  },
+  choices:[
+    {label:'What are you tracking before?',
+     response:'How many showings were scheduled before I booked ours. If 11 appointments are already on the calendar and we are showing on Day 2, that is a very different situation than 2 appointments on Day 5. Free information. Most buyers never see it.',
+     deep:{title:'Showing count as a competition signal',body:'A high early showing count on a well-priced listing means real demand. It does not always mean the home sells above list. Sometimes it just means it photographed well. But it does mean you should not sleep on the decision. A flat count on a two-week-old listing tells me buyers have already looked and passed. That is a negotiating position for you.'}
+    },
+    {label:'What are you watching during?',
+     response:'Whether we pass other buyers on the way in or out. Whether an agent is waiting when we finish. I pay attention. Two sets of buyers on a Saturday morning in Week 1 is a multiple-offer situation developing in real time.',
+    },
+    {label:'What do you check after we leave?',
+     response:'Zillow views and saves. I pull this the minute we are back in the car. Most agents never look at it. I look every time because it tells me how many people are watching this listing right now — before any of them schedule.',
+    }
+  ]
+},
+
+// 2 — ZILLOW 10% RULE
+{
+  bg:PHOTOS.zillow,
+  george:'serious',
+  room:'The Zillow Math',
+  title:'Here is what the view count tells me.',
+  sub:'Ten percent rule. Let me run the numbers.',
+  drawerLabel:'Run the math with me.',
+  interrupt:{
+    title:'Most agents never check Zillow views.',
+    text:'I do. Every time. Ten percent of views become saves. Ten percent of saves become showings. Ten percent of showings become offers. Let me show you what that looks like in real numbers.',
+    btnText:'Show me the math',
+    openDrawerOnDismiss:true
+  },
+  choices:[
+    {label:'Run it on 300 views.',
+     response:'300 views. 10% save it: 30 people. 10% of saves book a showing: 3 showings. 10% of showings write an offer: 0.3 — meaning you are very likely the only one. That is a house you have time to think about.',
+    },
+    {label:'Run it on 1,000 views.',
+     response:'1,000 views. 100 saves. 10 showings. 1 offer possibly already written. That is a house you need a decision on. Not panic. A decision.',
+    },
+    {label:'What about 2,000 views or more?',
+     response:'2,000 views. 200 saves. 20 showings. 2 competing offers in play. At that number you are likely looking at a best-and-final situation and your offer needs to be clean, strong, and in on Day 1.',
+     deep:{title:'It is a signal, not a guarantee',body:'Zillow views can spike from a social share or a featured placement that has nothing to do with serious local buyers. I use it alongside showing counts, days on market, and what I hear from the listing agent. No single number tells the whole story. But together they give you a picture most buyers never see — because most agents never pull it.'}
+    }
+  ]
+},
+
+// 3 — THE CALL
+{
+  bg:PHOTOS.phone,
+  george:'serious',
+  room:'Before We Submit',
+  title:'As soon as you say go, I call.',
+  sub:'The listing agent knows things Zillow does not.',
+  drawerLabel:'What I find out before we write.',
+  interrupt:{
+    title:'I call and text the listing agent.',
+    text:'The moment you give me permission, I am on the phone. What I find out changes how we write the offer. Sometimes completely.',
+    btnText:'What do you ask them?',
+    openDrawerOnDismiss:true
+  },
+  choices:[
+    {label:'What do you actually ask?',
+     response:'How much activity have you had? Any offers in hand or expected? Is the seller flexible on timeline or terms? Any property issues I should know before we write? Most listing agents tell you more than you expect if you ask directly.',
+     deep:{title:'Why this call changes everything',body:'A listing agent who says they have two offers coming tonight is telling you something real. One who says they have had 8 showings and nothing yet is also telling you something. I once wrote an offer that looked below list on paper but won because I found out the seller needed a 60-day close and we could give them that. Terms win deals as often as price.'}
+    },
+    {label:'What if they will not tell you anything?',
+     response:'Some agents are tight — either under instruction or protecting something. I note it, go conservative on competition assumptions, and make sure our offer is clean. If they are hiding something they will be managing a problem at some point. Either way I am not guessing.',
+    },
+    {label:'Do you check the first-weekend data too?',
+     response:'Yes. I track how many homes in this zip code go under contract in the first weekend. If 80% of listings here are gone by Sunday night, you need to know that before you say you want to think it over.',
+     deep:{title:'First weekend rate by zip code',body:'St. Louis is not one market. Some zip codes move in 48 hours consistently. Others sit for 45 days. I have built this data from actual MARIS transactions across the metro. Before we submit I will tell you what the pattern is for this specific neighborhood — not what a national news headline says about the housing market.'}
+    }
+  ]
+},
+
+// 4 — COMPS AND VALUE
+{
+  bg:PHOTOS.comps,
+  george:'serious',
+  room:'What Is It Worth',
+  title:'Now the fun part.',
+  sub:'I pull the comps. We look at them together.',
+  drawerLabel:'How I figure out what a home is worth.',
+  interrupt:{
+    title:'This is not my house.',
+    text:'I am not attached to any number. My job is to find what this home is likely worth — not what you want to pay and not what the seller wants to get. The comps do the talking.',
+    btnText:'Show me how you read them',
+    openDrawerOnDismiss:true
+  },
+  choices:[
+    {label:'How do you pull comps?',
+     response:'I start with the full last year of sales — same size, beds, baths, location. That shows me the trend first. Then I narrow to the closest matches and go through every photo to match condition. Kitchen age, flooring, mechanicals, basement. I am not running an algorithm. I am reading homes.',
+     deep:{title:'Condition matching is the whole game',body:'Two 3-bed 2-bath ranches in the same zip code can be $40,000 apart in value based on condition alone. A renovated kitchen and updated HVAC is not the same comp as 1985 original finishes at the same square footage. Most automated valuations miss this entirely. I do not.'}
+    },
+    {label:'What number do I actually get?',
+     response:'Two numbers. What I think the appraiser will value it at. And what the market will likely land on — within a $10,000 range. Those are sometimes the same. When they are not, the gap is what you need to understand before you write.',
+     deep:{title:'When market value is above appraised value',body:'In a competitive market, homes sometimes sell above what an appraiser will support. When that happens the gap between what you paid and what it appraised for is your problem — not the seller\'s. I flag this before you write. If we are going above what I think the appraiser will land on, you need to know that going in and be comfortable with it.'}
+    },
+    {label:'What if I need seller concessions?',
+     response:'If you need the seller to cover part of your closing costs, we build that into the strategy from the start. A $285,000 offer with $5,000 in concessions is not the same as a $280,000 clean offer from the seller\'s side. I run those numbers before we write anything.',
+     deep:{title:'How concessions affect offer strength',body:'Seller concessions reduce what the seller walks away with. In a competitive situation, a clean offer almost always beats a concession offer at the same price. If you need concessions, I structure the offer price to account for them rather than layering them on top of an already-low number. Layering almost never works.'}
+    }
+  ]
+},
+
+// 5 — YOU DECIDE
+{
+  bg:PHOTOS.negotiate,
+  george:'serious',
+  room:'Your Decision',
+  title:'Now you decide.',
+  sub:'Is it worth list? More? Less? That is your call.',
+  drawerLabel:'Here is what goes into the number.',
+  interrupt:{
+    title:'I have given you everything I have.',
+    text:'Comps, competition, agent intel, market data, first-weekend rate. Now we turn that into a number. You decide. I write it.',
+    btnText:'Walk me through the options',
+    openDrawerOnDismiss:true
+  },
+  choices:[
+    {label:'It is worth list price.',
+     response:'If the comps support it and competition is real, writing at list is a clean, defensible offer. It says you did your homework and you are serious. In a first-weekend situation, list is often the floor — not the ceiling.',
+    },
+    {label:'It might be worth more than list.',
+     response:'Sometimes yes. If comps support above list and competition is high, I will tell you exactly how much the data can justify — because writing above list and having it appraise below is your problem, not the seller\'s. I will not let you walk into that blind.',
+     deep:{title:'Escalation clauses',body:'An escalation clause says you will beat any other offer by a set amount up to a maximum. I use them selectively. They can win — but they reveal your ceiling to the seller. Before I put one in I tell you exactly what you are giving up and whether the situation warrants it.'}
+    },
+    {label:'It is worth less than list.',
+     response:'If the comps say it is overpriced I will show you that and we write accordingly. A below-list offer is not a lowball when the data backs it up. I have written plenty of them. The key is attaching the reasoning — not just the number.',
+     deep:{title:'Writing a below-list offer that gets taken seriously',body:'A below-list offer with no context is easy to dismiss. One with a clear comp analysis and a clean contract is harder to ignore — especially on a home that has been sitting. I always bring documentation to a below-list offer. It shifts the conversation from negotiation to education.'}
+    }
+  ]
+},
+
+// 6 — SOFT CALL + BRIDGE
+{
+  bg:PHOTOS.keys,
+  george:'serious',
+  room:'Ready When You Are',
+  title:'See a house you like? Text me the address.',
+  sub:'No obligation. I will check the red flags before you schedule a tour.',
+  drawerLabel:'How we work together from here.',
+  interrupt:{
+    title:'Send me an address. Any address.',
+    text:'Text me the address and I will pull the Zillow stats, check the price history, and tell you what the showing calendar looks like — before you commit to a tour. No obligation. That is just how I work. 314.435.1087',
+    btnText:'Got it. What happens after we write?',
+    openDrawerOnDismiss:true
+  },
+  choices:[
+    {label:'I have more questions first.',
+     response:'Call me. Buyer education is my favorite part of this job. 314.435.1087. Or text. Either works. No pressure, no agenda.',
+    },
+    {label:'What happens after the offer goes in?',
+     response:'If they accept, the clock starts immediately — and most buyers have no idea what they are on the hook for in the first 10 days. That is the next chapter.',
+    }
+  ],
+  isLast:true,
+  nextLabel:'Under Contract \u2192',
+  nextFile:'06-under-contract.html',
+  nextChapter:6
+}
+
+];
+</script>
+<script src="shared.js"></script>
+</body>
+</html>
