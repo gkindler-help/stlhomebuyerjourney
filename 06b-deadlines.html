@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Home Buyer Journey · Chapter 6 · The Deadlines</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EEE14BZT9P"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EEE14BZT9P');</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.sc-room{font-family:var(--font-serif);font-size:42px;font-weight:700;letter-spacing:-0.02em;color:var(--gold);line-height:1;margin-bottom:6px;text-shadow:0 2px 16px rgba(0,0,0,.6);}
+.sc-title{font-size:18px;margin-bottom:5px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="hdr">
+    <div class="hdr-l">
+      <svg class="hdr-ico" viewBox="0 0 26 26" fill="none">
+        <rect width="26" height="26" rx="5" fill="#111111"/>
+        <path d="M13 4L3 12h3v9h6v-5h2v5h6V12h3L13 4z" fill="white" opacity=".9"/>
+        <path d="M18 18l3-3-3-3M21 15H13" stroke="#D4A017" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="hdr-t">Home Buyer <span>Journey</span></div>
+        <div class="hdr-s">George Kindler &middot; The Closing Pros</div>
+      </div>
+    </div>
+    <a class="btn-at" href="index.html">&larr; All Tools</a>
+  </header>
+
+  <div class="prog-wrap"><div class="prog-fill" id="prog"></div></div>
+  <div class="scene-bar">
+    <span class="scene-lbl" id="scene-lbl">Loan Contingency</span>
+    <span class="scene-ch">Ch. 6 &middot; The Deadlines</span>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="scene-bg" id="scene-bg">
+      <img referrerpolicy="no-referrer" id="bg-img" src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=900&q=85" onerror="this.style.display='none';document.getElementById('scene-svg-wrap').style.display='flex';" alt="scene">
+      <div id="scene-svg-wrap" class="scene-svg" style="display:none;"></div>
+    </div>
+    <div class="scene-gradient"></div>
+    <div class="george-float" id="george-float">
+      <img referrerpolicy="no-referrer" id="george-img" src="assets/george-serious.png" alt="George Kindler" onerror="this.style.display='none'">
+      <div class="fb-init">GK</div>
+    </div>
+    <div class="scene-caption" id="scene-caption">
+      <div class="sc-room" id="sc-room">Day 1–30</div>
+      <div class="sc-title" id="sc-title">The deadlines are running.</div>
+      <div class="sc-sub" id="sc-sub">Three tracks. All with hard stops.</div>
+    </div>
+    <div class="interrupt-dim" id="int-dim"></div>
+    <div class="interrupt-card" id="int-card">
+      <div class="int-face">
+        <img referrerpolicy="no-referrer" id="int-george-img" src="assets/george-serious.png" alt="George" onerror="this.style.display='none'">
+        <div class="fb">GK</div>
+      </div>
+      <div class="int-bubble">
+        <div class="int-title" id="int-title">Pay attention here.</div>
+        <div class="int-text" id="int-text"></div>
+        <button class="int-btn" id="int-btn" onclick="dismissInterrupt()">Got it, keep going</button>
+      </div>
+    </div>
+    <div class="drawer" id="drawer">
+      <div class="drawer-label" id="drawer-label">Ask me anything</div>
+      <div class="choices" id="choices"></div>
+    </div>
+    <div class="ask-george" id="ask-george" onclick="askGeorge()">Ask George</div>
+  </div>
+
+  <div class="bnav">
+    <button class="btn-b" id="btn-back" onclick="prevScene()" disabled>&larr; Back</button>
+    <button class="btn-n" id="btn-next" onclick="nextScene()">Next &rarr;</button>
+  </div>
+
+  <footer class="ftr">
+    <div class="ftr-l">2026 MARIS MLS &middot; George Kindler &middot; 314.435.1087</div>
+    <div class="ftr-r"><a href="https://sites.google.com/view/st-louis-real-estate-guides/freestlouisrealestateguides" target="_blank">Free Guides &rarr;</a></div>
+  </footer>
+
+  <div class="jump-trigger" onclick="openJump()">&#9776; Explore</div>
+  <div class="jump-ov" id="jump-ov">
+    <div class="jump-sh">
+      <div class="jump-hnd"></div>
+      <div class="jump-ttl">Explore the Journey</div>
+      <div class="jump-items" id="jump-items"></div>
+    </div>
+  </div>
+
+  <div id="pop" style="position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:999;display:none;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;">
+    <div id="pop-sh" style="background:var(--surface);border-radius:14px 14px 0 0;border-top:2px solid var(--gold);padding:20px 18px 36px;width:100%;max-width:420px;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);">
+      <div style="width:36px;height:3px;background:var(--line2);border-radius:2px;margin:0 auto 16px;"></div>
+      <div id="pop-title" style="font-family:var(--font-serif);font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;"></div>
+      <div id="pop-body" style="font-family:var(--font-sans);font-size:13px;color:var(--white-70);line-height:1.7;margin-bottom:18px;"></div>
+      <button onclick="closePop()" style="width:100%;padding:13px;background:var(--white);border:none;border-radius:4px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--bg);cursor:pointer;">Got it</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── CHAPTER CONFIG ────────────────────────────────────────────
+var CHAPTER_NUM   = 6;
+var CHAPTER_LABEL = 'The Deadlines';
+var PREV_FILE     = '06-under-contract.html';
+
+var PHOTOS={
+  mortgage:  'https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=900&q=85',
+  appraisal: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=85',
+  title:     'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=900&q=85',
+  calendar:  'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=900&q=85',
+  inspect:   'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=900&q=85',
+};
+
+var SCENES=[
+
+// 0 — LOAN CONTINGENCY
+{
+  bg:PHOTOS.mortgage,
+  george:'serious',
+  room:'Day 1–30',
+  title:'Freeze your finances.',
+  sub:'This is the window where deals die quietly.',
+  interrupt:{
+    title:'Do not touch your finances.',
+    text:'No new car. No new credit card. No job change. No large deposits. Underwriters pull your file again 24–48 hours before closing.',
+    btnText:'What else can kill my loan?',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'What can kill your loan after acceptance?',
+  choices:[
+    {label:'New debt or credit inquiries',
+     response:'A new car payment, a new credit card, a store account. Any new credit inquiry. Each one shifts your debt-to-income ratio. Underwriters see all of it.',
+     deep:{title:'The frozen period',body:'From acceptance to keys: no car, no new accounts, no job changes, no large undocumented deposits, no co-signing. Not because it\'s probably fine. Because underwriters review your file multiple times — including 24–48 hours before closing.'}
+    },
+    {label:'Job change or income gap',
+     response:'Changing employers — even a lateral move or a promotion — can require a new employment verification. If you\'re hourly or commission-based, a gap in income can shift your qualifying income calculation.',
+     deep:{title:'Why even a promotion can kill your loan',body:'Lenders verify employment and income multiple times — at application, at conditional approval, and again 24–48 hours before closing. If you changed jobs between those pulls, even to a higher-paying position, underwriters may require 30 days of pay stubs from the new employer before they will close. That can blow a closing date entirely. If a job change is on the horizon, tell your lender before you accept the offer — not after you are under contract.'}
+    },
+    {label:'What is the loan contingency deadline?',
+     response:'Day 30 on this contract. Your lender must issue a written loan commitment by then or you must notify the seller you are terminating. Miss it and the deal falls apart on your dime.',
+     deep:{title:'What a loan commitment actually means',body:'A loan commitment is not a pre-approval and it is not a clear to close. It is a written commitment from the lender that they will fund the loan subject to specific remaining conditions — usually appraisal and final employment verification. Getting to commitment by Day 30 means your lender has underwritten the file. Buyers who use slow lenders or who delay providing documents are the ones who miss this deadline. I push lenders from Day 1 and track this deadline the same way I track the inspection windows.'}
+    }
+  ]
+},
+
+// 1 — APPRAISAL
+{
+  bg:PHOTOS.appraisal,
+  george:'serious',
+  room:'Day 3–30',
+  title:'The appraisal.',
+  sub:'Your lender orders it. The number can change everything.',
+  interrupt:{
+    title:'Low appraisals don\'t have to kill the deal.',
+    text:'But your options disappear if the appraisal isn\'t back before the loan contingency deadline.',
+    btnText:'What are my options?',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'What happens on the appraisal?',
+  choices:[
+    {label:'What happens if it comes in low?',
+     response:'Three options. Seller reduces to appraised value. You cover the gap in cash. Or you terminate under the appraisal contingency. Seller has 5 days to negotiate, you have 2 days to accept or walk.',
+     deep:{title:'Why lenders won\'t lend above appraised value',body:'The lender loans against the property as collateral. If you pay $310,000 for a house that appraises at $295,000, the lender will only fund against $295,000. The $15,000 gap is your problem — cash, price reduction, or exit.'}
+    },
+    {label:'Can I challenge a low appraisal?',
+     response:'Yes — through a Reconsideration of Value. You submit comparable sales the appraiser missed. It succeeds occasionally. I help when the comps support it. The timeline is tight.',
+     deep:{title:'How a Reconsideration of Value works',body:'A Reconsideration of Value is a formal request submitted through your lender asking the appraiser to review specific comparable sales they did not use. You cannot submit just any comps — they need to be closed sales that are genuinely comparable in size, condition, location, and time. I pull the comps, identify the strongest ones the appraiser missed, and build the case. It is not a guarantee. Appraisers are not required to change their value. But when the comps clearly support a higher number, it works more often than not.'}
+    },
+    {label:'What if the appraisal is late?',
+     response:'The appraisal contingency is waived if not delivered by the loan contingency date. This is why I push lenders to order the appraisal within 3 days of acceptance. Delays compound.',
+     deep:{title:'Why appraisal timing is entirely preventable',body:'Appraisal delays almost always trace back to one of two things: the lender waiting to order it, or the appraiser backlog in a busy market. I push lenders to order the appraisal within 3 days of acceptance — not after the inspection is resolved, not after they feel like it. In a backed-up market, appraisers can take 2 to 3 weeks to schedule and complete. If the lender orders on Day 14, you are looking at the appraisal coming back on Day 28 or later — with Day 30 right behind it. I have seen this kill deals. It is entirely preventable.'}
+    }
+  ]
+},
+
+// 2 — TITLE
+{
+  bg:PHOTOS.title,
+  george:'serious',
+  room:'Day 1–14',
+  title:'The title commitment.',
+  sub:'In our market, buyers typically pay for their own title. Here\'s what we\'re looking for.',
+  interrupt:{
+    title:'Here\'s what we are looking for in title.',
+    text:'Chain of ownership. Encumbrances. Anything that affects your right to own this property free and clear.',
+    btnText:'Show me the details',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'Here\'s what we\'re looking for in title.',
+  choices:[
+    {label:'Title commitment — typically 14 days',
+     response:'The title company researches the chain of ownership going back decades. The commitment lists what they will and won\'t insure. We use this to confirm there are no liens, easements, or ownership gaps that could cloud your title.',
+     deep:{title:'Common title issues in St. Louis',body:'Pre-1960 homes sometimes carry unreleased old mortgages, mechanic\'s liens from past work, property tax delinquencies, or estate issues where heirs were not properly cleared. Title insurance protects you after closing — the commitment review protects you before. I read every commitment before closing.'}
+    },
+    {label:'Title problem — seller must cure',
+     response:'In most cases, if a title defect is found, the seller must cure it before closing or your earnest money is returned. You submit written objection within the review window.',
+     deep:{title:'What title defects actually look like',body:'The most common title issues on St. Louis pre-1960 homes are unreleased old mortgages that were paid off but never properly released, mechanic\'s liens from contractors who were not paid, delinquent property taxes, and estate issues where a prior owner died and heirs were not properly cleared from title. Most of these are fixable — the seller pays off the lien, the estate files the correct paperwork. The process takes time. I flag these early so we have room in the timeline to resolve them before closing.'}
+    },
+    {label:'Owner\'s title insurance — that\'s for you',
+     response:'Owner\'s title insurance protects you, the buyer. Most sellers in our market will not pay for it — it\'s typically a buyer expense. In some cases we can negotiate it as a seller credit.',
+     deep:{title:'Why you want owner\'s title insurance',body:'Lender\'s title insurance only protects the bank. Owner\'s title insurance protects you for as long as you own the property. If a claim surfaces after closing — a prior lien, a forged deed, an heir who wasn\'t disclosed — owner\'s title covers your defense and loss. It is a one-time premium. Do not waive it.'}
+    }
+  ]
+},
+
+// 3 — BRIDGE TO INSPECTION
+{
+  bg:PHOTOS.inspect,
+  george:'serious',
+  room:'Day 1–10',
+  title:'And the inspection is happening right now.',
+  sub:'All of this runs in parallel — not in sequence.',
+  interrupt:{
+    title:'Every track runs simultaneously.',
+    text:'While you\'re managing the loan and watching the appraisal, your inspection window opened on Day 1 and closes on Day 10. The next chapter is the inspection report — what it means and what to do with it.',
+    btnText:'Take me to the inspection \u2192'
+  },
+  choices:[],
+  isLast:true,
+  nextLabel:'The Inspection Report \u2192',
+  nextFile:'07-inspection.html',
+  nextChapter:8
+}
+
+];
+
+</script>
+<script src="shared.js"></script>
+</body>
+</html>
