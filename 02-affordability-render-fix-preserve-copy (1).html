@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Home Buyer Journey · Chapter 2 · Affordability</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EEE14BZT9P"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EEE14BZT9P');</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+:root{
+  --surface2: var(--surface-2);
+  --line2: var(--line-2);
+  --white-80: var(--text-strong);
+  --white-70: var(--text);
+  --white-40: var(--text-soft);
+  --white-20: var(--text-dim);
+  --white-08: rgba(255,255,255,.08);
+  --gold-dim: var(--gold-soft);
+  --font-sans: "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-serif: "Playfair Display",Georgia,serif;
+}
+html,body{background:var(--bg);overflow:hidden;}
+body{display:flex;justify-content:center;}
+.app{width:100%;max-width:100%;height:100vh;height:100dvh;margin:0 auto;}
+@media (min-width:768px){.app{max-width:540px;}}
+@media (min-width:1024px){.app{max-width:640px;}}
+.scene-bar{gap:8px;}
+.context-pills{min-width:0;}
+.ctx-pill{max-width:140px;overflow:hidden;text-overflow:ellipsis;}
+.ftr{position:relative;z-index:50;}
+.bnav{position:relative;z-index:50;}
+</style>
+
+<style>
+/* ── CONTEXT PILLS — affordability-only ── */
+.context-pills{display:flex;gap:5px;align-items:center;flex:1;justify-content:center;padding:0 8px;}
+.ctx-pill{background:var(--surface2);border:1px solid var(--line2);border-radius:20px;padding:3px 9px;font-family:var(--font-sans);font-size:10px;font-weight:500;color:var(--white-70);cursor:pointer;transition:border-color .15s,color .15s;white-space:nowrap;line-height:1.4;}
+.ctx-pill:hover{border-color:var(--gold);color:var(--gold);}
+.ctx-pill-area{color:var(--white-40);}
+
+/* ── INPUT SCENE — amount / loan / area pickers ── */
+.input-scene{position:absolute;inset:0;display:flex;flex-direction:column;z-index:30;background:var(--bg);}
+.input-scene-bg{position:absolute;inset:0;}
+.input-scene-bg img{width:100%;height:100%;object-fit:cover;display:block;animation:kb 22s ease-in-out infinite alternate;opacity:.35;}
+.input-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,.6) 0%,rgba(8,8,8,.82) 60%,rgba(8,8,8,.97) 100%);}
+.input-content{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:0 0 0 0;}
+
+.inp-george-row{display:flex;align-items:flex-end;gap:0;padding:0 16px 0;flex-shrink:0;}
+.inp-g-face{width:72px;height:72px;flex-shrink:0;position:relative;}
+.inp-g-face img{width:100%;height:100%;object-fit:contain;object-position:bottom center;display:block;}
+.inp-g-face .fb{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;font-family:var(--font-serif);font-size:11px;color:var(--white-20);}
+.inp-bubble{flex:1;background:rgba(17,17,17,.95);border:1px solid var(--line2);border-radius:0 10px 10px 10px;padding:12px 14px;font-family:var(--font-sans);font-size:13px;color:var(--white-70);line-height:1.6;position:relative;margin-bottom:4px;}
+.inp-bubble::before{content:'';position:absolute;left:-7px;top:10px;border:6px solid transparent;border-right-color:var(--line2);}
+.inp-bubble::after{content:'';position:absolute;left:-5px;top:11px;border:5px solid transparent;border-right-color:rgba(17,17,17,.95);}
+.inp-bubble strong{color:var(--white);}
+
+.inp-field-wrap{padding:14px 16px 10px;}
+.inp-lbl{display:block;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--white-40);margin-bottom:8px;}
+.big-inp{width:100%;padding:14px 16px;background:var(--surface);border:1px solid var(--line2);border-radius:6px;font-family:var(--font-serif);font-size:30px;font-weight:600;color:var(--gold);text-align:center;transition:border-color .15s;-webkit-appearance:none;}
+.big-inp:focus{outline:none;border-color:var(--gold);}
+.inp-note{font-size:11px;color:var(--white-20);text-align:center;margin-top:6px;line-height:1.5;}
+
+.loan-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:14px 16px 4px;}
+.l-tile{background:var(--surface);border:1px solid var(--line2);border-radius:6px;padding:13px 8px;text-align:center;cursor:pointer;transition:all .15s;}
+.l-tile.sel{border-color:var(--gold);background:var(--gold-dim);}
+.l-tile:active{transform:scale(.97);}
+.l-name{font-family:var(--font-serif);font-size:16px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.l-tile.sel .l-name{color:var(--gold);}
+.l-sub{font-size:9px;color:var(--white-40);line-height:1.4;}
+.loan-desc-wrap{padding:0 16px 8px;}
+
+.area-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px 4px;}
+.area-tile{background:var(--surface);border:1px solid var(--line2);border-radius:8px;padding:13px 12px;cursor:pointer;transition:all .15s;}
+.area-tile:active{transform:scale(.97);}
+.area-tile:hover{border-color:var(--white-20);}
+.area-tile.sel{border-color:var(--gold);background:var(--gold-dim);}
+.at-name{font-family:var(--font-serif);font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.area-tile.sel .at-name{color:var(--gold);}
+.at-zips{font-size:10px;color:var(--white-40);line-height:1.4;}
+.at-med{font-size:10px;color:var(--white-20);margin-top:4px;}
+.area-tile.not-listed{grid-column:1/-1;border-style:dashed;}
+.area-tile.not-listed .at-name{color:var(--white-40);font-size:13px;}
+.area-skip-link{text-align:center;padding:6px 16px 10px;font-size:11px;color:var(--gold);cursor:pointer;opacity:.7;}
+.area-skip-link:hover{opacity:1;}
+
+/* ── SCENE CAPTION — affordability has scrollable card ── */
+.sc-peek{position:absolute;top:8px;right:12px;font-family:var(--font-sans);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--white-20);cursor:pointer;transition:color .15s;background:none;border:none;padding:0;}
+.sc-peek:hover{color:var(--white-40);}
+.scene-caption{position:absolute;bottom:0;left:0;right:0;z-index:11;max-height:72%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 18px 100px;transition:opacity .35s ease,transform .35s ease;}
+.scene-caption::-webkit-scrollbar{display:none;}
+
+/* ── DRAWER RESPONSE — flat engine ── */
+.drawer-response{font-family:var(--font-sans);font-size:12px;font-weight:400;color:var(--white-40);line-height:1.65;overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:0;transition:max-height .4s ease,opacity .3s ease;opacity:0;flex-shrink:0;margin-top:0;}
+.drawer-response::-webkit-scrollbar{display:none;}
+.drawer-response.show{max-height:130px;opacity:1;margin-top:8px;}
+.drawer-response .r-deep{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:11px;color:var(--white-20);cursor:pointer;}
+.drawer-response .r-deep:hover{color:var(--white-40);}
+
+/* ── INT-TEXT special spans ── */
+.int-text .cost{font-family:var(--font-serif);font-size:20px;color:var(--warn);display:block;margin:6px 0;}
+.int-text .flag{color:var(--red);font-weight:600;}
+.int-text .good{color:var(--green);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="hdr">
+    <div class="hdr-l">
+      <svg class="hdr-ico" viewBox="0 0 26 26" fill="none">
+        <rect width="26" height="26" rx="5" fill="#111111"/>
+        <path d="M13 4L3 12h3v9h6v-5h2v5h6V12h3L13 4z" fill="white" opacity=".9"/>
+        <path d="M18 18l3-3-3-3M21 15H13" stroke="#D4A017" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="hdr-t">Home Buyer <span>Journey</span></div>
+        <div class="hdr-s">George Kindler &middot; The Closing Pros</div>
+      </div>
+    </div>
+    <a class="btn-at" href="index.html">&larr; All Tools</a>
+  </header>
+
+  <div class="prog-wrap"><div class="prog-fill" id="prog"></div></div>
+  <div class="scene-bar">
+    <span class="scene-lbl" id="scene-lbl">Where Buyers Overpay</span>
+    <div class="context-pills" id="context-pills" style="display:none;">
+      <button class="ctx-pill" id="pill-amount" onclick="jumpToScene(0)" title="Change amount"></button>
+      <button class="ctx-pill ctx-pill-area" id="pill-area" onclick="jumpToScene(2)" title="Change area"></button>
+    </div>
+    <span class="scene-ch">Ch. 2 &middot; Affordability</span>
+  </div>
+
+  <div class="stage" id="stage">
+
+    <div class="scene-bg" id="scene-bg">
+      <img referrerpolicy="no-referrer" id="bg-img"
+           src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85"
+           onerror="this.style.display='none';" alt="scene">
+      <div id="scene-svg-wrap" class="scene-svg" style="display:none;"></div>
+    </div>
+    <div class="scene-gradient"></div>
+
+    <div class="george-float" id="george-float">
+      <img referrerpolicy="no-referrer" id="george-img" src="assets/george-serious.png" alt="George Kindler" onerror="this.style.display='none'">
+      <div class="fb-init">GK</div>
+    </div>
+
+    <div class="scene-caption" id="scene-caption">
+      <button class="sc-peek" id="sc-peek" onclick="togglePeek()" title="See photo">&#9650; Photo</button>
+      <div class="sc-room" id="sc-room">Affordability</div>
+      <div class="sc-title" id="sc-title">Your number.</div>
+      <div class="sc-sub" id="sc-sub">Before we look at a single house, I need you to understand what that number actually means.</div>
+    </div>
+
+    <div class="interrupt-dim" id="int-dim"></div>
+    <div class="interrupt-card" id="int-card">
+      <div class="int-face" onclick="openGeorgeCard()">
+        <img referrerpolicy="no-referrer" id="int-george-img" src="assets/george-serious.png" alt="George" onerror="this.style.display='none'">
+        <div class="fb">GK</div>
+      </div>
+            <div class="gas"><div class="gas-num">13</div><div class="gas-lbl">Years STL</div></div>
+            <div class="gas"><div class="gas-num">130+</div><div class="gas-lbl">Invest. Deals</div></div>
+          </div>
+          <div class="george-about-bio">I will never sell you. My job is to consult &mdash; help you weigh the facts against my experience. <strong>I started as a $9-an-hour laborer flipping houses.</strong> I&rsquo;ve pulled walls, been buried in 1950s insulation, hung drywall, owned rentals and an Airbnb. 250+ homes sold in St. Louis. I know what it takes to buy, sell, and own real estate.</div>
+          <a class="george-about-call" href="tel:3144351087">&#9742; 314.435.1087 &mdash; No obligation</a>
+        </div>
+      </div>
+      <div class="int-bubble">
+        <div class="int-title" id="int-title">Pay attention here.</div>
+        <div class="int-text" id="int-text"></div>
+        <button class="int-btn" id="int-btn" onclick="dismissInterrupt()">Got it, keep going</button>
+      </div>
+    </div>
+
+    <div class="drawer" id="drawer">
+      <div class="drawer-label" id="drawer-label">Look closer</div>
+      <div class="choices" id="choices"></div>
+      <div class="drawer-response" id="drawer-response"></div>
+    </div>
+
+  </div><!-- /stage -->
+
+  <div class="bnav">
+    <button class="btn-b" id="btn-back" onclick="prevScene()" disabled>&larr; Back</button>
+    <button class="btn-n" id="btn-next" onclick="nextScene()">Next &rarr;</button>
+  </div>
+
+  <footer class="ftr">
+    <div class="ftr-l">2026 MARIS MLS &middot; George Kindler &middot; 314.435.1087</div>
+    <div class="ftr-r"><a href="https://sites.google.com/view/st-louis-real-estate-guides/freestlouisrealestateguides" target="_blank">Free Guides &rarr;</a></div>
+  </footer>
+
+  <div class="jump-trigger" onclick="openJump()">&#9776; Explore</div>
+  <div class="jump-ov" id="jump-ov">
+    <div class="jump-sh">
+      <div class="jump-hnd"></div>
+      <div class="jump-ttl">Explore the Journey</div>
+      <div class="jump-items" id="jump-items"></div>
+    </div>
+  </div>
+
+  <div id="pop" style="position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:999;display:none;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;">
+    <div id="pop-sh" style="background:var(--surface);border-radius:14px 14px 0 0;border-top:2px solid var(--gold);padding:20px 18px 36px;width:100%;max-width:420px;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);">
+      <div style="width:36px;height:3px;background:var(--line2);border-radius:2px;margin:0 auto 16px;"></div>
+      <div id="pop-title" style="font-family:var(--font-serif);font-size:18px;font-weight:600;color:var(--white);margin-bottom:10px;"></div>
+      <div id="pop-body" style="font-family:var(--font-sans);font-size:13px;color:var(--white-70);line-height:1.7;margin-bottom:18px;"></div>
+      <button onclick="closePop()" style="width:100%;padding:13px;background:var(--white);border:none;border-radius:4px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--bg);cursor:pointer;">Got it</button>
+    </div>
+  </div>
+
+  <!-- George card -->
+  <div class="george-dim" id="george-dim" onclick="closeGeorgeCard()"></div>
+  <div class="george-card" id="george-card">
+    <div class="gc-handle"></div>
+    <div class="gc-close" onclick="closeGeorgeCard()">&#10005;</div>
+    <div class="gc-header">
+      <div class="gc-photo">
+        <img referrerpolicy="no-referrer" src="assets/george-proud.png" alt="George Kindler" onerror="this.style.display='none'">
+        <div class="fb">GK</div>
+      </div>
+      <div class="gc-name-block">
+        <div class="gc-name">George Kindler</div>
+        <div class="gc-title">Licensed Missouri Agent<br><span>The Closing Pros LLC</span></div>
+      </div>
+    </div>
+    <div class="gc-stats">
+      <div class="gc-stat"><div class="gc-stat-num">250+</div><div class="gc-stat-lbl">Homes<br>Sold</div></div>
+      <div class="gc-stat"><div class="gc-stat-num">13</div><div class="gc-stat-lbl">Years in<br>St. Louis</div></div>
+      <div class="gc-stat"><div class="gc-stat-num">130+</div><div class="gc-stat-lbl">Investment<br>Deals</div></div>
+    </div>
+    <div class="gc-about">I will never sell you. My job is to consult &mdash; help you weigh the facts against my experience. <strong>I started as a $9-an-hour laborer flipping houses.</strong> I&rsquo;ve pulled walls, been buried in 1950s insulation, hung drywall, owned rentals and an Airbnb. 250+ homes sold in St. Louis. I know what it takes to buy, sell, and own real estate &mdash; and I treat every client the way I want to be treated.</div>
+    <a class="gc-call" href="tel:3144351087">&#9742; 314.435.1087 &mdash; No obligation</a>
+  </div>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════
+var SK = 'stl_journey_v1';
+var S = {amount:280000,loan:'conventional',zip:'63123',area:null,tier:null,
+         lastChapter:2,lastStep:0,chaptersVisited:[],lessons:[]};
+try{var sv=JSON.parse(localStorage.getItem(SK)||'{}');if(sv.loan)Object.assign(S,sv);}catch(e){}
+function save(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
+
+// ════════════════════════════════════════════
+//  CHAPTERS — canonical list
+// ════════════════════════════════════════════
+var CURRENT_CHAPTER = 2;
+var CHAPTERS = [
+  {ch:1, file:'01-preapproval.html',    label:'What actually happens when you click “Contact Agent”'},
+  {ch:2, file:'02-affordability.html',  label:'Where buyers accidentally overpay'},
+  {ch:3, file:'03-interior.html',       label:'What I look at the moment we walk in'},
+  {ch:4, file:'05-pre-offer.html',      label:'Where buyers get pushed into offers they can’t take back'},
+  {ch:5, file:'06-under-contract.html', label:'Offer accepted — where deals fall apart'},
+  {ch:6, file:'06b-deadlines.html',     label:'Three deadlines running in parallel'},
+  {ch:7, file:'07-inspection.html',     label:'Where buyers miss the problems they end up paying for'},
+  {ch:8, file:'08-walkthrough.html',    label:'The final walk-through is not a second showing'},
+  {ch:9, file:'09-closing.html',        label:'What you’re signing at closing'}
+];
+
+// ════════════════════════════════════════════
+//  AREAS DATA
+// ════════════════════════════════════════════
+var AREAS = [
+  {id:'south-county',     name:'South County',       zips:'63123 \xb7 63125 \xb7 63126 \xb7 63128', median:265000, desc:'Affton, Mehlville, Crestwood, Oakville'},
+  {id:'south-city',       name:'South City',          zips:'63109 \xb7 63116',                        median:208000, desc:'Tower Grove, Bevo, Patch, Fox Park'},
+  {id:'webster-kirkwood', name:'Webster / Kirkwood',  zips:'63119 \xb7 63122',                        median:435000, desc:'Webster Groves, Kirkwood'},
+  {id:'jefferson',        name:'Jefferson County',    zips:'63010 \xb7 63049 \xb7 63052 \xb7 63028',  median:308000, desc:'Arnold, High Ridge, Imperial, Festus'},
+  {id:'north-county',     name:'North County',        zips:'63031 \xb7 63033',                        median:200000, desc:'Florissant, Hazelwood'},
+  {id:'st-charles',       name:'St. Charles County',  zips:'63301 \xb7 63366 \xb7 63376 \xb7 63385',  median:349000, desc:"St. Charles, O'Fallon, St. Peters, Wentzville"},
+  {id:'west-county',      name:'West County',         zips:'63043',                                   median:295000, desc:'Maryland Heights, Chesterfield edges'},
+];
+
+function getTier(amount, median){
+  var r = amount / median;
+  if(r < 0.95)  return 'tight';
+  if(r <= 1.20) return 'mid';
+  return 'strong';
+}
+
+// ════════════════════════════════════════════
+//  SCENES
+// ════════════════════════════════════════════
+var SCENES = [
+// 0: AMOUNT INPUT
+{type:'input-amount',bg:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',george:'serious',room:'Your Number',
+ speakTitle:"The amount you're approved for and the amount you should spend are not the same thing.",
+ speak:'Your lender gave you a number. Before we look at a single house, I need you to understand what that number actually means in this market.',
+ note:'This drives everything from here forward.',
+ subNote:"I will never tell you to max it out. The lender's job is to qualify you for as much as possible. My job is to help you find the number you can live with when something breaks in year one."
+},
+// 1: LOAN TYPE
+{type:'input-loan',bg:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85',george:'serious',room:'Loan Type',
+ speak:'What loan type are you working with? This changes what we can look at, what the appraiser will flag, and how sellers read your offer.'
+},
+// 2: AREA PICKER
+{type:'input-area',bg:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',george:'serious',room:'Where You Want to Live',
+ speak:"OK \u2014 what areas were you expecting to live in? Pick the one that feels closest to what you had in mind."
+},
+// 3: NOT-LISTED PATH
+{type:'not-listed',bg:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',george:'welcome',room:'Finding Your Area',
+ title:"That's OK.",sub:"It means your opportunities are smaller. Not impossible. Here's how I handle it."
+},
+// 4: BRANCH (tier detection)
+{type:'branch',bg:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85',george:'serious',room:'Reading the Market'},
+// 5: TIER DETAIL
+{type:'tier-detail',bg:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85',george:'serious',room:'What This Gets You'},
+// 6: LOWER RANGE
+{bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',george:'serious',room:'Lower Range Homes',
+ title:'Pre-1970 stock. Brick construction. Original bones.',
+ sub:"Here's what you'll find \u2014 and what to watch for.",
+ interrupt:{title:'Conforming guidelines are real here.',
+   text:"FHA and VA have minimum property condition requirements. Missing handrails, peeling paint on pre-1978 homes, non-functional systems \u2014 all flagged. Many homes in this range don't qualify for government loans as-is. I identify this before we schedule, not after.",
+   btnText:'Show me what to look for'},
+ choices:[
+  {label:"What does 'lower range' actually look like?",icon:'',
+   response:"Pre-1970 construction. Brick in most cases. Original windows and electrical in some. Mechanicals at or past end of life. These homes have bones \u2014 but they have history. The question is what that history cost the previous owner.",
+   deep:{title:'The upside of lower range',body:"Lower price point means more room to build equity through updates. In the right zip code with the right bones, a $180K home you put $30K into can appraise at $240K+. That's real return \u2014 if you go in with eyes open."}},
+  {label:"Send me the address \u2014 what does that mean?",icon:'',
+   response:"Before we schedule, I pull the seller's disclosure, listing photos, days on market, and price history. Many times I can identify conforming issues before we ever set foot inside. That saves your time for homes that can actually close."},
+  {label:"What if I'm open to a real fixer?",icon:'',
+   response:"I respect that. A true fixer at the right price can build real equity. But I need you walking in with a clear picture of what the conforming guidelines allow for your loan \u2014 before you fall in love with a house that won't fund.",
+   deep:{title:'Conforming guidelines by loan type',body:"Conventional: most flexible, appraiser sets the floor but condition issues are negotiated. FHA: chipped paint, missing handrails, broken fixtures, non-functioning systems are all required repairs \u2014 seller must address before close. VA: safe, sound, and sanitary is the standard at every price point. I've seen $380K homes fail VA appraisals. Your benefit travels with your standards."}},
+  {label:'Show me what my budget buys by zip code',icon:'',
+   response:"That's exactly what the Budget Matchmaker is for. Enter your number, pick your loan type, and see all 79 St. Louis MLS zip codes color-coded by what your approval actually reaches.",
+   deep:{title:'STL Budget Matchmaker',body:'79 zip codes covering St. Louis County, St. Louis City, St. Charles County, and Jefferson County \u2014 the full St. Louis side of the MARIS MLS. Shows true PITI \u2014 principal, interest, taxes, and insurance \u2014 not just the listing price.',link:'https://gkindler-help.github.io/buyeraffordabilityheatmap/'}}
+ ]
+},
+// 7: MID RANGE
+{bg:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&q=85',george:'serious',room:'Mid Range Homes',
+ title:'This is where most buyers land. And most competition.',
+ sub:"Here's why \u2014 and what you'll actually find.",
+ interrupt:{title:'Most competition is right here.',
+   text:"Buyers who can move right in and handle dated cosmetics are the most common buyer in St. Louis. You're competing with them. Pre-approval in hand, same-day decisions when the right house appears \u2014 that's how you win.",
+   btnText:'What gives me an edge?'},
+ choices:[
+  {label:'What does mid-range actually look like?',icon:'',
+   response:"1960s to 1990s construction. Mix of brick and frame. Some updated, some dated. Kitchens redone in 2012 next to bathrooms untouched since 1985. It's manageable \u2014 if you know what you're looking at.",
+   deep:{title:'What I watch for in this range',body:"HVAC age. Panel brand. Roof condition. Basement moisture. These items are common in mid-range homes and they're all negotiating tools when I find them before we write the offer. I don't overlook them \u2014 I use them."}},
+  {label:'The two-of-three rule \u2014 what is that?',icon:'',
+   response:"Condition, location, square footage. In this price range you usually get two. Buyers who hold out for all three either pay significantly over asking or wait a long time. Know which two matter most before we walk in anywhere.",
+   deep:{title:'Two-of-three in practice',body:"Condition first: move-in ready homes in the right zip sell fast \u2014 7 to 10 days average. Location first: a dated house in the right neighborhood appreciates. A beautiful house in the wrong location doesn't. Space first: that usually means cosmetic work to get the square footage at this price. None of these is wrong \u2014 knowing which one is yours makes every decision faster."}},
+  {label:'How fast do homes move here?',icon:'',
+   response:"In the competitive zip codes, move-in ready homes see multiple offers within the first weekend. 7 to 10 days average on market. The best ones are gone before the open house happens."}
+ ]
+},
+// 8: STRONG RANGE
+{bg:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85',george:'serious',room:'Top of the Zip',
+ title:'More options. Different things to watch for.',
+ sub:'At the top of any zip code, the game changes.',
+ interrupt:{title:'Beautiful finishes hide things too.',
+   text:"I've seen $380,000 homes fail VA appraisals. A high price tag doesn't mean a clean bill of health. It means the staging is better. I look harder.",
+   btnText:'What do you look for?'},
+ choices:[
+  {label:'What does renovated actually mean?',icon:'',
+   response:"It means someone improved the home before listing. Sometimes that's genuine. Sometimes it's fresh paint over deferred maintenance. I look past the finish work at the systems underneath \u2014 electrical, HVAC, plumbing, structure.",
+   deep:{title:'Bad workmanship in renovations',body:"Beautiful staging and fresh finishes can cover unpermitted electrical, improperly vented bathrooms, HVAC systems that were 'serviced' but not replaced. The higher the price, the more likely someone renovated before listing. The more I look past the cosmetics."}},
+  {label:'Why do permits matter more at this price?',icon:'',
+   response:"A $400K home with a $60K unpermitted addition is a liability that transfers with the deed. I check permit history before we write an offer at this price point. Five minutes of research that can save an expensive conversation later."},
+  {label:"What's the real constraint here?",icon:'',
+   response:"Floor plan. You can update a kitchen. You cannot move a staircase cheaply. At this budget, the floor plan \u2014 how the rooms connect, where the primary sits, kitchen placement \u2014 is what you're actually choosing. Everything else is negotiable.",
+   deep:{title:'Original condition at this price',body:"Buyers who choose original condition at the top of the range get something important: control. You know what was done and you choose who does it. The trade-off is time and upfront cost. The advantage is you don't inherit someone else's renovation decisions."}}
+ ]
+},
+// 9: WRAP
+{bg:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',george:'proud',room:"George's Process",
+ title:'Now you know how I think about affordability.',
+ sub:'Not just the number \u2014 the number in context of area, loan type, condition, and competition.',
+ choices:[
+  {label:'What happens at the showing?',icon:'',
+   response:"That's Chapter 3. You'll walk through a house the way I do \u2014 looking at what costs money, not what costs paint. Most buyers miss everything that matters. We fix that."},
+  {label:'I have a specific situation \u2014 can I call?',icon:'',
+   response:'Yes. That\'s exactly what the call is for. 314.435.1087. No obligation. Buyer education is my favorite part of this job.'},
+  {label:'Show me the zip code map',icon:'',
+   response:"The Budget Matchmaker covers all 79 St. Louis MLS zip codes \u2014 color-coded by what your approval actually reaches. True PITI, not just list price. Opens in a new tab.",
+   deep:{title:'STL Budget Matchmaker',body:'79 zip codes across St. Louis County, St. Louis City, St. Charles County, and Jefferson County. Uses actual municipal tax rates \u2014 not estimates. See exactly which zips fall inside your real monthly payment.',link:'https://gkindler-help.github.io/buyeraffordabilityheatmap/'}}
+ ],
+ nextLabel:'The Interior \u2192',
+ nextFile:'03-interior.html',
+ nextChapter:3,
+ isLast:true
+}
+];
+
+// ════════════════════════════════════════════
+//  ENGINE STATE
+// ════════════════════════════════════════════
+var cur = 0;
+var intDismissed = false;
+var intTimer = null;
+var _intCallback = null;
+var arrivedAt6From = (S.area && S.area !== 'skip') ? 5 : 2;
+
+var PREV_MAP = {0:null,1:0,2:1,3:2,4:2,5:4,6:5,7:6,8:7,9:8};
+
+// ════════════════════════════════════════════
+//  RENDER DISPATCH
+// ════════════════════════════════════════════
+function renderScene(idx){
+  var sc = SCENES[idx];
+  if(!sc) return;
+  if(sc.type==='input-amount') { renderAmountScene(sc,idx); return; }
+  if(sc.type==='input-loan')   { renderLoanScene(sc,idx); return; }
+  if(sc.type==='input-area')   { renderAreaScene(sc,idx); return; }
+  if(sc.type==='branch')       { renderBranchScene(sc,idx); return; }
+  if(sc.type==='tier-detail')  { renderTierDetailScene(sc,idx); return; }
+  if(sc.type==='not-listed')   { renderNotListedScene(sc,idx); return; }
+  renderStandardScene(sc,idx);
+}
+
+// ── STANDARD SCENE ────────────────────────────────────────────
+function renderStandardScene(sc,idx){
+  updateProgress(idx);
+  document.getElementById('scene-lbl').textContent = sc.room;
+  setBg(sc.bg);
+  setGeorge(sc.george);
+  document.getElementById('sc-room').textContent  = sc.room;
+  document.getElementById('sc-title').textContent = sc.title || '';
+  document.getElementById('sc-sub').textContent   = sc.sub   || '';
+  dismissInterrupt(true);
+  closeDrawer();
+  hideInputScene();
+  showSceneLayers();
+  buildChoices(sc.choices || []);
+  document.getElementById('btn-back').disabled = (idx === 0);
+  var btnNext = document.getElementById('btn-next');
+  if(sc.isLast){ btnNext.textContent = sc.nextLabel || 'Next \u2192'; btnNext.classList.add('gold'); }
+  else          { btnNext.textContent = 'Next \u2192'; btnNext.classList.remove('gold'); }
+  btnNext.disabled = false;
+  if(sc.interrupt){
+    intDismissed = false;
+    intTimer = setTimeout(function(){ if(!intDismissed) showInterrupt(sc.interrupt); }, 1000);
+  }
+  if(!sc.interrupt && sc.choices && sc.choices.length > 0){ setTimeout(openDrawer, 800); }
+  S.lastStep = idx; S.lastChapter = 2; save();
+  updatePills(); resetPeek(); animateSceneCard();
+  gtag('event','scene_view',{chapter:2,scene:idx,room:sc.room});
+}
+
+// ── AMOUNT INPUT ──────────────────────────────────────────────
+function renderAmountScene(sc,idx){
+  updateProgress(idx);
+  document.getElementById('scene-lbl').textContent = sc.room;
+  hideSceneLayers(); dismissInterrupt(true); closeDrawer();
+  var existing = document.getElementById('input-scene-el');
+  if(existing) existing.remove();
+  var el = document.createElement('div');
+  el.id = 'input-scene-el'; el.className = 'input-scene';
+  el.innerHTML =
+    '<div class="input-scene-bg"><img referrerpolicy="no-referrer" src="'+sc.bg+'" alt="scene"></div>'
+    +'<div class="input-overlay"></div>'
+    +'<div class="input-content">'
+    +'<div class="inp-george-row"><div class="inp-g-face"><img referrerpolicy="no-referrer" src="assets/george-serious.png" onerror="this.style.display=\'none\'"><div class="fb">GK</div></div>'
+    +'<div class="inp-bubble">'+sc.speak+'</div></div>'
+    +'<div class="inp-field-wrap"><label class="inp-lbl">Pre-approval amount</label>'
+    +'<input class="big-inp" type="number" id="amt-inp" value="'+S.amount+'" min="50000" max="800000" step="5000" oninput="S.amount=parseInt(this.value)||280000;save();">'
+    +'<div class="inp-note">'+sc.note+'</div></div>'
+    +'<div style="margin:0 16px 14px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:6px;">'
+    +'<div style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:3px;">I will never tell you to max it out</div>'
+    +'<div style="font-size:11px;color:var(--white-40);line-height:1.55;">'+sc.subNote+'</div></div>'
+    +'</div>';
+  document.getElementById('stage').appendChild(el);
+  document.getElementById('btn-back').disabled = (idx===0);
+  document.getElementById('btn-next').disabled = false;
+  document.getElementById('btn-next').textContent = 'Next \u2192';
+  document.getElementById('btn-next').classList.remove('gold');
+  S.lastStep = idx; save(); updatePills();
+}
+
+// ── LOAN SCENE ────────────────────────────────────────────────
+function renderLoanScene(sc,idx){
+  updateProgress(idx);
+  document.getElementById('scene-lbl').textContent = sc.room;
+  hideSceneLayers(); dismissInterrupt(true); closeDrawer();
+  var existing = document.getElementById('input-scene-el');
+  if(existing) existing.remove();
+  var selC = S.loan==='conventional'?' sel':'';
+  var selF = S.loan==='fha'?' sel':'';
+  var selV = S.loan==='va'?' sel':'';
+  var el = document.createElement('div');
+  el.id = 'input-scene-el'; el.className = 'input-scene';
+  el.innerHTML =
+    '<div class="input-scene-bg"><img referrerpolicy="no-referrer" src="'+sc.bg+'" alt="scene"></div>'
+    +'<div class="input-overlay"></div>'
+    +'<div class="input-content">'
+    +'<div class="inp-george-row"><div class="inp-g-face"><img referrerpolicy="no-referrer" src="assets/george-serious.png" onerror="this.style.display=\'none\'"><div class="fb">GK</div></div>'
+    +'<div class="inp-bubble">'+sc.speak+'</div></div>'
+    +'<div class="loan-row">'
+    +'<div class="l-tile'+selC+'" id="lc" onclick="pickLoan(\'conventional\')"><div class="l-name">Conv</div><div class="l-sub">3\u201320% down<br>620+ credit</div></div>'
+    +'<div class="l-tile'+selF+'" id="lf" onclick="pickLoan(\'fha\')"><div class="l-name">FHA</div><div class="l-sub">3.5% down<br>580+ credit</div></div>'
+    +'<div class="l-tile'+selV+'" id="lv" onclick="pickLoan(\'va\')"><div class="l-name">VA</div><div class="l-sub">0% down<br>Veterans</div></div>'
+    +'</div>'
+    +'<div class="loan-desc-wrap" id="loan-desc-wrap">'+getLoanDescHTML(S.loan)+'</div>'
+    +'</div>';
+  document.getElementById('stage').appendChild(el);
+  document.getElementById('btn-back').disabled = (idx===0);
+  document.getElementById('btn-next').disabled = false;
+  document.getElementById('btn-next').textContent = 'Next \u2192';
+  document.getElementById('btn-next').classList.remove('gold');
+  S.lastStep = idx; save(); updatePills();
+}
+
+function getLoanDescHTML(t){
+  if(!t) return '';
+  var desc = {
+    conventional:"Most flexible for sellers and on condition. Fewer appraisal trip wires than government loans \u2014 but the appraiser still controls the floor.",
+    fha:"Lower down payment, strict condition requirements. Sellers know an FHA offer means the appraiser will look at everything. I prep for that before we write.",
+    va:"Zero down, best rate available, strictest appraisal standards. Some sellers won't accept VA offers. I handle that conversation before you find out at the table."
+  };
+  return '<div style="background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--green);border-radius:6px;padding:11px 13px;">'
+    +'<div style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:3px;">'+t.charAt(0).toUpperCase()+t.slice(1)+'</div>'
+    +'<div style="font-size:11px;color:var(--white-40);line-height:1.55;">'+desc[t]+'</div></div>';
+}
+
+function pickLoan(t){
+  S.loan = t; save();
+  ['lc','lf','lv'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.classList.toggle('sel',(id==='lc'&&t==='conventional')||(id==='lf'&&t==='fha')||(id==='lv'&&t==='va'));
+  });
+  var wrap = document.getElementById('loan-desc-wrap');
+  if(wrap) wrap.innerHTML = getLoanDescHTML(t);
+  gtag('event','loan_pick',{loan:t,chapter:2});
+}
+
+// ── AREA SCENE ────────────────────────────────────────────────
+function renderAreaScene(sc,idx){
+  updateProgress(idx);
+  document.getElementById('scene-lbl').textContent = sc.room;
+  hideSceneLayers(); dismissInterrupt(true); closeDrawer();
+  var existing = document.getElementById('input-scene-el');
+  if(existing) existing.remove();
+  var tilesHtml = AREAS.map(function(a){
+    return '<div class="area-tile" id="at-'+a.id+'" onclick="pickArea(\''+a.id+'\')">'
+      +'<div class="at-name">'+a.name+'</div>'
+      +'<div class="at-zips">'+a.desc+'</div>'
+      +'<div class="at-med">$'+Math.round(a.median/1000)+'K avg</div></div>';
+  }).join('');
+  tilesHtml += '<div class="area-tile not-listed" id="at-not-listed" onclick="pickArea(\'not-listed\')">'
+    +'<div class="at-name">My area isn\'t listed</div>'
+    +'<div class="at-zips">We can still find your home</div></div>';
+  var el = document.createElement('div');
+  el.id = 'input-scene-el'; el.className = 'input-scene';
+  el.innerHTML =
+    '<div class="input-scene-bg"><img referrerpolicy="no-referrer" src="'+sc.bg+'" alt="scene"></div>'
+    +'<div class="input-overlay"></div>'
+    +'<div class="input-content" style="overflow-y:auto;-webkit-overflow-scrolling:touch;">'
+    +'<div class="inp-george-row" style="flex-shrink:0;"><div class="inp-g-face"><img referrerpolicy="no-referrer" src="assets/george-serious.png" onerror="this.style.display=\'none\'"><div class="fb">GK</div></div>'
+    +'<div class="inp-bubble">'+sc.speak+'</div></div>'
+    +'<div class="area-grid">'+tilesHtml+'</div>'
+    +'<div class="area-skip-link" onclick="skipToGenEd()">Skip \u2014 show me what each price tier looks like \u2192</div>'
+    +'</div>';
+  document.getElementById('stage').appendChild(el);
+  if(S.area && S.area !== 'skip'){
+    var selEl = document.getElementById('at-'+S.area);
+    if(selEl) selEl.classList.add('sel');
+  }
+  document.getElementById('btn-back').disabled = (idx===0);
+  document.getElementById('btn-next').disabled = !S.area;
+  document.getElementById('btn-next').textContent = 'Next \u2192';
+  document.getElementById('btn-next').classList.remove('gold');
+  S.lastStep = idx; save(); updatePills();
+}
+
+function pickArea(id){
+  S.area = id; save();
+  document.querySelectorAll('.area-tile').forEach(function(el){ el.classList.remove('sel'); });
+  var el = document.getElementById('at-'+id);
+  if(el) el.classList.add('sel');
+  document.getElementById('btn-next').disabled = false;
+  updatePills();
+  gtag('event','area_pick',{area:id,chapter:2});
+}
+
+function skipToGenEd(){
+  S.area = 'skip'; save();
+  arrivedAt6From = 2;
+  cur = 6; renderScene(cur);
+}
+
+// ── NOT-LISTED SCENE ──────────────────────────────────────────
+function renderNotListedScene(sc,idx){
+  updateProgress(idx);
+  document.getElementById('scene-lbl').textContent = sc.room;
+  setBg(sc.bg); setGeorge(sc.george);
+  document.getElementById('sc-room').textContent  = sc.room;
+  document.getElementById('sc-title').textContent = sc.title || '';
+  document.getElementById('sc-sub').textContent   = sc.sub   || '';
+  showSceneLayers(); hideInputScene(); dismissInterrupt(true);
+  buildChoices([
+    {label:'How does MLS notification work?',icon:'',
+     response:"I set up a live search for your criteria \u2014 price, beds, baths, location. The moment a matching home hits the market, you get notified. Before Zillow. Before the open house weekend. Before the other buyers.",
+     deep:{title:'Why being first matters',body:'In a tight inventory area, the home you want may receive multiple offers in 48 hours. Buyers who see it day one have the best shot. Zillow and Realtor.com typically lag the MLS by 24 to 48 hours. Direct MLS notification eliminates that gap entirely.'}},
+    {label:'What do I do while I wait?',icon:'',
+     response:'Keep going through the Journey. Understanding what to look for, how to read an inspection, and how offers work gives you an edge the moment a home lands in your inbox.'}
+  ]);
+  setTimeout(openDrawer, 600);
+  document.getElementById('btn-back').disabled = (idx===0);
+  document.getElementById('btn-next').disabled = false;
+  document.getElementById('btn-next').textContent = 'Next \u2192';
+  document.getElementById('btn-next').classList.remove('gold');
+  S.lastStep = idx; save(); updatePills(); resetPeek(); animateSceneCard();
+}
+
+// ── BRANCH SCENE ──────────────────────────────────────────────
+function renderBranchScene(sc,idx){
+  updateProgress(idx);
+  document.getElementById('scene-lbl').textContent = sc.room;
+  var area = AREAS.find(function(a){ return a.id === S.area; });
+  if(!area){ cur=6; renderScene(cur); return; }
+  var tier = getTier(S.amount, area.median);
+  S.tier = tier; save();
+  setBg(sc.bg); setGeorge(sc.george);
+  showSceneLayers(); hideInputScene(); dismissInterrupt(true); closeDrawer();
+  var f$ = function(n){ return '$'+Math.round(n).toLocaleString(); };
+  var tierLabels = {tight:'Lower end of this area.',mid:'Right in the heart of this area.',strong:'Strong budget for this area.'};
+  document.getElementById('sc-room').textContent  = sc.room;
+  document.getElementById('sc-title').textContent = area.name + ' \u2014 ' + f$(area.median) + ' median';
+  document.getElementById('sc-sub').textContent   = tierLabels[tier];
+  var questions = {tight:'How much work are you willing to take on?',mid:'What matters most \u2014 condition, location, or square footage?',strong:'What kind of home are you picturing?'};
+  var choicesByTier = {
+    tight: [{label:'Move-in ready only \u2014 I don\u2019t want a project',v:'ready'},{label:'Some work is fine if the price is right',v:'some'},{label:'Open to a real fixer if the bones are good',v:'full'}],
+    mid:   [{label:'Condition first \u2014 move-in ready',v:'condition'},{label:'Location first \u2014 I\u2019ll compromise on the house',v:'location'},{label:'Space first \u2014 I need the square footage',v:'space'}],
+    strong:[{label:'Renovated and done right',v:'renovated'},{label:'Original condition I can control',v:'original'},{label:'Open to either \u2014 show me what\u2019s there',v:'both'}]
+  };
+  document.getElementById('drawer-label').textContent = questions[tier];
+  var container = document.getElementById('choices');
+  container.innerHTML = '';
+  (choicesByTier[tier]||[]).forEach(function(c){
+    var btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c.label;
+    btn.onclick = function(){
+      container.querySelectorAll('.choice-btn').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      S.branchChoice = c.v; save();
+      setTimeout(function(){ document.getElementById('btn-next').disabled = false; }, 300);
+      gtag('event','branch_choice',{tier:tier,choice:c.v,chapter:2});
+    };
+    container.appendChild(btn);
+  });
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('btn-back').disabled = (idx===0);
+  document.getElementById('btn-next').textContent = 'Next \u2192';
+  document.getElementById('btn-next').classList.remove('gold');
+  var loanWarns = {
+    conventional:'Conventional loans are the most flexible on condition \u2014 but the appraiser still sets the floor. If something is clearly wrong, it gets flagged regardless of price.',
+    fha:'FHA appraisers are strict on condition at every price point \u2014 chipped paint, missing handrails, deferred maintenance. Being at the top of your FHA approval doesn\u2019t change what they\u2019ll require.',
+    va:'VA appraisers require the home to be safe, sound, and sanitary at every price point. I\u2019ve seen $380,000 homes fail VA appraisals. Your benefit travels with you into every price range \u2014 so do its standards.'
+  };
+  var questionInt = {title:questions[tier],text:'Tap your answer below.',btnText:'Show me the options',_onDismiss:function(){ setTimeout(openDrawer,300); }};
+  var loanInt = {title:S.loan.toUpperCase()+' \u2014 this applies at every price point.',text:loanWarns[S.loan]||loanWarns.conventional,btnText:'Got it',_onDismiss:function(){ setTimeout(function(){ showInterruptWithCallback(questionInt,questionInt._onDismiss); },400); }};
+  intDismissed = false;
+  intTimer = setTimeout(function(){ if(!intDismissed) showInterruptWithCallback(loanInt,loanInt._onDismiss); },700);
+  S.lastStep = idx; save(); updatePills(); resetPeek(); animateSceneCard();
+}
+
+// ── TIER DETAIL SCENE ─────────────────────────────────────────
+function renderTierDetailScene(sc,idx){
+  updateProgress(idx);
+  document.getElementById('scene-lbl').textContent = sc.room;
+  setBg(sc.bg); setGeorge(sc.george);
+  showSceneLayers(); hideInputScene(); dismissInterrupt(true); closeDrawer();
+  var tier = S.tier || 'mid';
+  var choice = S.branchChoice || '';
+  var reactions = {
+    tight:{ready:"That's a legitimate preference. It narrows the field significantly \u2014 but those homes exist. When they hit the market they move fast. We need to be ready.",some:"Smart. Cosmetic work \u2014 paint, flooring, fixtures \u2014 is manageable. What you want to avoid is structural and mechanical surprises. That's what I screen for before we schedule anything.",full:"I respect that. A true fixer at the right price can build real equity. But I need you to understand conforming guidelines before we get there."},
+    mid:{condition:"Condition-first buyers win when they're fast. Move-in ready homes in this range get multiple offers. Your pre-approval letter needs to be clean and your timeline needs to be flexible.",location:"Location-first is how you build long-term value. A dated house in the right neighborhood appreciates. A beautiful house in the wrong location doesn't. Smart priority.",space:"Square footage first means we're probably looking at homes that need cosmetic work to get the space at this price. I can work with that. The structure matters more than the finishes."},
+    strong:{renovated:"Renovated homes in this range look great. That's exactly when I look hardest. A beautiful renovation can hide bad workmanship as easily as a dated house hides deferred maintenance.",original:"Original condition at the top of the range gives you control over the renovation. You know what was done and you choose who does it. That's a legitimate strategy.",both:"Good \u2014 keeping options open gives us more inventory. At your budget, you have real flexibility. The question becomes what's non-negotiable on floor plan, lot, and location."}
+  };
+  var titles = {
+    tight:{ready:'Send me the address first.',some:'Cosmetic work is fine. System failures are not.',full:'Equity builder \u2014 if you go in with eyes open.'},
+    mid:{condition:'Move-in ready moves fast here.',location:'A dated house in the right zip appreciates.',space:'Square footage at this price usually means cosmetic work.'},
+    strong:{renovated:'I look harder at renovated homes.',original:'Control is worth something.',both:'You have real flexibility here.'}
+  };
+  document.getElementById('sc-room').textContent  = sc.room;
+  document.getElementById('sc-title').textContent = (titles[tier]&&titles[tier][choice]) || 'Here\u2019s what this looks like.';
+  document.getElementById('sc-sub').textContent   = (reactions[tier]&&reactions[tier][choice]) || '';
+  var deepChoices = {
+    tight:[
+      {label:'What are conforming guidelines?',icon:'',response:"Your loan has minimum property condition requirements. FHA and VA are the strictest \u2014 but every loan has a floor. A home that doesn't meet those standards won't fund.",deep:{title:'Why I review before you tour',body:"I pull the seller's disclosure, listing photos, days on market, and price history before we schedule. Many times I can tell there are going to be conforming issues before we ever set foot in the home. That saves you a Saturday and your energy for homes that actually work for your loan."}},
+      {label:'How do you know before we tour?',icon:'',response:"Seller's disclosure. Listing photos \u2014 wide-angle shots hide a lot but show more than you'd think. Days on market. Price reductions. I've looked at a lot of houses. Patterns are recognizable."},
+      {label:'What does this process look like in practice?',icon:'',response:"You see a house you like. You send me the address. I review it that day. I tell you yes, worth scheduling \u2014 or here's what I'm seeing that concerns me. We focus your time on homes that can actually close."}
+    ],
+    mid:[
+      {label:'What kills deals in this range?',icon:'',response:"HVAC at end of life. Federal Pacific panels. Basement moisture. Unpermitted additions. These are common. They're also negotiating tools \u2014 but only if we find them before we write the offer.",deep:{title:'How I use the inspection',body:"I don't use inspection findings as a surprise at the end. I anticipate them from the listing. The inspection confirms what I already suspect. That changes the negotiation entirely \u2014 I'm not reacting, I'm prepared."}},
+      {label:'Two-of-three \u2014 condition, location, space?',icon:'',response:"Condition first: move-in ready homes in the right zip sell fast. Location first: the right zip appreciates regardless of condition. Space first: usually means cosmetic work to get square footage at this price."},
+      {label:'How fast do I need to be ready to decide?',icon:'',response:"Same day on the best homes. In the competitive zip codes, a move-in ready home in the right price range can be under contract before the weekend open house happens."}
+    ],
+    strong:[
+      {label:'How do I spot bad workmanship?',icon:'',response:"I look past the staging. Outlet placement around a remodeled kitchen. Bathroom exhaust fans \u2014 do they vent outside or into the attic? HVAC brand and age. Permit records. You learn to see past the countertops.",deep:{title:'The permit check',body:"Five minutes with the county permit record tells me whether the work was done legally. An unpermitted renovation is a liability that transfers with the deed. Some buyers inherit this problem without knowing it existed. I check before we write."}},
+      {label:'Why does floor plan matter most here?',icon:'',response:"You can replace a kitchen. You cannot move a load-bearing wall cheaply. At this budget, floor plan \u2014 how the rooms connect, where the primary sits, kitchen flow \u2014 is what you're actually choosing. Finishes are replaceable. Layout is permanent."},
+      {label:'What should I know about $380K homes failing VA?',icon:'',response:"VA appraisers require the home to be safe, sound, and sanitary \u2014 at every price point. A renovated home with deferred maintenance underneath can fail the VA appraisal even at $380K. Your benefit travels with its standards into every price range."}
+    ]
+  };
+  buildChoices(deepChoices[tier]||[]);
+  setTimeout(openDrawer, 600);
+  document.getElementById('btn-back').disabled = (idx===0);
+  document.getElementById('btn-next').disabled = false;
+  document.getElementById('btn-next').textContent = 'Next \u2192';
+  document.getElementById('btn-next').classList.remove('gold');
+  S.lastStep = idx; save(); updatePills(); resetPeek(); animateSceneCard();
+}
+
+// ════════════════════════════════════════════
+//  INTERRUPT
+// ════════════════════════════════════════════
+function showInterrupt(int){
+  _intCallback = null;
+  document.getElementById('int-title').textContent = int.title;
+  typeText(int.text,'int-text');
+  document.getElementById('int-btn').textContent = int.btnText || 'Got it';
+  document.getElementById('int-dim').classList.add('active');
+  document.getElementById('int-card').classList.add('active');
+  closeDrawer();
+}
+
+function showInterruptWithCallback(int,cb){
+  _intCallback = cb || null;
+  document.getElementById('int-title').textContent = int.title;
+  if(int.text){ typeText(int.text,'int-text'); }
+  else { document.getElementById('int-text').innerHTML = ''; }
+  document.getElementById('int-btn').textContent = int.btnText || 'Got it';
+  document.getElementById('int-dim').classList.add('active');
+  document.getElementById('int-card').classList.add('active');
+  closeDrawer();
+}
+
+function dismissInterrupt(silent){
+  if(intTimer){ clearTimeout(intTimer); intTimer = null; }
+  intDismissed = true;
+  document.getElementById('int-dim').classList.remove('active');
+  document.getElementById('int-card').classList.remove('active');
+  var cb = _intCallback; _intCallback = null;
+  if(cb){ cb(); return; }
+  var sc = SCENES[cur];
+  if(!silent && sc && sc.choices && sc.choices.length > 0){ setTimeout(openDrawer,400); }
+}
+
+// ════════════════════════════════════════════
+//  DRAWER — flat engine (affordability only)
+// ════════════════════════════════════════════
+function openDrawer(){ document.getElementById('drawer').classList.add('open'); }
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  var resp = document.getElementById('drawer-response');
+  if(resp){ resp.classList.remove('show'); resp.innerHTML = ''; }
+}
+
+function buildChoices(choices){
+  var container = document.getElementById('choices');
+  container.innerHTML = '';
+  if(!choices||choices.length===0) return;
+  document.getElementById('drawer-label').textContent = 'Look closer \u2014 tap anything';
+  choices.forEach(function(c){
+    var btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = (c.icon?'<span class="c-ico">'+c.icon+'</span>':'')+c.label;
+    btn.onclick = function(){
+      container.querySelectorAll('.choice-btn').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      showResponse(c);
+    };
+    container.appendChild(btn);
+  });
+}
+
+function showResponse(c){
+  var resp = document.getElementById('drawer-response');
+  resp.classList.remove('show');
+  setTimeout(function(){
+    var html = c.response;
+    if(c.deep){ html += '<span class="r-deep" onclick="showDeep('+JSON.stringify(c.deep).replace(/"/g,"'")+')">\u2192 Go deeper</span>'; }
+    resp.innerHTML = html;
+    resp.classList.add('show');
+  }, 120);
+  gtag('event','choice_tap',{chapter:2,scene:cur,choice:c.label});
+}
+
+// ════════════════════════════════════════════
+//  DEEP DIVE POPUP
+// ════════════════════════════════════════════
+function showDeep(deep){
+  document.getElementById('pop-title').textContent = deep.title;
+  document.getElementById('pop-body').textContent  = deep.body;
+  var pop = document.getElementById('pop');
+  var sh  = document.getElementById('pop-sh');
+  var linkEl = document.getElementById('pop-link-btn');
+  if(linkEl) linkEl.remove();
+  if(deep.link){
+    var lb = document.createElement('a');
+    lb.id = 'pop-link-btn'; lb.href = deep.link; lb.target = '_blank'; lb.rel = 'noopener';
+    lb.textContent = 'Open the map \u2192';
+    lb.style.cssText = 'display:block;width:100%;padding:13px;background:var(--gold);border:none;border-radius:4px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--bg);cursor:pointer;text-align:center;text-decoration:none;margin-bottom:10px;';
+    var closeBtn = sh.querySelector('button');
+    sh.insertBefore(lb, closeBtn);
+  }
+  pop.style.display = 'flex';
+  requestAnimationFrame(function(){
+    pop.style.opacity='1'; pop.style.pointerEvents='all'; pop.style.transition='opacity .25s';
+    sh.style.transform='translateY(0)'; sh.style.transition='transform .3s cubic-bezier(.32,.72,0,1)';
+  });
+}
+
+function closePop(){
+  var pop = document.getElementById('pop');
+  pop.style.opacity='0'; pop.style.pointerEvents='none';
+  setTimeout(function(){ pop.style.display='none'; },300);
+}
+
+// ════════════════════════════════════════════
+//  TYPEWRITER
+// ════════════════════════════════════════════
+function typeText(text,elId){
+  var el = document.getElementById(elId);
+  if(!el) return;
+  el.innerHTML = '';
+  var i = 0;
+  var iv = setInterval(function(){
+    el.innerHTML = text.slice(0,i).replace(/\n/g,'<br>');
+    i++;
+    if(i>text.length) clearInterval(iv);
+  },16);
+}
+
+// ════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════
+var _peeking = false;
+function togglePeek(){
+  _peeking = !_peeking;
+  var cap = document.getElementById('scene-caption');
+  var btn = document.getElementById('sc-peek');
+  var drawer = document.getElementById('drawer');
+  if(_peeking){
+    cap.style.maxHeight = '36px'; cap.style.overflow = 'hidden';
+    if(btn) btn.textContent = '\u25bc Text';
+    if(drawer) drawer.classList.remove('open');
+  } else {
+    cap.style.maxHeight = ''; cap.style.overflow = '';
+    if(btn) btn.textContent = '\u25b2 Photo';
+    var sc = SCENES[cur];
+    if(sc&&sc.choices&&sc.choices.length>0) setTimeout(openDrawer,200);
+  }
+}
+function resetPeek(){
+  _peeking = false;
+  var cap = document.getElementById('scene-caption');
+  var btn = document.getElementById('sc-peek');
+  if(cap){ cap.style.maxHeight=''; cap.style.overflow=''; }
+  if(btn) btn.textContent = '\u25b2 Photo';
+}
+function animateSceneCard(){
+  var cap = document.getElementById('scene-caption');
+  if(!cap) return;
+  cap.style.transition='none'; cap.style.opacity='0'; cap.style.transform='translateY(18px)';
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    cap.style.transition='opacity .4s ease, transform .4s ease';
+    cap.style.opacity='1'; cap.style.transform='translateY(0)';
+  });});
+}
+function updateProgress(idx){ document.getElementById('prog').style.width=Math.round((idx/(SCENES.length-1))*100)+'%'; }
+function setBg(url){
+  var img = document.getElementById('bg-img');
+  if(!img) return;
+  img.style.opacity='0';
+  setTimeout(function(){
+    img.src = url||'';
+    img.onload=function(){ img.style.opacity='1'; img.style.transition='opacity .6s ease'; };
+    img.onerror=function(){ img.style.display='none'; };
+  },200);
+}
+function setGeorge(name){
+  var map = {serious:'assets/george-serious.png',welcome:'assets/george-welcome.png',excited:'assets/george-excited.png',proud:'assets/george-proud.png',papers:'assets/george-papers.png',disappointed:'assets/george-disappointed.png'};
+  var src = map[name]||'assets/george-serious.png';
+  var g = document.getElementById('george-img'); var ig = document.getElementById('int-george-img');
+  if(g) g.src=src; if(ig) ig.src=src;
+}
+function showSceneLayers(){
+  document.getElementById('scene-bg').style.opacity='1';
+  document.getElementById('george-float').classList.remove('hidden');
+  document.getElementById('scene-caption').style.opacity='1';
+}
+function hideSceneLayers(){
+  document.getElementById('george-float').classList.add('hidden');
+  document.getElementById('scene-caption').style.opacity='0';
+}
+function hideInputScene(){
+  var el = document.getElementById('input-scene-el');
+  if(el) el.remove();
+}
+
+// ════════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════════
+function nextScene(){
+  var sc = SCENES[cur];
+  if(sc&&sc.isLast){
+    if(!S.chaptersVisited) S.chaptersVisited=[];
+    if(!S.chaptersVisited.includes(2)) S.chaptersVisited.push(2);
+    S.lastChapter = sc.nextChapter || 3;
+    S.lastStep = 0;
+    save();
+    window.location.href = sc.nextFile || '03-interior.html';
+    return;
+  }
+  if(sc&&sc.type==='input-area'){
+    if(!S.area) return;
+    if(S.area==='not-listed'){ cur=3; renderScene(cur); return; }
+    if(S.area==='skip'){ arrivedAt6From=2; cur=6; renderScene(cur); return; }
+    cur=4; renderScene(cur); return;
+  }
+  if(cur < SCENES.length-1){ cur++; renderScene(cur); }
+}
+
+function prevScene(){
+  var target;
+  if(cur===6){ target = arrivedAt6From; }
+  else { target = PREV_MAP[cur]; }
+  if(target===null||target===undefined){ window.location.href='index.html'; return; }
+  cur = target; renderScene(cur);
+}
+
+function jumpToScene(idx){ cur=idx; renderScene(cur); }
+
+// ── CONTEXT PILLS ─────────────────────────────────────────────
+function updatePills(){
+  var pills = document.getElementById('context-pills');
+  var pAmt  = document.getElementById('pill-amount');
+  var pArea = document.getElementById('pill-area');
+  if(cur<1){ pills.style.display='none'; return; }
+  pills.style.display='flex';
+  pAmt.textContent = (S.amount ? '$'+Math.round(S.amount/1000)+'K' : '\u2014') + ' \u270e';
+  if(cur>=3 && S.area && S.area!=='skip'){
+    var area = AREAS.find(function(a){ return a.id===S.area; });
+    pArea.textContent = (area?area.name:'Area') + ' \u270e';
+    pArea.style.display='';
+  } else {
+    pArea.style.display='none';
+  }
+}
+
+// ════════════════════════════════════════════
+//  JUMP MENU
+// ════════════════════════════════════════════
+function openJump(){
+  var visited = S.chaptersVisited||[];
+  document.getElementById('jump-items').innerHTML = CHAPTERS.map(function(c){
+    var isCur = c.ch===CURRENT_CHAPTER;
+    var isVis = visited.includes(c.ch)&&!isCur;
+    return '<div class="jump-item '+(isCur?'cur-ch':'')+'" onclick="jumpTo(\''+c.file+'\','+c.ch+')">'
+      +'<div class="ji-dot '+(isCur?'cur':isVis?'vis':'')+'"></div>'
+      +'<div class="ji-ch">Ch.'+c.ch+'</div>'
+      +'<div class="ji-lbl">'+c.label+(isCur?' \u2190 here':'')+'</div>'
+      +'<div class="ji-arr">'+(isCur?'':'&#8250;')+'</div>'
+      +'</div>';
+  }).join('');
+  document.getElementById('jump-ov').classList.add('open');
+}
+
+function jumpTo(file,ch){
+  if(ch===CURRENT_CHAPTER){ document.getElementById('jump-ov').classList.remove('open'); return; }
+  S.jumpEntry='jump_ch'+ch;
+  if(!S.chaptersVisited) S.chaptersVisited=[];
+  if(!S.chaptersVisited.includes(CURRENT_CHAPTER)) S.chaptersVisited.push(CURRENT_CHAPTER);
+  save();
+  window.location.href=file;
+}
+
+document.getElementById('jump-ov').addEventListener('click',function(e){
+  if(e.target===this) this.classList.remove('open');
+});
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+renderScene(cur);
+</script>
+</body>
+</html>
