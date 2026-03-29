@@ -32,7 +32,7 @@
   ];
 
   var APP_CONFIG = {
-    title: "Home Buyer Journey",
+    title: "STL Home Buyer Journey",
     subtitle: "George Kindler · The Closing Pros",
     toolsUrl: "index.html",
     guidesUrl: "https://sites.google.com/view/st-louis-real-estate-guides/freestlouisrealestateguides",
