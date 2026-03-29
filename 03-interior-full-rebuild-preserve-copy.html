@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Home Buyer Journey · Chapter 3 · The Interior</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EEE14BZT9P"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EEE14BZT9P');</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+html,body{height:100%;overflow:hidden;background:var(--bg);}
+body{display:flex;justify-content:center;}
+.app{
+  width:100%;
+  max-width:100%;
+  height:100vh;
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  background:var(--bg);
+}
+@media(min-width:768px){.app{max-width:540px;}}
+@media(min-width:1024px){.app{max-width:640px;}}
+.stage{flex:1;min-height:0;position:relative;overflow:hidden;}
+.drawer-response{display:none;}
+#pop{
+  position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:999;display:flex;
+  align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;
+}
+#pop-sh{
+  background:var(--surface);border-radius:14px 14px 0 0;border-top:2px solid var(--gold);
+  padding:20px 18px 36px;width:100%;max-width:420px;transform:translateY(100%);
+  transition:transform .3s cubic-bezier(.32,.72,0,1);
+}
+.pop-handle{width:36px;height:3px;background:var(--line2);border-radius:2px;margin:0 auto 16px;}
+#pop-title{font-family:var(--font-serif);font-size:18px;font-weight:600;color:var(--text-strong);margin-bottom:10px;}
+#pop-body{font-family:var(--font-sans);font-size:13px;color:var(--text-soft);line-height:1.7;margin-bottom:18px;}
+.pop-btn{width:100%;padding:13px;background:var(--white);border:none;border-radius:8px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--bg);cursor:pointer;}
+.int-face{cursor:pointer;}
+.gc-call{display:flex;align-items:center;justify-content:center;}
+.ftr{padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));}
+.bnav{padding-bottom:calc(12px + env(safe-area-inset-bottom, 0px));}
+.jump-trigger{bottom:calc(102px + env(safe-area-inset-bottom, 0px));}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="hdr">
+    <div class="hdr-l">
+      <svg class="hdr-ico" viewBox="0 0 26 26" fill="none">
+        <rect width="26" height="26" rx="5" fill="#111111"/>
+        <path d="M13 4L3 12h3v9h6v-5h2v5h6V12h3L13 4z" fill="white" opacity=".9"/>
+        <path d="M18 18l3-3-3-3M21 15H13" stroke="#FFCC4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="hdr-t">Home Buyer <span>Journey</span></div>
+        <div class="hdr-s">George Kindler &middot; The Closing Pros</div>
+      </div>
+    </div>
+    <a class="btn-at" href="index.html">&larr; All Tools</a>
+  </header>
+
+  <div class="prog-wrap"><div class="prog-fill" id="prog"></div></div>
+  <div class="scene-bar">
+    <span class="scene-lbl" id="scene-lbl">Entering the House</span>
+    <span class="scene-ch">Ch. 3 &middot; Interior Showing</span>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="scene-bg" id="scene-bg">
+      <img referrerpolicy="no-referrer" id="bg-img" src="" alt="scene">
+      <div id="scene-svg-wrap" class="scene-svg" style="display:none;"></div>
+    </div>
+    <div class="scene-gradient"></div>
+
+    <div class="george-float" id="george-float">
+      <img referrerpolicy="no-referrer" id="george-img" src="assets/george-serious.png" alt="George Kindler" onerror="this.style.display='none'">
+      <div class="fb-init">GK</div>
+    </div>
+
+    <div class="scene-caption" id="scene-caption">
+      <div class="sc-room" id="sc-room">Exterior</div>
+      <div class="sc-title" id="sc-title">Let's go inside.</div>
+      <div class="sc-sub" id="sc-sub">I've already been looking at things out front. Now we go through the door.</div>
+    </div>
+
+    <div class="interrupt-dim" id="int-dim"></div>
+    <div class="interrupt-card" id="int-card">
+      <div class="int-face" onclick="openGeorgeCard()">
+        <img referrerpolicy="no-referrer" id="int-george-img" src="assets/george-serious.png" alt="George" onerror="this.style.display='none'">
+        <div class="fb">GK</div>
+      </div>
+      <div class="int-bubble">
+        <div class="int-title" id="int-title">Pay attention here.</div>
+        <div class="int-text" id="int-text"></div>
+        <button class="int-btn" id="int-btn" onclick="dismissInterrupt()">Got it, keep going</button>
+      </div>
+    </div>
+
+    <div class="drawer" id="drawer">
+      <div class="drawer-label" id="drawer-label">Look closer</div>
+      <div class="choices" id="choices"></div>
+      <div class="drawer-response" id="drawer-response"></div>
+    </div>
+
+    <div class="ask-george" id="ask-george" onclick="askGeorge()">Ask George</div>
+  </div>
+
+  <div class="bnav">
+    <button class="btn-b" id="btn-back" onclick="prevScene()" disabled>&larr; Back</button>
+    <button class="btn-n" id="btn-next" onclick="nextScene()">Next &rarr;</button>
+  </div>
+
+  <footer class="ftr">
+    <div class="ftr-l">2026 MARIS MLS &middot; George Kindler &middot; 314.435.1087</div>
+    <div class="ftr-r"><a href="https://sites.google.com/view/st-louis-real-estate-guides/freestlouisrealestateguides" target="_blank" rel="noopener">Free Guides &rarr;</a></div>
+  </footer>
+
+  <div class="jump-trigger" onclick="openJump()">&#9776; Explore</div>
+  <div class="jump-ov" id="jump-ov">
+    <div class="jump-sh">
+      <div class="jump-hnd"></div>
+      <div class="jump-ttl">Explore the Journey</div>
+      <div class="jump-items" id="jump-items"></div>
+    </div>
+  </div>
+
+  <div id="pop">
+    <div id="pop-sh">
+      <div class="pop-handle"></div>
+      <div id="pop-title"></div>
+      <div id="pop-body"></div>
+      <button class="pop-btn" onclick="closePop()">Got it</button>
+    </div>
+  </div>
+
+  <div class="george-dim" id="george-dim" onclick="closeGeorgeCard()"></div>
+  <div class="george-card" id="george-card">
+    <div class="gc-handle"></div>
+    <div class="gc-close" onclick="closeGeorgeCard()">&#10005;</div>
+    <div class="gc-header">
+      <div class="gc-photo">
+        <img referrerpolicy="no-referrer" src="assets/george-proud.png" alt="George Kindler" onerror="this.style.display='none'">
+        <div class="fb">GK</div>
+      </div>
+      <div class="gc-name-block">
+        <div class="gc-name">George Kindler</div>
+        <div class="gc-title">Licensed Missouri Agent<br><span>The Closing Pros LLC</span></div>
+      </div>
+    </div>
+    <div class="gc-stats">
+      <div class="gc-stat"><div class="gc-stat-num">250+</div><div class="gc-stat-lbl">Homes<br>Sold</div></div>
+      <div class="gc-stat"><div class="gc-stat-num">13</div><div class="gc-stat-lbl">Years in<br>St. Louis</div></div>
+      <div class="gc-stat"><div class="gc-stat-num">130+</div><div class="gc-stat-lbl">Investment<br>Deals</div></div>
+    </div>
+    <div class="gc-about">I will never sell you. My job is to consult &mdash; help you weigh the facts against my experience. <strong>I started as a $9-an-hour laborer flipping houses.</strong> I&rsquo;ve pulled walls, been buried in 1950s insulation, hung drywall, owned rentals and an Airbnb. 250+ homes sold in St. Louis. I know what it takes to buy, sell, and own real estate &mdash; and I treat every client the way I want to be treated.</div>
+    <a class="gc-call" href="tel:3144351087">&#9742; 314.435.1087 &mdash; No obligation</a>
+  </div>
+
+<script>
+function openGeorgeCard(){
+  document.getElementById('george-dim').classList.add('active');
+  document.getElementById('george-card').classList.add('open');
+}
+function closeGeorgeCard(){
+  document.getElementById('george-dim').classList.remove('active');
+  document.getElementById('george-card').classList.remove('open');
+}
+</script>
+
+<script>
+// ════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════
+var SK='stl_journey_v1';
+var S={amount:280000,loan:'conventional',zip:'63123',lastChapter:3,lastStep:0,chaptersVisited:[],lessons:[]};
+try{var sv=JSON.parse(localStorage.getItem(SK)||'{}');if(sv.loan)Object.assign(S,sv);}catch(e){}
+function save(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
+
+// ════════════════════════════════════════════
+//  PHOTO URLS — Unsplash free CDN
+// ════════════════════════════════════════════
+var PHOTOS={
+  livingRoom:  'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85',
+  livingRoom2: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&q=85',
+  kitchen:     'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=85',
+  exterior:    'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  stairs:      'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=900&q=85',
+  basement:    'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=900&q=85',
+  bedroom:     'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=900&q=85',
+};
+
+// ════════════════════════════════════════════
+//  SCENES
+// ════════════════════════════════════════════
+var SCENES=[
+
+// 0 — PHOTO REVEAL — the listing photo lesson
+// Special type:'photo-reveal' — handled separately
+{
+  type:'photo-reveal',
+  bg:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85',
+  george:'serious',
+  room:'Listing Photo',
+  title:'Notice something off with this picture?',
+  sub:'',
+  photoReveal:{
+    question:'Notice something off with this picture?',
+    yesResponse:'Good eye.',
+    noResponse:'You should.',
+    george:'Well, you should — because sellers hire professional photographers. Every home you walk into will feel a little smaller than what the pictures show. Because if they used cell phone pictures, no one would walk through the door.',
+    btnText:'Got it — let\'s go inside'
+  },
+  choices:[]
+},
+
+// 1 — ENTER THE HOUSE
+{
+  bg:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george:'serious',
+  room:'Exterior',
+  title:'Let\'s go inside.',
+  sub:'I\'ve already been looking at things out front. Now we go through the door.',
+  interrupt:{
+    title:'Before we walk in.',
+    text:'Most buyers walk through a house thinking about paint colors. I\'m looking at the things that cost money after you close.',
+    btnText:'I\'m ready'
+  },
+  choices:[
+    {label:'What were you looking at outside?',icon:'',
+     response:'Roof line, grading around the foundation, any staining under the eaves. I didn\'t see anything alarming but I want to check the gutters from inside.',
+     deep:{title:'Exterior red flags',body:'Negative grading — ground sloping toward the foundation — is one of the most common causes of basement moisture. It costs almost nothing to fix early. It costs a lot when it\'s been wet for ten years.'}
+    },
+    {label:'What\'s the first thing you check inside?',icon:'',
+     response:'Floors. I walk on them. I\'m listening for soft spots near bathrooms and kitchen. That\'s where water damage hides.',
+     deep:{title:'Sub-floor damage',body:'Soft spots around toilets and under sinks are usually from slow leaks over years. By the time you feel it underfoot the sub-floor has already deteriorated. Repair costs range from $500 to $4,000+ depending on how far it spread.'}
+    }
+  ]
+},
+
+// 2 — FLOOR PLAN / FLOW
+{
+  bg:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&q=85',
+  george:'welcome',
+  room:'Living Room',
+  title:'Walk the floor plan.',
+  sub:'The layout tells you things the listing photos don\'t.',
+  choices:[
+    {label:'What are you looking for in the layout?',icon:'',
+     response:'Load-bearing walls. Older homes in St. Louis were built with plaster and wood lath. Every wall isn\'t moveable. If the buyer wants open concept, I need to know that before they\'re in love with a gut job.',
+     deep:{title:'Load-bearing walls',body:'Removing a load-bearing wall without a proper beam runs $3,000 to $10,000+ and requires permits. An unpermitted wall removal is a liability that follows the property — not the seller. I flag unpermitted work every time.'}
+    },
+    {label:'The rooms feel small. Is that a problem?',icon:'',
+     response:'Not inherently. 1960s St. Louis homes are tighter than new construction. What matters is ceiling height and window placement. Low ceilings feel worse than small rooms.',
+     deep:{title:'Room size vs ceiling height',body:'An 8-foot ceiling in a 12x12 room feels like a box. The same room with 9-foot ceilings and two windows feels fine. Before you write off a smaller house, stand in it for a minute.'}
+    }
+  ]
+},
+
+// 3 — OUTLETS
+{
+  bg:'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=900&q=85',
+  george:'serious',
+  room:'Living Room',
+  title:'Two-prong outlets.',
+  sub:'This house has them. Here\'s what that means for you.',
+  interrupt:{
+    title:'This is a tell.',
+    text:'Two-prong outlets mean the electrical system hasn\'t been updated since before 1960. That\'s not automatically a deal killer — but it means the panel, the wiring, and the grounding all need to be looked at carefully.',
+    btnText:'Show me the panel later'
+  },
+  choices:[
+    {label:'How much does rewiring cost?',icon:'',
+     response:'A full rewire on a 1,200 sq ft house runs $8,000 to $15,000 depending on access. Partial updates — just adding grounds — are cheaper but don\'t solve the underlying age of the system.',
+     deep:{title:'Aluminum wiring',body:'Homes built in the late 60s and 70s sometimes have aluminum branch wiring. It\'s not always dangerous but it needs pigtailing at every connection or replacement. Insurance companies flag it. Ask me if you\'re in that era.'}
+    },
+    {label:'Can I just add adapters?',icon:'',
+     response:'You can. But that\'s a buyer solution to a seller problem. I use this in negotiations — not as an afterthought.',
+     deep:{title:'Negotiation leverage',body:'Ungrounded outlets, two-prong wiring, and missing GFCI protection near water are all code violations in a sale. They\'re also negotiating tools. I don\'t overlook them — I use them.'}
+    }
+  ]
+},
+
+// 4 — WINDOWS
+{
+  bg:'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=900&q=85',
+  george:'serious',
+  room:'Living Room',
+  title:'Fogged window seals.',
+  sub:'Look at the corner of that window. See the haze? That\'s a failed IGU.',
+  choices:[
+    {label:'What\'s an IGU?',icon:'',
+     response:'Insulated Glass Unit. Double-pane windows trap argon gas between the panes for insulation. When the seal fails, moisture gets in. You get fogging, condensation, and lost efficiency.',
+     deep:{title:'Replacement cost',body:'Replacing just the glass unit in a standard double-hung window runs $150 to $400 per window. Full window replacement is $300 to $800+. A house with 12 fogged windows is a $4,000+ item — and it shows up on FHA/VA appraisals as a required repair.'}
+    },
+    {label:'Is this a deal breaker?',icon:'',
+     response:'No. But it goes on the list. I count the windows with failed seals and roll them into the inspection request. Sellers who dismiss this are negotiating against themselves.',
+    }
+  ]
+},
+
+// 5 — BASEMENT TRANSITION
+{
+  bg:'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=900&q=85',
+  george:'serious',
+  room:'Basement Stairs',
+  title:'We\'re going downstairs.',
+  sub:'This is where I learn the most about a house.',
+  interrupt:{
+    title:'Everything changes down here.',
+    text:'The basement tells me what the house has been through. Water intrusion, structural movement, deferred maintenance — it all lives down here. Most buyers rush through it. We don\'t.',
+    btnText:'Let\'s go down'
+  },
+  choices:[]
+},
+
+// 6 — BASEMENT OVERVIEW
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement',
+  title:'First impression.',
+  sub:'I look at four things immediately: smell, light, walls, ceiling.',
+  choices:[
+    {label:'What does the smell tell you?',icon:'',
+     response:'Musty = moisture history. Earthy = water intrusion, possibly active. Fresh air = either legitimately dry or they staged it. I check the walls regardless.',
+     deep:{title:'Efflorescence',body:'White mineral deposits on block or poured concrete walls mean water has been moving through the wall. It\'s not always active but it tells a story. Heavy efflorescence on multiple walls is a drainage problem, not a cosmetic one.'}
+    },
+    {label:'What are you looking for on the ceiling?',icon:'',
+     response:'Joists, plumbing, and any previous repairs. A sister joist — a new board nailed next to an old one — means someone knew there was a problem and patched it. I want to know what caused it.',
+    },
+    {label:'Is finished basement good or bad?',icon:'',
+     response:'Depends entirely on what\'s behind the drywall. A finished basement can hide water damage, mold, and structural issues for years. I always ask if there are photos from before it was finished.',
+     deep:{title:'This is where you need the right inspector',body:'You can hire any inspector you want — and you should choose someone you trust. The one I recommend uses a thermal imaging camera and a moisture meter as standard equipment. In Missouri, I consider those non-negotiable on any finished basement. Thermal shows temperature differentials behind walls that indicate moisture or missing insulation. A moisture meter confirms it. Without those two tools, you are guessing. Make sure your inspector has them before you book.'}
+    }
+  ]
+},
+
+// 7 — PANEL
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement',
+  title:'The electrical panel.',
+  sub:'I check the brand before I open it.',
+  interrupt:{
+    title:'Federal Pacific. We have a problem.',
+    text:'Federal Pacific Stab-Lok panels have a documented history of breaker failure. Many insurance carriers won\'t write a policy on a home with one. No insurance means no mortgage.',
+    btnText:'What does this mean for my offer?'
+  },
+  choices:[
+    {label:'How much to replace a panel?',icon:'',
+     response:'Full panel replacement with a modern 200-amp service runs $3,500 to $6,500 depending on the scope. On an FHA or VA loan this is a required repair — the appraiser will flag it.',
+     deep:{title:'Insurance implications',body:'Several major carriers in Missouri will not write homeowner\'s policies on Federal Pacific or Zinsco panels. Without insurance you cannot close a financed purchase. I identify this before we write an offer — not after inspection.'}
+    },
+    {label:'Can the seller just leave it?',icon:'',
+     response:'On a conventional loan sometimes. On FHA or VA, no — the appraiser will call it. On any loan, the insurance question makes it a deal point either way.',
+    },
+    {label:'What if the panel is fine?',icon:'',
+     response:'Then we move on. I\'m not looking to find problems — I\'m looking to find your problems before they become your problem after closing.',
+    }
+  ]
+},
+
+// 8 — FOUNDATION
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Foundation Walls',
+  title:'Reading the cracks.',
+  sub:'Not all cracks are equal. I need you to understand the difference.',
+  choices:[
+    {label:'Vertical cracks — what do they mean?',icon:'',
+     response:'Vertical hairline cracks in poured concrete are usually settlement — normal over 50+ years. I watch for width and if they\'ve been repaired before. One repair isn\'t alarming. Multiple repairs tell a story.',
+     deep:{title:'Epoxy injection',body:'Epoxy-injected cracks mean a previous owner knew there was an issue and addressed it. That\'s actually a positive sign if done correctly. What I\'m looking for is whether the crack re-opened after injection — that means movement is still happening.'}
+    },
+    {label:'Horizontal cracks — how serious?',icon:'',
+     response:'Horizontal cracks in block walls are a structural red flag. They indicate lateral pressure from soil. This is the one that stops me cold. I want a structural engineer before we go further.',
+     deep:{title:'Cost of horizontal crack repair',body:'Wall repair for horizontal cracking runs $5,000 to $30,000+ depending on severity. Full wall replacement can reach $50,000+. I\'ve walked buyers away from houses over this. It\'s the right call every time.'}
+    },
+    {label:'Stair-step cracks in block?',icon:'',
+     response:'Stair-step cracks follow the mortar joints in block walls. They indicate differential settlement. Worth noting but less urgent than horizontal. Still goes on the list.',
+    }
+  ]
+},
+
+// 9 — JOISTS
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement Ceiling',
+  title:'Look up.',
+  sub:'The floor joists above us are the structure of the first floor.',
+  choices:[
+    {label:'What am I looking at?',icon:'',
+     response:'Joist span, any notching, any sister joists, any signs of moisture damage or insect activity. In pre-1960 construction I\'m also looking for old-growth lumber — it\'s actually stronger than modern dimensional lumber.',
+     deep:{title:'Notched joists',body:'Plumbers and electricians sometimes notch or drill through joists to run pipes and wires. Done correctly it\'s fine. Notched in the wrong location — especially in the top or bottom third — it weakens the joist significantly. This is a code violation in new construction.'}
+    },
+    {label:'What does moisture damage look like?',icon:'',
+     response:'Dark staining, soft wood, any white or black fungal growth. A soft spot I can push with my thumb is active decay. That joist needs to be sistered or replaced.',
+    },
+    {label:'What\'s a sister joist?',icon:'',
+     response:'A new joist nailed alongside a damaged one to restore strength. It\'s a legitimate repair when done correctly. I want to know what caused the original damage — not just that it was patched.',
+    }
+  ]
+},
+
+// 10 — SEWER
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement',
+  title:'The main stack.',
+  sub:'Cast iron or PVC. Pre-1960 usually has both. Sometimes worse.',
+  choices:[
+    {label:'What are you looking for here?',icon:'',
+     response:'Rust, active leaks, improper connections, and signs of a belly in the main line. A belly — where the pipe sags — causes backups. You won\'t see it from here. You need a camera scope.',
+     deep:{title:'Sewer scope cost',body:'A sewer scope inspection runs $150 to $300 and is the most important $200 you\'ll spend on a pre-1960 house. A clay tile main line with a belly and root intrusion can cost $5,000 to $15,000 to repair or replace.'}
+    },
+    {label:'Who pays for sewer repairs?',icon:'',
+     response:'After closing, you do. This is one of the most commonly missed and most expensive post-close surprises. I request a sewer scope on every pre-1960 city home before we finalize the inspection period.',
+    }
+  ]
+},
+
+// 11 — MOISTURE
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement',
+  title:'Moisture detection.',
+  sub:'My hand against the wall. My eyes on the floor line. My nose.',
+  interrupt:{
+    title:'This corner is wet.',
+    text:'Active moisture in the basement. I need to determine whether this is surface condensation, wall seepage, or floor seepage. Each one has a different fix and a different price.',
+    btnText:'What does this change?'
+  },
+  choices:[
+    {label:'How do we know what type of moisture?',icon:'',
+     response:'Tape plastic sheeting to the wall, seal the edges, wait 24 hours. Moisture on the outside is condensation. Moisture behind the plastic means it\'s coming through the wall.',
+     deep:{title:'Waterproofing costs',body:'Interior waterproofing with a drain tile system runs $5,000 to $15,000. Exterior waterproofing — the right fix for wall seepage — runs $10,000 to $30,000+. I use active moisture as a hard negotiating point.'}
+    },
+    {label:'Is a sump pump good or bad?',icon:'',
+     response:'A sump pump tells me water management was already a known issue. It\'s not automatically bad. What I want to know is whether it runs constantly or just in heavy rain.',
+    }
+  ]
+},
+
+// 12 — HVAC
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Mechanical Room',
+  title:'Age the mechanicals.',
+  sub:'I\'m not looking at how they work. I\'m looking at when they\'ll stop.',
+  choices:[
+    {label:'How do I know how old the furnace is?',icon:'',
+     response:'The serial number. Most manufacturers encode the date in the first four digits. A furnace over 18 years old is near end of life. A 22-year-old furnace is a negotiating point, not a footnote.',
+     deep:{title:'HVAC replacement cost',body:'A furnace and AC replacement runs $5,000 to $12,000 depending on size and efficiency. If both are the same age and near end of life, I roll that cost into the offer price — not the inspection request. The seller expects the inspection to find it. I already know.'}
+    },
+    {label:'Water heater — what\'s the lifespan?',icon:'',
+     response:'Tank water heaters last 10 to 12 years. If this one is over 10 years old, you\'re buying someone else\'s replacement. I note it. Sometimes I use it. Depends on the rest of the list.',
+    },
+    {label:'Should I ask for a home warranty?',icon:'',
+     response:'A home warranty covers some appliance failures but not pre-existing conditions. It\'s a negotiating tool, not a safety net. Don\'t mistake it for one.',
+    }
+  ]
+},
+
+// 13 — SUMMARY
+{
+  bg:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george:'proud',
+  room:'George\'s Call',
+  title:'Here\'s what I found.',
+  sub:'This is the conversation most buyers never have with their agent.',
+  interrupt:{
+    title:'Here\'s where we stand.',
+    text:'Federal Pacific panel. Two-prong outlets. Fogged windows on three units. Moisture in the northwest corner. HVAC is 17 years old. None of this is a deal killer. All of it goes on the list.',
+    btnText:'What do we do with this?'
+  },
+  choices:[
+    {label:'Do we walk away?',icon:'',
+     response:'Not from this. But I\'m going to price every one of those items into our offer or our inspection request. The seller is going to feel this list.',
+    },
+    {label:'What\'s the number?',icon:'',
+     response:'Panel: $4,500. Moisture remediation: $3,000 to scope and address the source. HVAC credit: $3,000. Windows: $900. We\'re at roughly $11,000 in known items. That changes my offer number.',
+     deep:{title:'Offer strategy with a list',body:'I don\'t ask for everything in the inspection request. That signals desperation. I pick the structural and safety items — panel, moisture, foundation — and negotiate those hard. The cosmetic items I use to justify a lower initial offer price. Two different conversations, two different outcomes.'}
+    }
+  ],
+  nextLabel:'Pre-Offer Strategy →',
+  nextFile:'05-pre-offer.html',
+  nextChapter:4,
+  isLast:true
+}
+
+];
+
+// ════════════════════════════════════════════
+//  PHOTO REVEAL RENDERER
+// ════════════════════════════════════════════
+function renderPhotoReveal(sc, idx){
+  var pr = sc.photoReveal;
+  var stage = document.getElementById('stage');
+
+  // Hide normal scene elements
+  document.getElementById('scene-bg').style.opacity = '0';
+  document.getElementById('george-float').classList.add('hidden');
+  document.getElementById('scene-caption').style.opacity = '0';
+  closeDrawer();
+  dismissInterrupt(true);
+
+  // Progress + label
+  document.getElementById('prog').style.width = Math.round((idx/(SCENES.length-1))*100)+'%';
+  document.getElementById('scene-lbl').textContent = sc.room;
+
+  // Remove any existing photo reveal
+  var existing = document.getElementById('photo-reveal-el');
+  if(existing) existing.remove();
+
+  // Build the photo reveal element
+  var el = document.createElement('div');
+  el.id = 'photo-reveal-el';
+  el.className = 'photo-reveal-scene';
+  el.innerHTML =
+    '<div class="pr-photo">'
+    + '<img referrerpolicy="no-referrer" src="'+sc.bg+'" alt="listing photo">'
+    + '<div class="pr-listing-badge">Listing Photo</div>'
+    + '<div class="pr-mls">MARIS MLS &middot; Professional Photography</div>'
+    + '</div>'
+    + '<div class="pr-question">'
+    + '<div class="pr-q-text">'+pr.question+'</div>'
+    + '<div class="pr-btns">'
+    + '<button class="pr-btn yes" onclick="prAnswer(\'yes\')">Yes</button>'
+    + '<button class="pr-btn no" onclick="prAnswer(\'no\')">No</button>'
+    + '</div>'
+    + '</div>'
+    + '<div class="pr-george-row" id="pr-george-row">'
+    + '<div class="pr-face"><img referrerpolicy="no-referrer" src="assets/george-serious.png" onerror="this.style.display=\'none\'"><div class="fb">GK</div></div>'
+    + '<div class="pr-bubble" id="pr-bubble"></div>'
+    + '</div>'
+    + '<button class="pr-continue-btn" id="pr-continue-btn" onclick="prContinue()">'+pr.btnText+' &rarr;</button>';
+
+  stage.appendChild(el);
+
+  // Nav
+  document.getElementById('btn-back').disabled = (idx === 0);
+  document.getElementById('btn-next').disabled = true;
+  document.getElementById('btn-next').textContent = 'Next \u2192';
+  document.getElementById('btn-next').classList.remove('gold');
+
+  S.lastStep = idx;
+  S.lastChapter = 3;
+  save();
+
+  // Store reveal data globally for the handlers
+  window._prData = pr;
+  window._prAnswered = false;
+}
+
+function prAnswer(answer){
+  if(window._prAnswered) return;
+  window._prAnswered = true;
+  var pr = window._prData;
+
+  // Dim the Yes/No buttons
+  document.querySelectorAll('.pr-btn').forEach(function(b){
+    b.style.opacity = '.3';
+    b.style.pointerEvents = 'none';
+  });
+
+  // George's response
+  var setupLine = answer === 'yes' ? '<strong>Good eye.</strong> ' : '<strong>Well, you should.</strong> ';
+  var georgeText = pr.george;
+
+  // Show George row immediately
+  var row = document.getElementById('pr-george-row');
+  var bubble = document.getElementById('pr-bubble');
+  if(row) row.classList.add('show');
+
+  // Set the bold opener immediately, then type the rest as plain text
+  if(bubble){
+    bubble.innerHTML = setupLine;
+    // Type the rest character by character into a span
+    var span = document.createElement('span');
+    bubble.appendChild(span);
+    var i = 0;
+    var iv = setInterval(function(){
+      span.textContent = georgeText.slice(0, i);
+      i++;
+      if(i > georgeText.length){
+        clearInterval(iv);
+        // Show continue button and re-enable Next
+        var btn = document.getElementById('pr-continue-btn');
+        if(btn) btn.classList.add('show');
+        var btnNext = document.getElementById('btn-next');
+        if(btnNext){
+          btnNext.disabled = false;
+          btnNext.textContent = 'Next \u2192';
+        }
+      }
+    }, 18);
+  }
+
+  gtag('event','photo_reveal_answer',{answer:answer,chapter:3});
+}
+
+function prContinue(){
+  // Remove the photo reveal element
+  var el = document.getElementById('photo-reveal-el');
+  if(el) el.remove();
+
+  // Restore normal scene elements
+  document.getElementById('scene-bg').style.opacity = '1';
+  document.getElementById('george-float').classList.remove('hidden');
+  document.getElementById('scene-caption').style.opacity = '1';
+
+  // Advance to next scene
+  cur++;
+  renderScene(cur);
+}
+
+// ════════════════════════════════════════════
+//  SCENE ENGINE
+// ════════════════════════════════════════════
+var cur = S.lastStep || 0;
+var intDismissed = false;
+var intTimer = null;
+
+function renderScene(idx){
+  var sc = SCENES[idx];
+  if(!sc) return;
+
+  // ── PHOTO REVEAL — special scene type ──────────────
+  if(sc.type === 'photo-reveal'){
+    renderPhotoReveal(sc, idx);
+    return;
+  }
+
+  // Progress
+  document.getElementById('prog').style.width = Math.round((idx/(SCENES.length-1))*100)+'%';
+  document.getElementById('scene-lbl').textContent = sc.room;
+
+  // Background
+  var img = document.getElementById('bg-img');
+  var svgWrap = document.getElementById('scene-svg-wrap');
+  if(img){
+    img.style.opacity='0';
+    setTimeout(function(){
+      img.src = sc.bg || 'assets/house-exterior.jpg';
+      img.onload = function(){ img.style.opacity='1'; img.style.transition='opacity .6s ease'; };
+      img.onerror = function(){ img.style.display='none'; svgWrap.style.display='flex'; svgWrap.innerHTML=roomSVG(sc.room); };
+    },200);
+  }
+
+  // George face
+  var gImg = document.getElementById('george-img');
+  var intGImg = document.getElementById('int-george-img');
+  var faceSrc = georgeFace(sc.george);
+  if(gImg){ gImg.src = faceSrc; }
+  if(intGImg){ intGImg.src = faceSrc; }
+
+  // Caption
+  document.getElementById('sc-room').textContent = sc.room;
+  document.getElementById('sc-title').textContent = sc.title;
+  document.getElementById('sc-sub').textContent = sc.sub;
+
+  // Dismiss any open interrupt
+  dismissInterrupt(true);
+
+  // Close drawer
+  closeDrawer();
+
+  // Build choices
+  buildChoices(sc.choices || []);
+
+  // Nav buttons
+  document.getElementById('btn-back').disabled = (idx === 0);
+  var btnNext = document.getElementById('btn-next');
+  if(sc.isLast){
+    btnNext.textContent = sc.nextLabel || 'Chapter 4 \u2192';
+    btnNext.classList.add('gold');
+  } else {
+    btnNext.textContent = 'Next \u2192';
+    btnNext.classList.remove('gold');
+  }
+  btnNext.disabled = false;
+
+  // Interrupt — fires after 2.5s if defined
+  if(sc.interrupt){
+    intDismissed = false;
+    intTimer = setTimeout(function(){
+      if(!intDismissed) showInterrupt(sc.interrupt);
+    }, 1000);
+  }
+
+  // Drawer opens automatically if choices exist and no interrupt
+  if(!sc.interrupt && sc.choices && sc.choices.length > 0){
+    setTimeout(openDrawer, 800);
+  }
+
+  // Ask George button
+  var ag = document.getElementById('ask-george');
+  if(ag) ag.style.display = 'none';
+
+  // Save state
+  S.lastStep = idx;
+  S.lastChapter = 3;
+  save();
+
+  gtag('event','scene_view',{chapter:3,scene:idx,room:sc.room});
+}
+
+function georgeFace(name){
+  var map = {
+    'serious':'assets/george-serious.png',
+    'welcome':'assets/george-welcome.png',
+    'excited':'assets/george-excited.png',
+    'proud':'assets/george-proud.png',
+    'papers':'assets/george-papers.png',
+    'disappointed':'assets/george-disappointed.png'
+  };
+  return map[name] || 'assets/george-serious.png';
+}
+
+// ── INTERRUPT ──────────────────────────────────
+function showInterrupt(int){
+  document.getElementById('int-title').textContent = int.title;
+  typeText(int.text,'int-text');
+  var btn = document.getElementById('int-btn');
+  btn.textContent = int.btnText || 'Got it';
+  document.getElementById('int-dim').classList.add('active');
+  document.getElementById('int-card').classList.add('active');
+  closeDrawer();
+}
+
+function dismissInterrupt(silent){
+  if(intTimer){ clearTimeout(intTimer); intTimer=null; }
+  intDismissed = true;
+  document.getElementById('int-dim').classList.remove('active');
+  document.getElementById('int-card').classList.remove('active');
+  var sc = SCENES[cur];
+  if(!silent && sc && sc.choices && sc.choices.length > 0){
+    setTimeout(openDrawer, 400);
+  }
+  // Show Ask George after interrupt dismissed
+  if(!silent){
+    var ag = document.getElementById('ask-george');
+    if(ag){ ag.classList.add('show'); ag.style.display='block'; }
+  }
+}
+
+function askGeorge(){
+  var sc = SCENES[cur];
+  if(sc && sc.interrupt){
+    showInterrupt(sc.interrupt);
+  }
+}
+
+// ── DRAWER ────────────────────────────────────
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  var resp = document.getElementById('drawer-response');
+  resp.classList.remove('show');
+  resp.innerHTML = '';
+}
+
+function buildChoices(choices){
+  var container = document.getElementById('choices');
+  container.innerHTML = '';
+  if(!choices || choices.length === 0) return;
+
+  document.getElementById('drawer-label').textContent = 'Look closer \u2014 tap anything';
+
+  choices.forEach(function(c, i){
+    var btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = (c.icon?'<span class="c-ico">'+c.icon+'</span>':'') + c.label;
+    btn.onclick = function(){
+      // Deselect others
+      container.querySelectorAll('.choice-btn').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      showResponse(c);
+    };
+    container.appendChild(btn);
+  });
+}
+
+function showResponse(c){
+  var resp = document.getElementById('drawer-response');
+  resp.classList.remove('show');
+  setTimeout(function(){
+    var html = c.response;
+    if(c.deep){
+      html += '<span class="r-deep" onclick="showDeep('+JSON.stringify(c.deep).replace(/"/g,"'")+')">';
+      html += 'Go deeper \u2192</span>';
+    }
+    resp.innerHTML = html;
+    resp.classList.add('show');
+  }, 120);
+  gtag('event','choice_tap',{chapter:3,scene:cur,choice:c.label});
+}
+
+function showDeep(btn){
+  var title = btn.getAttribute('data-title');
+  var body = btn.getAttribute('data-body');
+  document.getElementById('pop-title').textContent = title;
+  document.getElementById('pop-body').textContent = body;
+  var pop = document.getElementById('pop');
+  var sh = document.getElementById('pop-sh');
+  pop.style.display='flex';
+  requestAnimationFrame(function(){
+    pop.style.opacity='1';pop.style.pointerEvents='all';pop.style.transition='opacity .25s';
+    sh.style.transform='translateY(0)';sh.style.transition='transform .3s cubic-bezier(.32,.72,0,1)';
+  });
+}
+
+function showDeepInline(deep){
+  document.getElementById('pop-title').textContent = deep.title;
+  document.getElementById('pop-body').textContent = deep.body;
+  var pop = document.getElementById('pop');
+  var sh = document.getElementById('pop-sh');
+  pop.style.display='flex';
+  requestAnimationFrame(function(){
+    pop.style.opacity='1';pop.style.pointerEvents='all';pop.style.transition='opacity .25s';
+    sh.style.transform='translateY(0)';sh.style.transition='transform .3s cubic-bezier(.32,.72,0,1)';
+  });
+}
+function closePop(){
+  var pop = document.getElementById('pop');
+  pop.style.opacity='0';pop.style.pointerEvents='none';
+  setTimeout(function(){ pop.style.display='none'; },300);
+}
+
+// ── TYPING EFFECT ─────────────────────────────
+function typeText(text, elId){
+  var el = document.getElementById(elId);
+  if(!el) return;
+  el.innerHTML = '';
+  var i = 0;
+  var iv = setInterval(function(){
+    el.innerHTML = text.slice(0,i).replace(/\n/g,'<br>');
+    i++;
+    if(i > text.length) clearInterval(iv);
+  }, 16);
+}
+
+// ── NAVIGATION ───────────────────────────────
+function nextScene(){
+  var sc = SCENES[cur];
+  // If on photo-reveal and answered, use prContinue
+  if(sc && sc.type === 'photo-reveal'){
+    if(window._prAnswered) prContinue();
+    return;
+  }
+  if(sc && sc.isLast){
+    if(!S.chaptersVisited) S.chaptersVisited=[];
+    if(!S.chaptersVisited.includes(3)) S.chaptersVisited.push(3);
+    S.lastChapter = 4;
+    save();
+    window.location.href = '04-inspection.html';
+    return;
+  }
+  if(cur < SCENES.length-1){
+    cur++;
+    renderScene(cur);
+  }
+}
+function prevScene(){
+  if(cur > 0){ cur--; renderScene(cur); }
+  else { window.location.href='index.html'; }
+}
+
+// ── ROOM SVG FALLBACKS ───────────────────────
+// Shown when photo assets are not yet present
+function roomSVG(room){
+  var isBasement = room && room.toLowerCase().includes('basement');
+  if(isBasement){
+    return '<svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;"><rect width="420" height="320" fill="#0a0a0a"/><rect x="0" y="240" width="420" height="80" fill="#0d0d0d"/><rect x="30" y="60" width="360" height="180" fill="none" stroke="#1a1a1a" stroke-width="2"/><line x1="30" y1="60" x2="30" y2="240" stroke="#1a1a1a" stroke-width="1.5"/><line x1="390" y1="60" x2="390" y2="240" stroke="#1a1a1a" stroke-width="1.5"/><rect x="60" y="80" width="40" height="120" fill="#0f0f0f" stroke="#1a1a1a"/><rect x="120" y="80" width="40" height="120" fill="#0f0f0f" stroke="#1a1a1a"/><rect x="240" y="80" width="60" height="120" fill="#111" stroke="#1a1a1a"/><rect x="320" y="100" width="50" height="60" rx="2" fill="#0d0d0d" stroke="#222"/><text x="210" y="170" text-anchor="middle" font-family="serif" font-size="11" fill="rgba(255,255,255,.12)">Basement</text></svg>';
+  }
+  return '<svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;"><rect width="420" height="320" fill="#0c0c0c"/><rect x="0" y="260" width="420" height="60" fill="#080808"/><rect x="40" y="40" width="340" height="220" fill="none" stroke="#1a1a1a" stroke-width="2"/><rect x="40" y="220" width="340" height="40" fill="#0d0d0d" stroke="#1a1a1a"/><rect x="60" y="80" width="80" height="100" fill="none" stroke="#1a1a1a"/><line x1="100" y1="80" x2="100" y2="180" stroke="#1a1a1a"/><line x1="60" y1="130" x2="140" y2="130" stroke="#1a1a1a"/><rect x="280" y="80" width="80" height="100" fill="none" stroke="#1a1a1a"/><line x1="320" y1="80" x2="320" y2="180" stroke="#1a1a1a"/><line x1="280" y1="130" x2="360" y2="130" stroke="#1a1a1a"/><rect x="170" y="220" width="80" height="40" fill="#0a0a0a" stroke="#1a1a1a"/><circle cx="246" cy="240" r="3" fill="rgba(212,160,23,.4)"/><text x="210" y="145" text-anchor="middle" font-family="serif" font-size="11" fill="rgba(255,255,255,.1)">Interior</text></svg>';
+}
+
+// ════════════════════════════════════════════
+//  JUMP MENU
+// ════════════════════════════════════════════
+var CURRENT_CHAPTER = 3;
+var CHAPTERS = [
+  {ch:1,file:'01-preapproval.html',   label:'What happens when you contact an agent'},
+  {ch:2,file:'02-affordability.html', label:'Where buyers overpay before making an offer'},
+  {ch:3,file:'03-interior.html',      label:'What to look for at a showing'},
+  {ch:4,file:'05-pre-offer.html',     label:'Pre-offer strategy'},
+  {ch:5,file:'06-under-contract.html',label:'Under contract — Day Zero'},
+  {ch:6,file:'06b-deadlines.html',    label:'The deadlines — loan, appraisal, title'},
+  {ch:7,file:'07-inspection.html',    label:'The inspection report — what matters'},
+  {ch:8,file:'08-walkthrough.html',   label:'Final walk-through'},
+  {ch:9,file:'09-closing.html',       label:'Closing day'}
+];
+function openJump(){
+  var visited = S.chaptersVisited||[];
+  var container = document.getElementById('jump-items');
+  container.innerHTML = CHAPTERS.map(function(c){
+    var isCur = c.ch===CURRENT_CHAPTER;
+    var isVis = visited.includes(c.ch)&&!isCur;
+    return '<div class="jump-item '+(isCur?'cur-ch':'')+'" onclick="jumpTo(\''+c.file+'\','+c.ch+')">'
+      +'<div class="ji-dot '+(isCur?'cur':isVis?'vis':'')+'">'+'</div>'
+      +'<div class="ji-ch">Ch.'+c.ch+'</div>'
+      +'<div class="ji-lbl">'+c.label+(isCur?' \u2190 here':'')+'</div>'
+      +'<div class="ji-arr">'+(isCur?'':'&#8250;')+'</div>'
+      +'</div>';
+  }).join('');
+  document.getElementById('jump-ov').classList.add('open');
+}
+function jumpTo(file,ch){
+  if(ch===CURRENT_CHAPTER){document.getElementById('jump-ov').classList.remove('open');return;}
+  S.jumpEntry='jump_ch'+ch;
+  if(!S.chaptersVisited)S.chaptersVisited=[];
+  if(!S.chaptersVisited.includes(CURRENT_CHAPTER))S.chaptersVisited.push(CURRENT_CHAPTER);
+  save();
+  window.location.href=file;
+}
+document.getElementById('jump-ov').addEventListener('click',function(e){
+  if(e.target===this) this.classList.remove('open');
+});
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+renderScene(cur);
+
+</script>
+
+</div><!-- /app -->
+</body>
+</html>
