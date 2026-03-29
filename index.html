@@ -12,11 +12,11 @@
 <style>
 
 /* ── INTRO OVERLAY ── */
-.intro{position:absolute;inset:0;background:var(–bg);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 36px 48px;transition:opacity .6s ease,transform .6s ease;}
+.intro{position:absolute;inset:0;background:#080808;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 36px 48px;transition:opacity .6s ease,transform .6s ease;}
 .intro.gone{opacity:0;pointer-events:none;transform:translateY(-6px);}
 
 /* George — large, round, prominent */
-.intro-face{width:180px;height:180px;position:relative;margin-bottom:28px;flex-shrink:0;border-radius:50%;overflow:hidden;border:2px solid var(–line2);background:var(–surface);}
+.intro-face{width:180px;height:180px;position:relative;margin-bottom:28px;flex-shrink:0;border-radius:50%;overflow:hidden;border:2px solid #2a2a2a;background:#111111;}
 .intro-face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transition:opacity .65s ease;}
 .intro-face img.raised{opacity:1;}
 .intro-face img.normal{opacity:0;}
@@ -26,16 +26,18 @@
 
 /* Intro copy */
 .intro-copy{text-align:center;max-width:280px;margin-bottom:44px;}
-.intro-main{font-family:var(–font-serif);font-size:18px;font-weight:400;color:var(–white);line-height:1.65;margin-bottom:16px;letter-spacing:.01em;}
-.intro-main strong{font-weight:600;}
-.intro-detail{font-family:var(–font-sans);font-size:13px;font-weight:300;color:var(–white-40);line-height:1.7;border-left:1px solid var(–white-08);padding:0 0 0 14px;text-align:left;letter-spacing:.01em;}
-.intro-detail em{font-style:normal;color:var(–gold);}
 
 /* Reveal button — matches chapter style */
-.btn-reveal{font-family:var(–font-sans);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(–bg);background:var(–white);border:none;border-radius:3px;padding:14px 36px;cursor:pointer;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .35s ease,transform .35s ease,background .15s;}
+.btn-reveal{font-family:var(–font-sans);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#080808;background:#ffffff;border:none;border-radius:3px;padding:14px 36px;cursor:pointer;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .35s ease,transform .35s ease,background .15s;-webkit-appearance:none;appearance:none;}
 .btn-reveal.show{opacity:1;transform:translateY(0);pointer-events:all;}
 .btn-reveal:hover{background:rgba(255,255,255,.88);}
 .btn-reveal:active{transform:scale(.97)!important;}
+
+/* Intro text — explicit hex fallbacks for mobile CSS var timing */
+.intro-main{font-family:var(–font-serif);font-size:18px;font-weight:400;color:#ffffff;line-height:1.65;margin-bottom:16px;letter-spacing:.01em;}
+.intro-main strong{font-weight:600;}
+.intro-detail{font-family:var(–font-sans);font-size:13px;font-weight:300;color:rgba(255,255,255,.40);line-height:1.7;border-left:1px solid rgba(255,255,255,.08);padding:0 0 0 14px;text-align:left;letter-spacing:.01em;}
+.intro-detail em{font-style:normal;color:#D4A017;}
 
 /* ── HEADER ── */
 .hdr{opacity:0;transform:translateY(-100%);transition:opacity .4s ease,transform .4s ease;}
