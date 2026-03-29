@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -20,170 +21,170 @@
   --line:      #1e1e1e;
   --line2:     #2a2a2a;
 
-  /* Type */
-  --white:     #ffffff;
-  --white-70:  rgba(255,255,255,.70);
-  --white-40:  rgba(255,255,255,.40);
-  --white-20:  rgba(255,255,255,.20);
-  --white-08:  rgba(255,255,255,.08);
+/* Type */
+–white:     #ffffff;
+–white-70:  rgba(255,255,255,.70);
+–white-40:  rgba(255,255,255,.40);
+–white-20:  rgba(255,255,255,.20);
+–white-08:  rgba(255,255,255,.08);
 
-  /* Gold — call-out only */
-  --gold:      #D4A017;
-  --gold-dim:  rgba(212,160,23,.15);
+/* Gold — call-out only */
+–gold:      #D4A017;
+–gold-dim:  rgba(212,160,23,.15);
 
-  /* Typography */
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-sans:  'Inter', -apple-system, sans-serif;
+/* Typography */
+–font-serif: ‘Playfair Display’, Georgia, serif;
+–font-sans:  ‘Inter’, -apple-system, sans-serif;
 }
 
 /* ── RESET ── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{
-  font-family:var(--font-sans);
-  background:var(--bg);
-  height:100%;
-  overflow:hidden;
-  display:flex;
-  justify-content:center;
+font-family:var(–font-sans);
+background:var(–bg);
+height:100%;
+overflow:hidden;
+display:flex;
+justify-content:center;
 }
 .app{
-  width:100%;
-  max-width:420px;
-  height:100vh;
-  height:100dvh;
-  background:var(--bg);
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  position:relative;
+width:100%;
+max-width:420px;
+height:100vh;
+height:100dvh;
+background:var(–bg);
+display:flex;
+flex-direction:column;
+overflow:hidden;
+position:relative;
 }
 
 /* ═══════════════════════════════════════════
-   PHASE 1 — INTRO
-   Pure black. Minimal. No borders, no cards.
+PHASE 1 — INTRO
+Pure black. Minimal. No borders, no cards.
 ═══════════════════════════════════════════ */
 .intro{
-  position:absolute;
-  inset:0;
-  background:var(--bg);
-  z-index:200;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:40px 36px 48px;
-  transition:opacity .6s ease, transform .6s ease;
+position:absolute;
+inset:0;
+background:var(–bg);
+z-index:200;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:40px 36px 48px;
+transition:opacity .6s ease, transform .6s ease;
 }
 .intro.gone{
-  opacity:0;
-  pointer-events:none;
-  transform:translateY(-6px);
+opacity:0;
+pointer-events:none;
+transform:translateY(-6px);
 }
 
 /* Transparent face — floats on black */
 .intro-face{
-  width:110px;
-  height:110px;
-  position:relative;
-  margin-bottom:28px;
-  flex-shrink:0;
+width:110px;
+height:110px;
+position:relative;
+margin-bottom:28px;
+flex-shrink:0;
 }
 .intro-face img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:bottom center;
-  transition:opacity .65s ease;
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:contain;
+object-position:bottom center;
+transition:opacity .65s ease;
 }
 .intro-face img.raised{ opacity:1; }
 .intro-face img.normal{ opacity:0; }
 .intro-face.swapped img.raised{ opacity:0; }
 .intro-face.swapped img.normal{ opacity:1; }
 .intro-face .fb{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-serif);
-  font-size:28px;
-  color:var(--white-20);
-  z-index:-1;
+position:absolute;inset:0;
+display:flex;align-items:center;justify-content:center;
+font-family:var(–font-serif);
+font-size:28px;
+color:var(–white-20);
+z-index:-1;
 }
 
 /* Intro type — editorial, no container */
 .intro-copy{
-  text-align:center;
-  max-width:280px;
-  margin-bottom:44px;
+text-align:center;
+max-width:280px;
+margin-bottom:44px;
 }
 .intro-main{
-  font-family:var(--font-serif);
-  font-size:18px;
-  font-weight:400;
-  color:var(--white);
-  line-height:1.65;
-  margin-bottom:16px;
-  letter-spacing:0.01em;
+font-family:var(–font-serif);
+font-size:18px;
+font-weight:400;
+color:var(–white);
+line-height:1.65;
+margin-bottom:16px;
+letter-spacing:0.01em;
 }
 .intro-main strong{
-  font-weight:600;
+font-weight:600;
 }
 .intro-detail{
-  font-family:var(--font-sans);
-  font-size:13px;
-  font-weight:300;
-  color:var(--white-40);
-  line-height:1.7;
-  border-left:1px solid var(--white-08);
-  padding:0 0 0 14px;
-  text-align:left;
-  letter-spacing:0.01em;
+font-family:var(–font-sans);
+font-size:13px;
+font-weight:300;
+color:var(–white-40);
+line-height:1.7;
+border-left:1px solid var(–white-08);
+padding:0 0 0 14px;
+text-align:left;
+letter-spacing:0.01em;
 }
 .intro-detail em{
-  font-style:normal;
-  color:var(--gold);
+font-style:normal;
+color:var(–gold);
 }
 
 /* Reveal button — white, clean */
 .btn-reveal{
-  font-family:var(--font-sans);
-  font-size:13px;
-  font-weight:600;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--bg);
-  background:var(--white);
-  border:none;
-  border-radius:3px;
-  padding:14px 36px;
-  cursor:pointer;
-  opacity:0;
-  transform:translateY(8px);
-  pointer-events:none;
-  transition:opacity .35s ease, transform .35s ease, background .15s;
+font-family:var(–font-sans);
+font-size:13px;
+font-weight:600;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(–bg);
+background:var(–white);
+border:none;
+border-radius:3px;
+padding:14px 36px;
+cursor:pointer;
+opacity:0;
+transform:translateY(8px);
+pointer-events:none;
+transition:opacity .35s ease, transform .35s ease, background .15s;
 }
 .btn-reveal.show{
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:all;
+opacity:1;
+transform:translateY(0);
+pointer-events:all;
 }
 .btn-reveal:hover{ background:rgba(255,255,255,.88); }
 .btn-reveal:active{ transform:scale(.97)!important; }
 
 /* ═══════════════════════════════════════════
-   HEADER
+HEADER
 ═══════════════════════════════════════════ */
 .hdr{
-  background:var(--bg);
-  border-bottom:1px solid var(--line2);
-  padding:12px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-shrink:0;
-  opacity:0;
-  transform:translateY(-100%);
-  transition:opacity .4s ease, transform .4s ease;
+background:var(–bg);
+border-bottom:1px solid var(–line2);
+padding:12px 16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+flex-shrink:0;
+opacity:0;
+transform:translateY(-100%);
+transition:opacity .4s ease, transform .4s ease;
 }
 .hdr.show{ opacity:1; transform:translateY(0); }
 .hdr-l{ display:flex; align-items:center; gap:10px; }
@@ -192,331 +193,332 @@ html,body{
 .hdr-ico{ width:26px; height:26px; flex-shrink:0; }
 
 .hdr-t{
-  font-family:var(--font-serif);
-  font-size:13px;
-  font-weight:600;
-  letter-spacing:0.04em;
-  color:var(--white);
-  line-height:1;
+font-family:var(–font-serif);
+font-size:13px;
+font-weight:600;
+letter-spacing:0.04em;
+color:var(–white);
+line-height:1;
 }
-.hdr-t span{ color:var(--gold); }
+.hdr-t span{ color:var(–gold); }
 .hdr-s{
-  font-family:var(--font-sans);
-  font-size:9px;
-  font-weight:400;
-  color:var(--white-40);
-  letter-spacing:0.06em;
-  text-transform:uppercase;
-  margin-top:2px;
+font-family:var(–font-sans);
+font-size:9px;
+font-weight:400;
+color:var(–white-40);
+letter-spacing:0.06em;
+text-transform:uppercase;
+margin-top:2px;
 }
 .btn-at{
-  font-family:var(--font-sans);
-  font-size:11px;
-  font-weight:500;
-  letter-spacing:0.04em;
-  padding:5px 12px;
-  border-radius:3px;
-  border:1px solid var(--line2);
-  color:var(--white-40);
-  text-decoration:none;
-  background:transparent;
-  cursor:pointer;
-  transition:all .15s;
-  white-space:nowrap;
+font-family:var(–font-sans);
+font-size:11px;
+font-weight:500;
+letter-spacing:0.04em;
+padding:5px 12px;
+border-radius:3px;
+border:1px solid var(–line2);
+color:var(–white-40);
+text-decoration:none;
+background:transparent;
+cursor:pointer;
+transition:all .15s;
+white-space:nowrap;
 }
-.btn-at:hover{ border-color:var(--white-20); color:var(--white-70); }
+.btn-at:hover{ border-color:var(–white-20); color:var(–white-70); }
 
 /* ═══════════════════════════════════════════
-   MAIN
+MAIN
 ═══════════════════════════════════════════ */
 .main{
-  flex:1;
-  overflow-y:auto;
-  overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  padding:0 0 20px;
-  min-height:0;
+flex:1;
+overflow-y:auto;
+overflow-x:hidden;
+-webkit-overflow-scrolling:touch;
+padding:0 0 20px;
+min-height:0;
 }
 .main::-webkit-scrollbar{ display:none; }
 
 /* George strip */
 .g-strip{
-  display:flex;
-  align-items:flex-end;
-  gap:0;
-  padding:20px 18px 0;
-  opacity:0;
-  transform:translateY(10px);
-  transition:opacity .4s ease, transform .4s ease;
+display:flex;
+align-items:flex-end;
+gap:0;
+padding:20px 18px 0;
+opacity:0;
+transform:translateY(10px);
+transition:opacity .4s ease, transform .4s ease;
 }
 .g-strip.show{ opacity:1; transform:translateY(0); }
 
 .gs-face{
-  width:58px;
-  height:58px;
-  flex-shrink:0;
-  position:relative;
-  margin-bottom:-2px;
+width:58px;
+height:58px;
+flex-shrink:0;
+position:relative;
+margin-bottom:-2px;
 }
 .gs-face img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:bottom center;
-  display:block;
+width:100%;
+height:100%;
+object-fit:contain;
+object-position:bottom center;
+display:block;
 }
 .gs-face .fb{
-  position:absolute;inset:0;
-  display:flex;align-items:flex-end;justify-content:center;
-  font-family:var(--font-serif);
-  font-size:14px;
-  color:var(--white-20);
-  z-index:-1;
+position:absolute;inset:0;
+display:flex;align-items:flex-end;justify-content:center;
+font-family:var(–font-serif);
+font-size:14px;
+color:var(–white-20);
+z-index:-1;
 }
 .gs-info{
-  padding-left:12px;
-  padding-bottom:6px;
-  flex:1;
+padding-left:12px;
+padding-bottom:6px;
+flex:1;
 }
 .gs-name{
-  font-family:var(--font-serif);
-  font-size:13px;
-  font-weight:600;
-  color:var(--white);
-  margin-bottom:2px;
+font-family:var(–font-serif);
+font-size:13px;
+font-weight:600;
+color:var(–white);
+margin-bottom:2px;
 }
 .gs-tag{
-  font-family:var(--font-sans);
-  font-size:10px;
-  font-weight:400;
-  color:var(--white-40);
-  letter-spacing:0.02em;
+font-family:var(–font-sans);
+font-size:10px;
+font-weight:400;
+color:var(–white-40);
+letter-spacing:0.02em;
 }
 
 /* Headline */
 .headline{
-  padding:16px 18px 18px;
-  opacity:0;
-  transform:translateY(10px);
-  transition:opacity .4s ease, transform .4s ease;
+padding:16px 18px 18px;
+opacity:0;
+transform:translateY(10px);
+transition:opacity .4s ease, transform .4s ease;
 }
 .headline.show{ opacity:1; transform:translateY(0); }
 
 .hl-main{
-  font-family:var(--font-serif);
-  font-size:30px;
-  font-weight:700;
-  color:var(--white);
-  line-height:1.12;
-  margin-bottom:10px;
-  letter-spacing:-0.01em;
+font-family:var(–font-serif);
+font-size:30px;
+font-weight:700;
+color:var(–white);
+line-height:1.12;
+margin-bottom:10px;
+letter-spacing:-0.01em;
 }
-.hl-main span{ color:var(--gold); }
+.hl-main span{ color:var(–gold); }
 .hl-sub{
-  font-family:var(--font-sans);
-  font-size:12px;
-  font-weight:400;
-  color:var(--white-40);
-  line-height:1.65;
-  letter-spacing:0.01em;
+font-family:var(–font-sans);
+font-size:12px;
+font-weight:400;
+color:var(–white-40);
+line-height:1.65;
+letter-spacing:0.01em;
 }
 
 /* ═══════════════════════════════════════════
-   CARDS — title-first, detail expands after 3s
-   Collapses back after 8s of showing detail
+CARDS — title-first, detail expands after 3s
+Collapses back after 8s of showing detail
 ═══════════════════════════════════════════ */
 .cards{
-  padding:0 14px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
+padding:0 14px;
+display:flex;
+flex-direction:column;
+gap:8px;
 }
 
 .ec{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:8px;
-  cursor:pointer;
-  opacity:0;
-  transform:translateY(16px);
-  transition:opacity .4s ease, transform .4s ease,
-             border-color .2s, background .2s;
-  overflow:hidden;
+background:var(–surface);
+border:1px solid var(–line);
+border-radius:8px;
+cursor:pointer;
+opacity:0;
+transform:translateY(16px);
+transition:opacity .4s ease, transform .4s ease,
+border-color .2s, background .2s;
+overflow:hidden;
 }
 .ec.show{ opacity:1; transform:translateY(0); }
 .ec:active{ transform:scale(.99)!important; }
-.ec:hover{ border-color:var(--line2); background:var(--surface2); }
+.ec:hover{ border-color:var(–line2); background:var(–surface2); }
 
 /* Gold left bar on primary only */
 .ec.primary{
-  border-left:3px solid var(--gold);
-  border-color:var(--line);
-  border-left-color:var(--gold);
+border-left:3px solid var(–gold);
+border-color:var(–line);
+border-left-color:var(–gold);
 }
-.ec.primary:hover{ background:var(--surface2); }
+.ec.primary:hover{ background:var(–surface2); }
 
 .ec.resume{
-  border-left:3px solid var(--white-20);
-  border-left-color:var(--white-20);
+border-left:3px solid var(–white-20);
+border-left-color:var(–white-20);
 }
 
 /* Title row — always visible */
 .ec-title-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:18px 18px 18px;
-  gap:12px;
-  transition:padding .35s ease;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:18px 18px 18px;
+gap:12px;
+transition:padding .35s ease;
 }
 .ec.expanded .ec-title-row{
-  padding-bottom:12px;
+padding-bottom:12px;
 }
 
 .ec-lbl{
-  font-family:var(--font-serif);
-  font-size:15px;
-  font-weight:600;
-  color:var(--white);
-  line-height:1.3;
-  letter-spacing:-0.005em;
-  flex:1;
+font-family:var(–font-serif);
+font-size:15px;
+font-weight:600;
+color:var(–white);
+line-height:1.3;
+letter-spacing:-0.005em;
+flex:1;
 }
-.ec.primary .ec-lbl{ color:var(--white); }
-.ec.resume .ec-lbl{ color:var(--white-70); }
+.ec.primary .ec-lbl{ color:var(–white); }
+.ec.resume .ec-lbl{ color:var(–white-70); }
 
 /* Chapter badge */
 .ch-b{
-  font-family:var(--font-sans);
-  font-size:9px;
-  font-weight:500;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  padding:2px 6px;
-  border-radius:2px;
-  background:var(--white-08);
-  color:var(--white-40);
-  margin-left:8px;
-  vertical-align:middle;
-  flex-shrink:0;
+font-family:var(–font-sans);
+font-size:9px;
+font-weight:500;
+letter-spacing:0.08em;
+text-transform:uppercase;
+padding:2px 6px;
+border-radius:2px;
+background:var(–white-08);
+color:var(–white-40);
+margin-left:8px;
+vertical-align:middle;
+flex-shrink:0;
 }
 
 /* Expand indicator */
 .ec-ind{
-  font-size:13px;
-  color:var(--white-20);
-  flex-shrink:0;
-  transition:transform .3s ease, color .2s;
-  line-height:1;
+font-size:13px;
+color:var(–white-20);
+flex-shrink:0;
+transition:transform .3s ease, color .2s;
+line-height:1;
 }
-.ec:hover .ec-ind{ color:var(--white-40); }
+.ec:hover .ec-ind{ color:var(–white-40); }
 .ec.expanded .ec-ind{
-  transform:rotate(90deg);
-  color:var(--gold);
+transform:rotate(90deg);
+color:var(–gold);
 }
 
 /* Detail block — hidden by default, expands in */
 .ec-detail{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height .45s cubic-bezier(.4,0,.2,1),
-             opacity .35s ease;
-  opacity:0;
+max-height:0;
+overflow:hidden;
+transition:max-height .45s cubic-bezier(.4,0,.2,1),
+opacity .35s ease;
+opacity:0;
 }
 .ec.expanded .ec-detail{
-  max-height:200px;
-  opacity:1;
+max-height:200px;
+opacity:1;
 }
 .ec-detail-inner{
-  padding:0 18px 18px;
-  border-top:1px solid var(--line);
-  padding-top:14px;
+padding:0 18px 18px;
+border-top:1px solid var(–line);
+padding-top:14px;
 }
 .ec-desc{
-  font-family:var(--font-sans);
-  font-size:12px;
-  font-weight:400;
-  color:var(--white-40);
-  line-height:1.65;
-  letter-spacing:0.01em;
+font-family:var(–font-sans);
+font-size:12px;
+font-weight:400;
+color:var(–white-40);
+line-height:1.65;
+letter-spacing:0.01em;
 }
 .ec-commit{
-  display:block;
-  margin-top:10px;
-  font-family:var(--font-sans);
-  font-size:11px;
-  font-weight:500;
-  color:var(--white-20);
-  letter-spacing:0.02em;
-  padding-top:8px;
-  border-top:1px solid var(--line);
+display:block;
+margin-top:10px;
+font-family:var(–font-sans);
+font-size:11px;
+font-weight:500;
+color:var(–white-20);
+letter-spacing:0.02em;
+padding-top:8px;
+border-top:1px solid var(–line);
 }
 .ec.primary .ec-commit{ color:rgba(212,160,23,.6); }
 
 /* ═══════════════════════════════════════════
-   FOOTER
+FOOTER
 ═══════════════════════════════════════════ */
 .ftr{
-  background:var(--bg);
-  border-top:1px solid var(--line);
-  padding:10px 18px;
-  flex-shrink:0;
-  opacity:0;
-  transform:translateY(100%);
-  transition:opacity .4s ease, transform .4s ease;
+background:var(–bg);
+border-top:1px solid var(–line);
+padding:10px 18px;
+flex-shrink:0;
+opacity:0;
+transform:translateY(100%);
+transition:opacity .4s ease, transform .4s ease;
 }
 .ftr.show{ opacity:1; transform:translateY(0); }
 .ftr-in{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+display:flex;
+align-items:center;
+justify-content:space-between;
 }
 .ftr-l{
-  font-family:var(--font-sans);
-  font-size:9px;
-  font-weight:400;
-  color:var(--white-20);
-  line-height:1.6;
-  letter-spacing:0.02em;
+font-family:var(–font-sans);
+font-size:9px;
+font-weight:400;
+color:var(–white-20);
+line-height:1.6;
+letter-spacing:0.02em;
 }
 .ftr-r a{
-  font-family:var(--font-sans);
-  font-size:9px;
-  font-weight:500;
-  letter-spacing:0.06em;
-  text-transform:uppercase;
-  color:var(--gold);
-  text-decoration:none;
-  opacity:.7;
-  transition:opacity .15s;
+font-family:var(–font-sans);
+font-size:9px;
+font-weight:500;
+letter-spacing:0.06em;
+text-transform:uppercase;
+color:var(–gold);
+text-decoration:none;
+opacity:.7;
+transition:opacity .15s;
 }
 .ftr-r a:hover{ opacity:1; }
 /* Tension cue line */
 .tension-line{
-  font-family:var(--font-sans);
-  font-size:12px;
-  font-weight:600;
-  color:var(--white-40);
-  letter-spacing:0.02em;
-  line-height:1.5;
-  padding:0 18px 4px;
-  opacity:0;
-  transition:opacity .4s ease;
+font-family:var(–font-sans);
+font-size:12px;
+font-weight:600;
+color:var(–white-40);
+letter-spacing:0.02em;
+line-height:1.5;
+padding:0 18px 4px;
+opacity:0;
+transition:opacity .4s ease;
 }
 .tension-line.show{ opacity:1; }
 .tension-sub{
-  font-family:var(--font-sans);
-  font-size:11px;
-  font-weight:400;
-  color:var(--white-20);
-  letter-spacing:0.02em;
-  line-height:1.5;
-  padding:0 18px 16px;
-  opacity:0;
-  transition:opacity .4s ease;
+font-family:var(–font-sans);
+font-size:11px;
+font-weight:400;
+color:var(–white-20);
+letter-spacing:0.02em;
+line-height:1.5;
+padding:0 18px 16px;
+opacity:0;
+transition:opacity .4s ease;
 }
 .tension-sub.show{ opacity:1; }
 </style>
+
 </head>
 <body>
 <div class="app">
@@ -524,40 +526,44 @@ html,body{
   <!-- ═══════════════════════════
        PHASE 1 — INTRO
   ═══════════════════════════ -->
+
   <div class="intro" id="intro">
 
-    <div class="intro-face" id="intro-face">
-      <img class="raised"
-           src="assets/george-serious.png"
-           alt="George Kindler"
-           onerror="this.style.display='none'">
-      <img class="normal"
-           src="assets/george-welcome.png"
-           alt="George Kindler"
-           onerror="this.style.display='none'">
-      <div class="fb">GK</div>
-    </div>
+```
+<div class="intro-face" id="intro-face">
+  <img class="raised"
+       src="assets/george-serious.png"
+       alt="George Kindler"
+       onerror="this.style.display='none'">
+  <img class="normal"
+       src="assets/george-welcome.png"
+       alt="George Kindler"
+       onerror="this.style.display='none'">
+  <div class="fb">GK</div>
+</div>
 
-    <div class="intro-copy">
-      <div class="intro-main">
-        You tapped <strong>Request Tour.</strong><br>
-        They were counting on that.
-      </div>
-      <div class="intro-detail">
-        That's why your agent paid Zillow —<br>
-        <em>before you ever picked up the phone.</em>
-      </div>
-    </div>
+<div class="intro-copy">
+  <div class="intro-main">
+    You tapped <strong>Request Tour.</strong><br>
+    They were counting on that.
+  </div>
+  <div class="intro-detail">
+    That's why your agent paid Zillow —<br>
+    <em>before you ever picked up the phone.</em>
+  </div>
+</div>
 
-    <button class="btn-reveal" id="btn-reveal" onclick="revealSite()">
-      Show me what I'm missing
-    </button>
+<button class="btn-reveal" id="btn-reveal" onclick="revealSite()">
+  Show me what I'm missing
+</button>
+```
 
   </div>
 
   <!-- ═══════════════════════════
        HEADER
   ═══════════════════════════ -->
+
   <header class="hdr" id="hdr">
     <div class="hdr-l">
       <!-- Icon: white house on dark -->
@@ -583,125 +589,171 @@ html,body{
   <!-- ═══════════════════════════
        MAIN
   ═══════════════════════════ -->
+
   <div class="main" id="main">
 
-    <!-- George strip -->
-    <div class="g-strip" id="g-strip">
-      <div class="gs-face">
-        <img src="assets/george-welcome.png"
-             alt="George Kindler"
-             onerror="this.style.display='none'">
-        <div class="fb">GK</div>
-      </div>
-      <div class="gs-info">
-        <div class="gs-name">George Kindler</div>
-        <div class="gs-tag">The Closing Pros LLC &middot; 314.435.1087</div>
+```
+<!-- George strip -->
+<div class="g-strip" id="g-strip">
+  <div class="gs-face">
+    <img src="assets/george-welcome.png"
+         alt="George Kindler"
+         onerror="this.style.display='none'">
+    <div class="fb">GK</div>
+  </div>
+  <div class="gs-info">
+    <div class="gs-name">George Kindler</div>
+    <div class="gs-tag">The Closing Pros LLC &middot; 314.435.1087</div>
+  </div>
+</div>
+
+<!-- Headline -->
+<div class="headline" id="headline">
+  <div class="hl-main">Where buyers lose money —<br><span>without realizing it.</span></div>
+  <div class="hl-sub">Start anywhere — or follow the full journey from start to closing.</div>
+</div>
+
+<!-- Tension cue -->
+<div class="tension-line" id="tension-line">Most buyers skip the part that costs them. Don't.</div>
+<div class="tension-sub" id="tension-sub">Tap any section to open it — or follow the journey step by step.</div>
+
+<!-- Cards -->
+<div class="cards" id="cards">
+
+  <!-- Ch.1 — Pre-Approval -->
+  <div class="ec primary" id="c0" onclick="tapCard(this,'01-preapproval.html','start')">
+    <div class="ec-title-row">
+      <div class="ec-lbl">What actually happens when you click &ldquo;Contact Agent&rdquo;</div>
+      <span class="ec-ind">&#8250;</span>
+    </div>
+    <div class="ec-detail">
+      <div class="ec-detail-inner">
+        <div class="ec-desc">The agent who calls you paid to be there. That changes everything before you ever see a house.</div>
+        <span class="ec-commit">Start here if you haven't made any moves yet.</span>
       </div>
     </div>
+  </div>
 
-    <!-- Headline -->
-    <div class="headline" id="headline">
-      <div class="hl-main">Where buyers lose money —<br><span>without realizing it.</span></div>
-      <div class="hl-sub">Start anywhere — or follow the full journey from start to closing.</div>
+  <!-- Ch.2 — Affordability -->
+  <div class="ec" id="c1" onclick="tapCard(this,'02-affordability.html','afford')">
+    <div class="ec-title-row">
+      <div class="ec-lbl">Where buyers accidentally overpay &mdash; before they even make an offer <span class="ch-b">Ch. 2</span></div>
+      <span class="ec-ind">&#8250;</span>
     </div>
-
-    <!-- Tension cue -->
-    <div class="tension-line" id="tension-line">Most buyers skip the part that costs them. Don't.</div>
-    <div class="tension-sub" id="tension-sub">Tap any section to open it — or follow the journey step by step.</div>
-
-    <!-- Cards -->
-    <div class="cards" id="cards">
-
-      <!-- 0 — Start -->
-      <div class="ec primary" id="c0" onclick="tapCard(this,'01-preapproval.html','start')">
-        <div class="ec-title-row">
-          <div class="ec-lbl">What actually happens when you click &ldquo;Contact Agent&rdquo;</div>
-          <span class="ec-ind">&#8250;</span>
-        </div>
-        <div class="ec-detail">
-          <div class="ec-detail-inner">
-            <div class="ec-desc">The agent who calls you paid to be there. That changes everything before you ever see a house.</div>
-            <span class="ec-commit">Start here if you haven't made any moves yet.</span>
-          </div>
-        </div>
+    <div class="ec-detail">
+      <div class="ec-detail-inner">
+        <div class="ec-desc">The number your lender approved is not the number you should spend. Most agents never make that distinction.</div>
+        <span class="ec-commit">I will never tell you to max it out.</span>
       </div>
+    </div>
+  </div>
 
-      <!-- 1 — Affordability -->
-      <div class="ec" id="c1" onclick="tapCard(this,'02-affordability.html','afford')">
-        <div class="ec-title-row">
-          <div class="ec-lbl">Where buyers accidentally overpay — before they even make an offer <span class="ch-b">Ch. 2</span></div>
-          <span class="ec-ind">&#8250;</span>
-        </div>
-        <div class="ec-detail">
-          <div class="ec-detail-inner">
-            <div class="ec-desc">The number your lender approved is not the number you should spend. Most agents never make that distinction.</div>
-            <span class="ec-commit">I will never tell you to max it out.</span>
-          </div>
-        </div>
+  <!-- Ch.3 — Interior -->
+  <div class="ec" id="c2" onclick="tapCard(this,'03-interior.html','interior')">
+    <div class="ec-title-row">
+      <div class="ec-lbl">What I look at the moment we walk in &mdash; and what you should too <span class="ch-b">Ch. 3</span></div>
+      <span class="ec-ind">&#8250;</span>
+    </div>
+    <div class="ec-detail">
+      <div class="ec-detail-inner">
+        <div class="ec-desc">Most buyers look at countertops and paint. I look at the basement, the panel, the roof, and the mechanicals. Walk through a house the way I do.</div>
+        <span class="ec-commit">What costs money is rarely what costs paint.</span>
       </div>
+    </div>
+  </div>
 
-      <!-- 2 — Inspection -->
-      <div class="ec" id="c2" onclick="tapCard(this,'04-inspection.html','inspect')">
-        <div class="ec-title-row">
-          <div class="ec-lbl">This is where buyers miss the problems they end up paying for <span class="ch-b">Ch. 4</span></div>
-          <span class="ec-ind">&#8250;</span>
-        </div>
-        <div class="ec-detail">
-          <div class="ec-detail-inner">
-            <div class="ec-desc">By the time most buyers read it, their earnest money is already at risk. The items that matter most are rarely the ones at the top.</div>
-            <span class="ec-commit">It's not my house. I will never overlook a repair to get you to close.</span>
-          </div>
-        </div>
+  <!-- Ch.4 — Pre-Offer -->
+  <div class="ec" id="c3" onclick="tapCard(this,'05-pre-offer.html','offer')">
+    <div class="ec-title-row">
+      <div class="ec-lbl">Where buyers get pushed into offers they can&rsquo;t take back <span class="ch-b">Ch. 4</span></div>
+      <span class="ec-ind">&#8250;</span>
+    </div>
+    <div class="ec-detail">
+      <div class="ec-detail-inner">
+        <div class="ec-desc">Competing offers, manufactured urgency, escalation clauses. What agents say, what it means, and what actually gets your offer accepted.</div>
+        <span class="ec-commit">No version held back. All of it.</span>
       </div>
+    </div>
+  </div>
 
-      <!-- 3 — Offer -->
-      <div class="ec" id="c3" onclick="tapCard(this,'05-offer.html','offer')">
-        <div class="ec-title-row">
-          <div class="ec-lbl">Where buyers get pushed into offers they can't take back <span class="ch-b">Ch. 5</span></div>
-          <span class="ec-ind">&#8250;</span>
-        </div>
-        <div class="ec-detail">
-          <div class="ec-detail-inner">
-            <div class="ec-desc">Competing offers, manufactured urgency, escalation clauses. What agents say, what it means, and what actually gets your offer accepted.</div>
-            <span class="ec-commit">No version held back. All of it.</span>
-          </div>
-        </div>
+  <!-- Ch.5 — Under Contract -->
+  <div class="ec" id="c4" onclick="tapCard(this,'06-under-contract.html','contract')">
+    <div class="ec-title-row">
+      <div class="ec-lbl">Offer accepted: where deals fall apart <span class="ch-b">Ch. 5</span></div>
+      <span class="ec-ind">&#8250;</span>
+    </div>
+    <div class="ec-detail">
+      <div class="ec-detail-inner">
+        <div class="ec-desc">Earnest money. Inspection windows. Day Zero actions. Small mistakes here can quietly kill a deal after you think you&rsquo;re safe.</div>
+        <span class="ec-commit">This is where most buyers lose control. You won&rsquo;t.</span>
       </div>
+    </div>
+  </div>
 
-      <!-- 4 — Under contract -->
-      <div class="ec" id="c4" onclick="tapCard(this,'06-under-contract.html','contract')">
-        <div class="ec-title-row">
-          <div class="ec-lbl">Offer Accepted: Where deals fall apart <span class="ch-b">Ch. 6</span></div>
-          <span class="ec-ind">&#8250;</span>
-        </div>
-        <div class="ec-detail">
-          <div class="ec-detail-inner">
-            <div class="ec-desc">Deadlines, financing, inspections, and small mistakes that can quietly kill a deal after you think you're safe.</div>
-            <span class="ec-commit">This is where most buyers lose control. You won't.</span>
-          </div>
-        </div>
+  <!-- Ch.6 — Deadlines -->
+  <div class="ec" id="c5" onclick="tapCard(this,'06b-deadlines.html','deadlines')">
+    <div class="ec-title-row">
+      <div class="ec-lbl">Three deadlines running in parallel &mdash; miss any one and the protection is gone <span class="ch-b">Ch. 6</span></div>
+      <span class="ec-ind">&#8250;</span>
+    </div>
+    <div class="ec-detail">
+      <div class="ec-detail-inner">
+        <div class="ec-desc">Loan contingency. Appraisal. Title. They all run simultaneously from Day 1. Every one has a hard stop. I track all three so nothing slips.</div>
+        <span class="ec-commit">Miss a deadline once and you can&rsquo;t un-miss it.</span>
       </div>
+    </div>
+  </div>
 
-      <!-- 5 — Closing -->
-      <div class="ec" id="c5" onclick="tapCard(this,'07-closing.html','closing')">
-        <div class="ec-title-row">
-          <div class="ec-lbl">What you're signing at closing — and what most buyers don't catch <span class="ch-b">Ch. 7</span></div>
-          <span class="ec-ind">&#8250;</span>
-        </div>
-        <div class="ec-detail">
-          <div class="ec-detail-inner">
-            <div class="ec-desc">The final walk. The closing table. The documents. Your job is to fall in love with the house.</div>
-            <span class="ec-commit">My job is to make sure you don't own a disaster.</span>
-          </div>
-        </div>
+  <!-- Ch.7 — Inspection -->
+  <div class="ec" id="c6" onclick="tapCard(this,'07-inspection.html','inspect')">
+    <div class="ec-title-row">
+      <div class="ec-lbl">This is where buyers miss the problems they end up paying for <span class="ch-b">Ch. 7</span></div>
+      <span class="ec-ind">&#8250;</span>
+    </div>
+    <div class="ec-detail">
+      <div class="ec-detail-inner">
+        <div class="ec-desc">By the time most buyers read the inspection report, their earnest money is already at risk. The items that matter most are rarely the ones at the top.</div>
+        <span class="ec-commit">It&rsquo;s not my house. I will never overlook a repair to get you to close.</span>
       </div>
+    </div>
+  </div>
 
-    </div><!-- /cards -->
-    <div style="height:20px;"></div>
+  <!-- Ch.8 — Walk-Through -->
+  <div class="ec" id="c7" onclick="tapCard(this,'08-walkthrough.html','walkthrough')">
+    <div class="ec-title-row">
+      <div class="ec-lbl">The final walk-through is not a second showing &mdash; it&rsquo;s a condition verification <span class="ch-b">Ch. 8</span></div>
+      <span class="ec-ind">&#8250;</span>
+    </div>
+    <div class="ec-detail">
+      <div class="ec-detail-inner">
+        <div class="ec-desc">Same condition as the day you made the offer. Agreed repairs complete. Seller out. Utilities on. If anything is wrong, you address it before you sign &mdash; not after.</div>
+        <span class="ec-commit">After you sign, your leverage is gone.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ch.9 — Closing -->
+  <div class="ec" id="c8" onclick="tapCard(this,'09-closing.html','closing')">
+    <div class="ec-title-row">
+      <div class="ec-lbl">What you&rsquo;re signing at closing &mdash; and what most buyers don&rsquo;t catch <span class="ch-b">Ch. 9</span></div>
+      <span class="ec-ind">&#8250;</span>
+    </div>
+    <div class="ec-detail">
+      <div class="ec-detail-inner">
+        <div class="ec-desc">The final walk. The closing table. The documents. Wire fraud. What the note and deed of trust actually say. Your job is to fall in love with the house.</div>
+        <span class="ec-commit">My job is to make sure you don&rsquo;t own a disaster.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /cards -->
+<div style="height:20px;"></div>
+```
 
   </div><!-- /main -->
 
   <!-- FOOTER -->
+
   <footer class="ftr" id="ftr">
     <div class="ftr-in">
       <div class="ftr-l">
@@ -774,7 +826,9 @@ function revealSite(){
   var detailDelay = 3000;   // 3s after card arrives → expand detail
   var collapseDelay = 8000; // 8s after expanding → collapse back
 
-  for(var i=0;i<6;i++){
+  // All card IDs in reveal order
+  var allCards = ['c0','c1','c2','c3','c4','c5','c6','c7','c8'];
+  for(var i=0;i<allCards.length;i++){
     (function(idx){
       var arriveAt  = baseDelay + idx * cardInterval;
       var expandAt  = arriveAt + detailDelay;
@@ -782,13 +836,13 @@ function revealSite(){
 
       // Card arrives (title only)
       setTimeout(function(){
-        var c=document.getElementById('c'+idx);
+        var c=document.getElementById(allCards[idx]);
         if(c) c.classList.add('show');
       }, arriveAt);
 
       // Detail expands
       setTimeout(function(){
-        var c=document.getElementById('c'+idx);
+        var c=document.getElementById(allCards[idx]);
         if(c && !c.dataset.manualToggle){
           c.classList.add('expanded');
         }
@@ -796,7 +850,7 @@ function revealSite(){
 
       // Detail collapses
       setTimeout(function(){
-        var c=document.getElementById('c'+idx);
+        var c=document.getElementById(allCards[idx]);
         if(c && !c.dataset.manualToggle){
           c.classList.remove('expanded');
         }
@@ -834,10 +888,12 @@ function checkResume(){
   var saved=JSON.parse(localStorage.getItem(SK)||'{}');
   if(!saved.lastChapter||saved.lastChapter<2) return;
   var files={1:'01-preapproval.html',2:'02-affordability.html',
-    3:'03-exterior.html',4:'04-inspection.html',
-    5:'05-offer.html',6:'06-under-contract.html',7:'07-closing.html'};
-  var labels={1:'Pre-Approval',2:'Affordability',3:'House Walkthrough',
-    4:'Inspection',5:'Making an Offer',6:'Under Contract',7:'Closing'};
+    3:'03-interior.html',4:'05-pre-offer.html',
+    5:'06-under-contract.html',6:'06b-deadlines.html',
+    7:'07-inspection.html',8:'08-walkthrough.html',9:'09-closing.html'};
+  var labels={1:'Pre-Approval',2:'Affordability',3:'Interior Showing',
+    4:'Pre-Offer Strategy',5:'Under Contract',6:'The Deadlines',
+    7:'Inspection Report',8:'Final Walk-Through',9:'Closing Day'};
   var ch=saved.lastChapter;
   var file=files[ch];
   if(!file) return;
@@ -859,5 +915,6 @@ function go(file,evt){
   window.location.href=file;
 }
 </script>
+
 </body>
 </html>
