@@ -1,6 +1,6 @@
 /* ============================================================
 STL Home Buyer Journey — shared.js
-George Kindler · 314.435.1087
+George Kindler · The Closing Pros LLC · 314.435.1087
 
 Per-file must define before loading this script:
 var CHAPTER_NUM   — integer (3, 4, 5 …)
@@ -31,7 +31,7 @@ try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {}
 
 // ── CHAPTERS — single source of truth ────────────────────────
 var CHAPTERS = [
-{ch:1, file:‘01-preapproval.html’,    label:‘What happens when you click “Contact Agent”’},
+{ch:1, file:‘01-preapproval.html’,    label:‘What actually happens when you click “Contact Agent”’},
 {ch:2, file:‘02-affordability.html’,  label:‘Where buyers accidentally overpay’},
 {ch:3, file:‘03-interior.html’,       label:‘What I look at the moment we walk in’},
 {ch:4, file:‘05-pre-offer.html’,      label:‘Where buyers get pushed into offers they can’t take back’},
