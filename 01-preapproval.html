@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Home Buyer Journey · Chapter 1 · What Actually Happens</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EEE14BZT9P"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EEE14BZT9P');</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   CHAPTER 1 ONLY — Zillow simulator styles
+   Everything below is unique to this chapter.
+   shared.css owns all global tokens and shell styles.
+═══════════════════════════════════════════════════════════ */
+
+/* ── ZILLOW BRAND TOKENS ── */
+:root {
+  --zillow:       #006AFF;
+  --zillow-dark:  #0052CC;
+  --zillow-light: #EBF3FF;
+  --zillow-text:  #1a202c;
+  --zillow-sub:   #4a5568;
+  --z-border:     #dde3ed;
+  --z-card:       #ffffff;
+  --z-bg:         #f7f9fc;
+}
+
+/* ── ZILLOW SCENE WRAPPER ──
+   Overlays the stage for light-background Zillow scenes.
+   Fades out as the chapter transitions to dark shell. */
+.z-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: var(--z-bg);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 0 16px;
+  transition: opacity .5s ease;
+}
+.z-scene::-webkit-scrollbar { display: none; }
+.z-scene.fading { opacity: 0; pointer-events: none; }
+
+/* ── ZILLOW APP TOP BAR ── */
+.z-topbar {
+  background: var(--zillow);
+  padding: 10px 16px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.z-logo {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -.02em;
+}
+.z-logo span { color: rgba(255,255,255,.6); font-weight: 400; font-size: 11px; margin-left: 4px; letter-spacing: .04em; }
+.z-nav-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  cursor: pointer;
+}
+.z-nav-icon span {
+  display: block;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* ── NOTIFICATION SCREEN ── */
+.z-notif-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  gap: 20px;
+}
+.z-phone-frame {
+  width: 100%;
+  max-width: 300px;
+  background: #1c1c1e;
+  border-radius: 28px;
+  padding: 20px 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+.z-phone-status {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(255,255,255,.7);
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+.z-notif-card {
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.z-notif-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--zillow);
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.z-notif-body { flex: 1; min-width: 0; }
+.z-notif-app {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.z-notif-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+.z-notif-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,.6);
+  line-height: 1.4;
+}
+.z-notif-time {
+  font-size: 10px;
+  color: rgba(255,255,255,.4);
+  flex-shrink: 0;
+}
+.z-notif-cta {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(255,255,255,.4);
+  font-family: var(--font-sans);
+}
+.z-scene-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--zillow-sub);
+  text-align: center;
+}
+.z-scene-text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--zillow-text);
+  text-align: center;
+  line-height: 1.65;
+}
+.z-scene-text strong { color: var(--zillow); }
+
+/* ── ZILLOW LISTING CARD ── */
+.z-listing-wrap {
+  padding: 16px;
+  flex: 1;
+}
+.z-listing-card {
+  background: var(--z-card);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,.1);
+  border: 1px solid var(--z-border);
+}
+.z-listing-img {
+  height: 180px;
+  background: linear-gradient(135deg, #c8d6e8, #a8bcd4);
+  position: relative;
+  overflow: hidden;
+}
+.z-listing-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.z-listing-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--zillow);
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.z-listing-save {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.z-listing-body { padding: 16px; }
+.z-listing-price {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--zillow-text);
+  margin-bottom: 4px;
+}
+.z-listing-addr {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--zillow-sub);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.z-listing-stats {
+  display: flex;
+  gap: 16px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--zillow-sub);
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--z-border);
+}
+.z-listing-stats span { display: flex; align-items: center; gap: 4px; }
+.z-listing-desc {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--zillow-sub);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.z-contact-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--zillow);
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  transition: background .15s, transform .12s;
+  -webkit-appearance: none;
+}
+.z-contact-btn:active { transform: scale(.98); background: var(--zillow-dark); }
+.z-contact-btn.tapped {
+  background: #059669;
+}
+.z-disclaimer {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: #a0aec0;
+  text-align: center;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+.z-agent-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--z-border);
+  margin-top: 14px;
+}
+.z-agent-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--zillow-light);
+  border: 2px solid var(--zillow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.z-agent-info { flex: 1; min-width: 0; }
+.z-agent-name {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--zillow-text);
+}
+.z-agent-tag {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: var(--zillow);
+  font-weight: 600;
+}
+.z-premier-badge {
+  background: var(--zillow-light);
+  color: var(--zillow);
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* ── SMS SCREEN ── */
+.z-sms-screen {
+  background: var(--z-bg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.z-sms-topbar {
+  background: var(--z-card);
+  border-bottom: 1px solid var(--z-border);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.z-sms-back {
+  font-size: 22px;
+  color: var(--zillow);
+  cursor: pointer;
+  line-height: 1;
+}
+.z-sms-contact { flex: 1; text-align: center; }
+.z-sms-name {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--zillow-text);
+}
+.z-sms-status {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: #a0aec0;
+}
+.z-sms-body {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+}
+.z-sms-time {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  color: #a0aec0;
+  text-align: center;
+  margin: 6px 0 2px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.z-sms-recv {
+  align-self: flex-start;
+  max-width: 80%;
+  background: #e5e5ea;
+  color: var(--zillow-text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 9px 12px;
+  border-radius: 18px 18px 18px 4px;
+}
+.z-sms-sent {
+  align-self: flex-end;
+  max-width: 80%;
+  background: var(--zillow);
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 9px 12px;
+  border-radius: 18px 18px 4px 18px;
+}
+.z-sms-replies {
+  padding: 12px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  background: var(--z-bg);
+}
+.z-sms-reply {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--z-card);
+  border: 1.5px solid var(--zillow);
+  border-radius: 22px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--zillow);
+  cursor: pointer;
+  text-align: center;
+  transition: background .15s, color .15s;
+}
+.z-sms-reply:active { background: var(--zillow); color: white; }
+.z-sms-reply.selected { background: var(--zillow); color: white; pointer-events: none; }
+
+/* ── REVEAL CARD (dark border, gold accent) ── */
+.z-reveal {
+  margin: 12px 16px 0;
+  background: rgba(0,0,0,.04);
+  border: 1px solid var(--gold-line);
+  border-left: 3px solid var(--gold);
+  border-radius: 10px;
+  padding: 13px 14px;
+  flex-shrink: 0;
+}
+.z-reveal-title {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.z-reveal-body {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--zillow-text);
+  line-height: 1.65;
+}
+.z-reveal-body strong { color: #1a202c; }
+
+/* Dark variant for reveal cards that appear after transition */
+.z-reveal.dark {
+  background: rgba(255,204,77,.06);
+  border-color: var(--gold-line);
+}
+.z-reveal.dark .z-reveal-body { color: var(--text-soft); }
+.z-reveal.dark .z-reveal-body strong { color: var(--text-strong); }
+
+/* ── FRIEND SMS (appears in George scene) ── */
+.friend-sms {
+  margin: 0 16px;
+  background: var(--z-card);
+  border: 1px solid var(--z-border);
+  border-radius: 14px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.friend-sms-top {
+  background: var(--z-bg);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--z-border);
+}
+.friend-sms-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.friend-sms-name {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--zillow-text);
+}
+.friend-sms-body {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.friend-bubble {
+  align-self: flex-start;
+  max-width: 90%;
+  background: #e5e5ea;
+  color: var(--zillow-text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 9px 12px;
+  border-radius: 18px 18px 18px 4px;
+}
+.friend-bubble strong { color: #1a202c; }
+.friend-bubble a {
+  color: var(--zillow);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ── GEORGE BREAK-IN ROW ── */
+.g-break-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px 0;
+  flex-shrink: 0;
+}
+.g-break-face {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--gold-line);
+  background: var(--surface-2);
+}
+.g-break-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.g-break-bubble {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  border-radius: 0 12px 12px 12px;
+  padding: 11px 13px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-soft);
+  line-height: 1.65;
+  position: relative;
+}
+.g-break-bubble::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 10px;
+  border: 6px solid transparent;
+  border-right-color: var(--line-2);
+}
+.g-break-bubble::after {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 11px;
+  border: 5px solid transparent;
+  border-right-color: var(--surface-2);
+}
+.g-break-bubble strong { color: var(--text-strong); }
+
+/* ── TRANSITION OVERLAY ──
+   Dark vignette that covers z-scene during handoff to shell */
+.z-transition {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s ease;
+}
+.z-transition.show { opacity: 1; }
+
+/* Spacer used inside z-scene scroll areas */
+.z-spacer { height: 16px; flex-shrink: 0; }
+
+/* ── MOBILE TUNING ── */
+@media (max-width: 430px) {
+  .z-listing-img { height: 150px; }
+  .z-listing-price { font-size: 20px; }
+  .z-phone-frame { max-width: 260px; }
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+window.CHAPTER_NUM   = 1;
+window.CHAPTER_LABEL = 'What Actually Happens';
+window.PREV_FILE     = 'index.html';
+
+window.SCENES = [
+// 0 — ZILLOW NOTIFICATION
+{
+  type: 'zillow-notif',
+  bg: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george: 'serious',
+  room: 'Your Phone'
+},
+// 1 — THE ZILLOW LISTING
+{
+  type: 'zillow-listing',
+  bg: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george: 'serious',
+  room: '4822 Oakmont Dr'
+},
+// 2 — ZILLOW SMS THREAD
+{
+  type: 'zillow-sms',
+  bg: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george: 'serious',
+  room: 'The Morning After'
+},
+// 3 — THE REVEAL
+{
+  type: 'zillow-reveal',
+  bg: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george: 'serious',
+  room: 'What Alex Didn\'t Say'
+},
+// 4 — CHRIS TEXTS
+{
+  type: 'zillow-chris',
+  bg: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george: 'serious',
+  room: 'Chris Calls'
+},
+// 5 — GEORGE BREAKS IN
+{
+  type: 'george-break',
+  bg: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george: 'serious',
+  room: 'The Truth'
+},
+// 6 — WHAT ACTUALLY HAPPENS (standard)
+{
+  bg: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=85',
+  george: 'serious',
+  room: 'What Actually Happens',
+  title: 'Here is what the contact button actually triggers.',
+  sub: 'And what you should do before you ever tap it.',
+  drawerLabel: 'Ask me anything about how this works.',
+  choices: [
+    { label: 'Who is the agent Zillow sends me?',
+      response: 'A Zillow Premier Agent. They paid for placement in your zip code. That is their only qualification to appear on that listing. They are not the listing agent. They are not your agent. They are whoever paid the most for 63123 this month.',
+      deep: { title: 'How the Premier Agent program works', body: 'Zillow sells advertising by zip code. Agents pay monthly fees — sometimes $1,000 to $5,000+ per month — to have their face appear on listings in specific zip codes. When you tap Contact Agent, Zillow routes you to whoever bought that placement. The listing agent had nothing to do with who called you.' }
+    },
+    { label: 'Is the agent who calls me the listing agent?',
+      response: 'Almost never. The listing agent represents the seller. The Zillow agent who calls you is trying to become your buyer\'s agent. There is a difference. The listing agent\'s job is to get the best price for the seller. A buyer\'s agent\'s job is to look out for you. When someone calls you unsolicited, figure out which one they are before you schedule anything.',
+    },
+    { label: 'What should I do before contacting anyone?',
+      response: 'Get pre-approved with your own lender first. Know your actual number. Then find an agent you chose — not one who bought your click. The order matters. Most buyers do it backwards. They tour first, fall in love with a house, then find out they can\'t qualify for it.',
+      deep: { title: 'Why pre-approval before touring', body: 'An agent who shows you houses before you have a pre-approval letter is building their pipeline — not protecting you. If you fall in love with a home and then find out you can\'t qualify, you have lost time and emotional capital. Get the letter first. Know your real number. Tour homes you can actually buy.' }
+    }
+  ]
+},
+// 7 — THE RIGHT WAY
+{
+  bg: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=900&q=85',
+  george: 'serious',
+  room: 'Before You Tour Anything',
+  title: 'The showing request is not the first step.',
+  sub: 'This is what I tell every buyer before we walk through a single door.',
+  drawerLabel: 'The three things you need before you tour.',
+  interrupt: {
+    title: 'You are not ready to tour yet.',
+    text: 'Not because the house isn\'t right. Because you don\'t know your number. An agent who takes you to a showing before you have a pre-approval letter is not working for you. They are working on their pipeline.',
+    btnText: 'What do I need first?'
+  },
+  choices: [
+    { label: 'Step 1 — Get pre-approved, not pre-qualified',
+      response: 'Pre-qualification is a conversation. Pre-approval is a verified document — your income, assets, and credit checked by an underwriter. Sellers in a competitive market will not take a pre-qualified offer seriously. Get the letter before you tour anything.',
+      deep: { title: 'Pre-approval vs pre-qualification', body: 'Pre-qualification takes 10 minutes over the phone. A lender asks about your income and debts and gives you a ballpark number. Nothing is verified. Pre-approval requires W-2s, tax returns, pay stubs, bank statements, and a hard credit pull. An underwriter reviews the file. You get a letter with a specific number. In a multiple-offer situation, the pre-approved buyer wins.' }
+    },
+    { label: 'Step 2 — Choose your own agent before you tour',
+      response: 'When you tap Contact Agent on Zillow, you are not choosing an agent. You are accepting whoever bought that zip code. Choose first. Interview if you want. Then book the showing through someone who is working for you — not someone who bought your attention.',
+    },
+    { label: 'Step 3 — Send me the address before you schedule',
+      response: 'Before you commit to a tour, text me the address. I pull price history, seller disclosure, showing count, and Zillow stats. I tell you what I see before you give up a Saturday. Most of the time this saves you from scheduling a showing on a house that has a problem I can see from the listing.',
+      deep: { title: 'What I check before you tour', body: 'Days on market. Price history — any reductions and when. Seller\'s disclosure if available. How many showings have been scheduled. Zillow views and saves. And the listing photos — wide-angle shots hide a lot but show more than you think if you know what to look for. I send you my notes. You decide if it\'s worth the drive.' }
+    }
+  ]
+},
+// 8 — SOFT CALL
+{
+  bg: 'https://images.unsplash.com/photo-1560184897-ae75f418493e?w=900&q=85',
+  george: 'proud',
+  room: 'Ready When You Are',
+  title: 'See a house you like? Text me the address first.',
+  sub: '314.435.1087. No obligation. That is just how I work.',
+  drawerLabel: 'How we work together from here.',
+  interrupt: {
+    title: 'Send me an address. Any address.',
+    text: 'Text me the address and I will pull the stats, check the price history, and tell you what the showing calendar looks like — before you commit to a tour. No obligation. That is just how I work. 314.435.1087.',
+    btnText: 'Got it \u2014 show me what I can afford \u2192'
+  },
+  choices: [
+    { label: 'I already have an agent — is this still useful?',
+      response: 'Yes. Walk through the journey anyway. Know what questions to ask. Know what to look for in the basement, at the panel, in the inspection report. An informed buyer is a protected buyer regardless of who their agent is.',
+    },
+    { label: 'I have more questions first.',
+      response: 'Call me. 314.435.1087. Or text. Buyer education is my favorite part of this job. No pressure. No agenda.',
+    }
+  ],
+  isLast: true,
+  nextLabel: 'What Can I Afford? \u2192',
+  nextFile: '02-affordability.html',
+  nextChapter: 2
+}
+];
+</script>
+
+<script>
+// ════════════════════════════════════════════
+//  ZILLOW SCENE RENDERER
+//  Handles scenes 0–5 (light Zillow UI)
+//  Scenes 6–8 use shared.js renderScene()
+// ════════════════════════════════════════════
+
+var _zReplied    = false;
+var _zContactTapped = false;
+
+function renderZillowScene(sc, idx) {
+  var stage = document.getElementById('stage');
+  if (!stage) return;
+
+  // Remove existing z-scene and transition
+  var existing = document.getElementById('z-scene-el');
+  if (existing) existing.remove();
+  var existingT = document.getElementById('z-trans-el');
+  if (existingT) existingT.remove();
+
+  // Update progress and scene label via shared.js helpers
+  var prog = document.getElementById('prog');
+  var lbl  = document.getElementById('scene-lbl');
+  if (prog) prog.style.width = Math.round((idx / (window.SCENES.length - 1)) * 100) + '%';
+  if (lbl)  lbl.textContent  = sc.room;
+
+  // Nav
+  var btnBack = document.getElementById('btn-back');
+  var btnNext = document.getElementById('btn-next');
+  if (btnBack) btnBack.disabled = (idx === 0);
+  if (btnNext) { btnNext.textContent = 'Next \u2192'; btnNext.classList.remove('gold'); btnNext.disabled = false; }
+
+  // Hide normal scene layers
+  var gbg  = document.getElementById('scene-bg');
+  var gcap = document.getElementById('scene-caption');
+  var gflt = document.getElementById('george-float');
+  if (gbg)  gbg.style.opacity  = '0';
+  if (gcap) gcap.style.opacity = '0';
+  if (gflt) gflt.classList.add('hidden');
+  if (window.SharedPlatform) { SharedPlatform.closeDrawer(); SharedPlatform.dismissInterrupt(true); }
+
+  // Build z-scene wrapper
+  var el = document.createElement('div');
+  el.id = 'z-scene-el';
+  el.className = 'z-scene';
+  el.innerHTML = buildZillowHTML(sc, idx);
+  stage.appendChild(el);
+
+  // Wire interactive elements
+  wireZillowEvents(el, idx);
+
+  // Save state
+  var SK = 'stl_journey_v1';
+  try { var s = JSON.parse(localStorage.getItem(SK)||'{}'); s.lastStep = idx; s.lastChapter = 1; localStorage.setItem(SK, JSON.stringify(s)); } catch(e) {}
+  if (typeof gtag === 'function') gtag('event', 'scene_view', { chapter: 1, scene: idx, room: sc.room });
+}
+
+function buildZillowHTML(sc, idx) {
+  switch(idx) {
+
+    case 0: // NOTIFICATION
+      return `
+        <div class="z-topbar">
+          <span class="z-logo">zillow<span>· Buyer</span></span>
+          <div class="z-nav-icon"><span></span><span></span><span></span></div>
+        </div>
+        <div class="z-notif-screen">
+          <div class="z-scene-label">&#128241; 11:07 PM &mdash; TUESDAY</div>
+          <div class="z-phone-frame">
+            <div class="z-phone-status"><span>11:07</span><span>&#9679;&#9679;&#9679;&#9679; 78%</span></div>
+            <div class="z-notif-card">
+              <div class="z-notif-icon">&#127968;</div>
+              <div class="z-notif-body">
+                <div class="z-notif-app">Zillow</div>
+                <div class="z-notif-title">New listing matches your search</div>
+                <div class="z-notif-sub">4822 Oakmont Dr &mdash; $274,900 &bull; 3 bd / 1 ba</div>
+              </div>
+              <div class="z-notif-time">now</div>
+            </div>
+            <div class="z-notif-cta">Tap to view listing</div>
+          </div>
+          <div class="z-scene-text">You&rsquo;re in bed. Can&rsquo;t sleep.<br>You open Zillow. <strong>You find it.</strong></div>
+        </div>`;
+
+    case 1: // LISTING
+      return `
+        <div class="z-topbar">
+          <span class="z-logo">zillow<span>· Affton MO</span></span>
+          <div class="z-nav-icon"><span></span><span></span><span></span></div>
+        </div>
+        <div class="z-listing-wrap">
+          <div class="z-listing-card">
+            <div class="z-listing-img">
+              <img referrerpolicy="no-referrer" src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80" alt="4822 Oakmont Dr">
+              <div class="z-listing-badge">NEW LISTING</div>
+              <div class="z-listing-save">&#9825;</div>
+            </div>
+            <div class="z-listing-body">
+              <div class="z-listing-price">$274,900</div>
+              <div class="z-listing-addr">4822 Oakmont Dr, Affton MO 63123</div>
+              <div class="z-listing-stats">
+                <span>&#127968; 3 bd</span>
+                <span>&#128703; 1 ba</span>
+                <span>&#128207; 1,240 sqft</span>
+              </div>
+              <div class="z-listing-desc">Great bones in Affton. Updated kitchen, original hardwood floors. Move-in ready. Photos uploaded 2 hours ago.</div>
+              <button class="z-contact-btn" id="z-contact-btn">&#128222; Contact Agent</button>
+              <div class="z-disclaimer">By contacting, you agree to Zillow&rsquo;s Terms of Use and Privacy Policy</div>
+              <div class="z-agent-row">
+                <div class="z-agent-avatar">&#128100;</div>
+                <div class="z-agent-info">
+                  <div class="z-agent-name">Listed by: Keller Williams Realty</div>
+                  <div class="z-agent-tag">See contact info</div>
+                </div>
+                <div class="z-premier-badge">Premier</div>
+              </div>
+            </div>
+          </div>
+          <div class="z-spacer"></div>
+        </div>`;
+
+    case 2: // SMS THREAD
+      return `
+        <div class="z-sms-screen">
+          <div class="z-sms-topbar">
+            <div class="z-sms-back">&#8249;</div>
+            <div class="z-sms-contact">
+              <div class="z-sms-name">Zillow</div>
+              <div class="z-sms-status">iMessage</div>
+            </div>
+            <div style="width:28px;"></div>
+          </div>
+          <div class="z-sms-body">
+            <div class="z-sms-time">Last night 11:08 PM</div>
+            <div class="z-sms-recv">Thanks for your interest in <strong>4822 Oakmont Dr</strong>. An agent will be in touch shortly &#128522;</div>
+            <div class="z-sms-time">This morning 8:42 AM</div>
+            <div class="z-sms-recv">Hi! This is <strong>Alex with Zillow</strong>. I&rsquo;m connecting you with a local agent who can help you see this home today.</div>
+          </div>
+          <div class="z-sms-replies">
+            <div style="font-family:var(--font-sans);font-size:10px;color:#a0aec0;text-align:center;margin-bottom:4px;">TAP TO REPLY</div>
+            <button class="z-sms-reply" id="z-rep-see">&#128064; I want to see it</button>
+            <button class="z-sms-reply" id="z-rep-own">&#128101; I&rsquo;ll find my own agent</button>
+          </div>
+        </div>`;
+
+    case 3: // THE REVEAL
+      return `
+        <div class="z-sms-screen">
+          <div class="z-sms-topbar">
+            <div class="z-sms-back">&#8249;</div>
+            <div class="z-sms-contact">
+              <div class="z-sms-name">Zillow</div>
+              <div class="z-sms-status">iMessage</div>
+            </div>
+            <div style="width:28px;"></div>
+          </div>
+          <div class="z-sms-body">
+            <div class="z-sms-time">Last night 11:08 PM</div>
+            <div class="z-sms-recv">Thanks for your interest in <strong>4822 Oakmont Dr</strong>. An agent will be in touch shortly &#128522;</div>
+            <div class="z-sms-time">This morning 8:42 AM</div>
+            <div class="z-sms-recv">Hi! This is <strong>Alex with Zillow</strong>. I&rsquo;m connecting you with a local agent who can help you see this home today.</div>
+            <div class="z-sms-sent">I want to see it &#128064;</div>
+            <div class="z-sms-recv">Perfect! Connecting you with <strong>Chris</strong>, a top agent in that area. He&rsquo;ll reach out shortly &#128522;</div>
+          </div>
+        </div>
+        <div class="z-reveal">
+          <div class="z-reveal-title">What Alex didn&rsquo;t say</div>
+          <div class="z-reveal-body">Alex works for Zillow &mdash; not for you. Chris <strong>paid Zillow for your contact information.</strong> The Zillow Premier Agent program routes you to whoever paid the most for your zip code this month.</div>
+        </div>
+        <div class="z-spacer"></div>`;
+
+    case 4: // CHRIS TEXTS
+      return `
+        <div class="z-sms-screen" style="flex:none;">
+          <div class="z-sms-topbar">
+            <div class="z-sms-back">&#8249;</div>
+            <div class="z-sms-contact">
+              <div class="z-sms-name">Chris &bull; Zillow Agent</div>
+              <div class="z-sms-status">Mobile</div>
+            </div>
+            <div style="width:28px;"></div>
+          </div>
+          <div class="z-sms-body" style="flex:none;padding:16px;">
+            <div class="z-sms-time">Today 9:15 AM</div>
+            <div class="z-sms-recv">Hi! This is <strong>Chris</strong> &mdash; Zillow told me you&rsquo;re interested in the Oakmont property &#127968; Great area! I can show it to you today &mdash; does 3pm work?</div>
+            <div class="z-sms-sent">Sure, 3pm works</div>
+            <div class="z-sms-recv">Perfect! See you there. This one won&rsquo;t last &mdash; <strong>another buyer is also looking this week.</strong> &#9200;&#65039;</div>
+          </div>
+        </div>
+        <div class="z-reveal">
+          <div class="z-reveal-title">What you know about Chris</div>
+          <div class="z-reveal-body">Nothing. Chris contacted you within 90 minutes of you tapping a button. Chris paid to appear on 63123 listings. Chris gets paid when <strong>you buy</strong> &mdash; any house, any condition. The urgency is a tactic.</div>
+        </div>
+        <div class="z-spacer"></div>`;
+
+    case 5: // GEORGE BREAKS IN
+      return `
+        <div class="g-break-row">
+          <div class="g-break-face">
+            <img referrerpolicy="no-referrer" src="assets/george-serious.png" alt="George Kindler" onerror="this.style.display='none'">
+          </div>
+          <div class="g-break-bubble">
+            Nobody in that room was working for you.<br><br>
+            Alex worked for Zillow. Chris worked for his commission.<br><br>
+            <strong>That is how most buyers go through this process.</strong>
+          </div>
+        </div>
+        <div class="z-reveal dark" style="margin-top:14px;">
+          <div class="z-reveal-title">The system is designed this way</div>
+          <div class="z-reveal-body dark">Zillow built a lead-generation business. When you tap Contact Agent, you are not contacting an agent &mdash; you are generating a lead that gets sold to the highest bidder in your zip code. <strong>The agent who calls you did not earn your call. They bought it.</strong></div>
+        </div>
+        <div class="friend-sms" style="margin-top:14px;">
+          <div class="friend-sms-top">
+            <div class="friend-sms-avatar">&#128149;</div>
+            <div class="friend-sms-name">Sarah &#127775;</div>
+          </div>
+          <div class="friend-sms-body">
+            <div class="friend-bubble">Hey &mdash; before you do <em>anything</em> else, call George Kindler. He&rsquo;s a real agent. He&rsquo;ll tell you the truth.</div>
+            <div class="friend-bubble" style="margin-top:2px;"><strong><a href="tel:3144351087">314.435.1087</a></strong> &mdash; He found my house. Saved me $14K on repairs. Just call him first.</div>
+          </div>
+        </div>
+        <div class="z-spacer"></div>`;
+
+    default:
+      return '';
+  }
+}
+
+function wireZillowEvents(el, idx) {
+  // Scene 1: Contact Agent button
+  var contactBtn = el.querySelector('#z-contact-btn');
+  if (contactBtn) {
+    contactBtn.addEventListener('click', function() {
+      if (_zContactTapped) return;
+      _zContactTapped = true;
+      contactBtn.textContent = '&#10003; Request Sent';
+      contactBtn.classList.add('tapped');
+      if (typeof gtag === 'function') gtag('event', 'zillow_contact_tap', { chapter: 1 });
+      // Auto-advance after brief pause
+      setTimeout(function() { advanceScene(); }, 900);
+    });
+  }
+
+  // Scene 2: SMS reply buttons
+  var repSee = el.querySelector('#z-rep-see');
+  var repOwn = el.querySelector('#z-rep-own');
+  function handleReply(btn) {
+    if (_zReplied) return;
+    _zReplied = true;
+    btn.classList.add('selected');
+    if (repSee) repSee.style.pointerEvents = 'none';
+    if (repOwn) repOwn.style.pointerEvents = 'none';
+    if (typeof gtag === 'function') gtag('event', 'zillow_sms_reply', { reply: btn.id, chapter: 1 });
+    setTimeout(function() { advanceScene(); }, 600);
+  }
+  if (repSee) repSee.addEventListener('click', function() { handleReply(repSee); });
+  if (repOwn) repOwn.addEventListener('click', function() { handleReply(repOwn); });
+}
+
+// ════════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════════
+var _cur = 0;
+
+function advanceScene() {
+  _cur++;
+  dispatchScene(_cur);
+}
+
+function dispatchScene(idx) {
+  var scenes = window.SCENES;
+  if (!scenes || idx >= scenes.length) return;
+
+  var sc = scenes[idx];
+  _cur = idx;
+
+  // Scenes 0-5: Zillow UI
+  if (idx <= 5) {
+    renderZillowScene(sc, idx);
+    return;
+  }
+
+  // Scene 5→6 transition: fade out z-scene, reveal dark shell
+  if (idx === 6) {
+    var zEl = document.getElementById('z-scene-el');
+    if (zEl) {
+      zEl.classList.add('fading');
+      setTimeout(function() {
+        if (zEl.parentNode) zEl.parentNode.removeChild(zEl);
+        showDarkShell(sc, idx);
+      }, 500);
+    } else {
+      showDarkShell(sc, idx);
+    }
+    return;
+  }
+
+  // Scenes 7+: standard shared.js renderScene
+  if (window.SharedPlatform && typeof window.SharedPlatform.renderScene === 'function') {
+    var gbg  = document.getElementById('scene-bg');
+    var gcap = document.getElementById('scene-caption');
+    var gflt = document.getElementById('george-float');
+    if (gbg)  gbg.style.opacity  = '1';
+    if (gcap) gcap.style.opacity = '1';
+    if (gflt) gflt.classList.remove('hidden');
+    window.SharedPlatform.renderScene(idx);
+  }
+}
+
+function showDarkShell(sc, idx) {
+  // Restore normal scene layers
+  var gbg  = document.getElementById('scene-bg');
+  var gcap = document.getElementById('scene-caption');
+  var gflt = document.getElementById('george-float');
+  if (gbg)  { gbg.style.opacity = '1'; }
+  if (gcap) { gcap.style.opacity = '1'; }
+  if (gflt) { gflt.classList.remove('hidden'); }
+  if (window.SharedPlatform && typeof window.SharedPlatform.renderScene === 'function') {
+    window.SharedPlatform.renderScene(idx);
+  }
+}
+
+// Override shared.js next/prev to route through our dispatcher
+function ch1Next() {
+  var scenes = window.SCENES;
+  var sc = scenes[_cur];
+  if (!sc) return;
+
+  if (sc.isLast) {
+    var SK = 'stl_journey_v1';
+    try {
+      var s = JSON.parse(localStorage.getItem(SK)||'{}');
+      if (!s.chaptersVisited) s.chaptersVisited = [];
+      if (!s.chaptersVisited.includes(1)) s.chaptersVisited.push(1);
+      s.lastChapter = sc.nextChapter || 2;
+      s.lastStep = 0;
+      localStorage.setItem(SK, JSON.stringify(s));
+    } catch(e) {}
+    window.location.href = sc.nextFile || '02-affordability.html';
+    return;
+  }
+
+  // Scenes 2 (SMS): require interaction
+  if (_cur === 2 && !_zReplied) return;
+  // Scene 1 (listing): require contact tap
+  if (_cur === 1 && !_zContactTapped) {
+    // Nudge the button
+    var btn = document.getElementById('z-contact-btn');
+    if (btn) { btn.style.animation = 'none'; btn.style.border = '2px solid #ff0'; setTimeout(function(){ btn.style.border=''; }, 600); }
+    return;
+  }
+
+  _cur++;
+  dispatchScene(_cur);
+}
+
+function ch1Prev() {
+  if (_cur > 0) {
+    _cur--;
+    // Reset interaction flags when going back
+    if (_cur <= 1) _zContactTapped = false;
+    if (_cur <= 2) _zReplied = false;
+    dispatchScene(_cur);
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+function ch1Init() {
+  if (!document.getElementById('prog')) {
+    setTimeout(ch1Init, 20);
+    return;
+  }
+
+  // Restore last step
+  var SK = 'stl_journey_v1';
+  try {
+    var s = JSON.parse(localStorage.getItem(SK)||'{}');
+    if (s.lastChapter === 1 && s.lastStep > 0) {
+      _cur = Math.min(s.lastStep, window.SCENES.length - 1);
+    }
+  } catch(e) {}
+
+  // Wire nav buttons
+  var btnBack = document.getElementById('btn-back');
+  var btnNext = document.getElementById('btn-next');
+  if (btnBack) btnBack.onclick = ch1Prev;
+  if (btnNext) btnNext.onclick = ch1Next;
+
+  // Wire int-btn
+  var intBtn = document.getElementById('int-btn');
+  if (intBtn) intBtn.onclick = function() {
+    if (window.SharedPlatform) SharedPlatform.dismissInterrupt(false);
+  };
+
+  // Start
+  dispatchScene(_cur);
+}
+</script>
+
+<script src="shared.js"></script>
+
+<script>
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', ch1Init);
+} else {
+  ch1Init();
+}
+</script>
+</body>
+</html>
