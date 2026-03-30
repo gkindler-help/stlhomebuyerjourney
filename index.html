@@ -22,9 +22,10 @@
     rel="stylesheet"
   >
   <link rel="stylesheet" href="shared.css">
+  <script defer src="shared.js"></script>
 
   <style>
-    .index-app-shell{
+    .index-shell{
       width:100%;
       height:100%;
       display:flex;
@@ -44,7 +45,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding:40px 28px 48px;
+      padding:34px 20px 38px;
       background:
         radial-gradient(circle at 50% 18%, rgba(255,204,77,.08), transparent 24%),
         linear-gradient(180deg, #090909 0%, #050505 100%);
@@ -59,14 +60,14 @@
     }
 
     .intro-face{
-      width:180px;
-      height:180px;
+      width:172px;
+      height:172px;
       position:relative;
-      margin-bottom:28px;
+      margin-bottom:24px;
       flex-shrink:0;
       border-radius:50%;
       overflow:hidden;
-      border:1px solid rgba(255,204,77,.22);
+      border:1px solid rgba(255,204,77,.24);
       background:linear-gradient(180deg, #171717 0%, #101010 100%);
       box-shadow:0 20px 50px rgba(0,0,0,.45);
     }
@@ -81,11 +82,10 @@
       transition:opacity .7s ease;
     }
 
-    .intro-face img.raised{ opacity:1; }
-    .intro-face img.normal{ opacity:0; }
-
-    .intro-face.swapped img.raised{ opacity:0; }
-    .intro-face.swapped img.normal{ opacity:1; }
+    .intro-face img.raised{opacity:1;}
+    .intro-face img.normal{opacity:0;}
+    .intro-face.swapped img.raised{opacity:0;}
+    .intro-face.swapped img.normal{opacity:1;}
 
     .intro-face .fb{
       position:absolute;
@@ -102,7 +102,7 @@
       width:100%;
       max-width:320px;
       text-align:center;
-      margin-bottom:42px;
+      margin-bottom:18px;
     }
 
     .intro-main{
@@ -136,6 +136,54 @@
       color:var(--gold);
     }
 
+    .intro-icon-grid{
+      width:100%;
+      max-width:320px;
+      margin:0 0 18px;
+      opacity:0;
+      transform:translateY(10px);
+      transition:opacity .45s ease, transform .45s ease;
+    }
+
+    .intro-icon-grid.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .intro-icon-grid .icon-card-grid{
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+    }
+
+    .intro-icon-grid .icon-card{
+      min-height:72px;
+      padding:12px;
+      border-radius:14px;
+      align-items:flex-start;
+      flex-direction:column;
+      gap:8px;
+      text-align:left;
+      box-shadow:0 8px 22px rgba(0,0,0,.2);
+    }
+
+    .intro-icon-grid .icon-card-copy{
+      width:100%;
+    }
+
+    .intro-icon-grid .icon-card-title{
+      font-size:13px;
+      line-height:1.2;
+    }
+
+    .intro-icon-grid .icon-card-sub{
+      display:none;
+    }
+
+    .intro-icon-grid .icon-card-ico{
+      width:18px;
+      height:18px;
+    }
+
     .btn-reveal{
       padding:14px 28px;
       border:none;
@@ -161,8 +209,8 @@
       pointer-events:auto;
     }
 
-    .btn-reveal:hover{ opacity:.92; }
-    .btn-reveal:active{ transform:scale(.985); }
+    .btn-reveal:hover{opacity:.92;}
+    .btn-reveal:active{transform:scale(.985);}
 
     .hdr,
     .ftr{
@@ -170,13 +218,8 @@
       transition:opacity .45s ease, transform .45s ease;
     }
 
-    .hdr{
-      transform:translateY(-100%);
-    }
-
-    .ftr{
-      transform:translateY(100%);
-    }
+    .hdr{transform:translateY(-100%);}
+    .ftr{transform:translateY(100%);}
 
     .hdr.show,
     .ftr.show{
@@ -190,7 +233,7 @@
       overflow-y:auto;
       overflow-x:hidden;
       -webkit-overflow-scrolling:touch;
-      padding-bottom:24px;
+      padding:0 0 20px;
     }
 
     .main::-webkit-scrollbar{
@@ -198,18 +241,18 @@
     }
 
     .g-strip,
-    .headline,
-    .tension-line,
-    .tension-sub{
+    .hero,
+    .hero-sub,
+    .journey-grid-wrap{
       opacity:0;
       transform:translateY(10px);
       transition:opacity .45s ease, transform .45s ease;
     }
 
     .g-strip.show,
-    .headline.show,
-    .tension-line.show,
-    .tension-sub.show{
+    .hero.show,
+    .hero-sub.show,
+    .journey-grid-wrap.show{
       opacity:1;
       transform:translateY(0);
     }
@@ -218,12 +261,12 @@
       display:flex;
       align-items:flex-end;
       gap:0;
-      padding:20px 18px 0;
+      padding:18px 18px 0;
     }
 
     .gs-face{
-      width:58px;
-      height:58px;
+      width:60px;
+      height:60px;
       flex-shrink:0;
       position:relative;
       margin-bottom:-2px;
@@ -271,223 +314,134 @@
       letter-spacing:.03em;
     }
 
-    .headline{
-      padding:16px 18px 18px;
+    .hero{
+      padding:16px 18px 10px;
     }
 
-    .hl-main{
+    .hero-main{
       font-family:var(--font-serif);
       font-size:32px;
       font-weight:700;
       color:var(--text-strong);
-      line-height:1.12;
-      margin-bottom:12px;
+      line-height:1.08;
+      margin-bottom:10px;
       letter-spacing:-.02em;
       text-shadow:0 2px 16px rgba(0,0,0,.45);
     }
 
-    .hl-main span{
+    .hero-main span{
       color:var(--gold);
     }
 
-    .hl-sub{
-      font-size:13px;
-      font-weight:400;
-      color:var(--text-soft);
-      line-height:1.75;
-      letter-spacing:.01em;
-      max-width:420px;
-    }
-
-    .tension-line{
-      padding:0 18px 4px;
-      font-size:12px;
-      font-weight:700;
-      color:var(--text);
-      letter-spacing:.02em;
-      line-height:1.5;
-    }
-
-    .tension-sub{
+    .hero-sub{
       padding:0 18px 16px;
-      font-size:11px;
-      font-weight:400;
-      color:var(--text-dim);
-      letter-spacing:.02em;
-      line-height:1.6;
+      font-size:13px;
+      color:var(--text-soft);
+      line-height:1.72;
+      max-width:430px;
     }
 
-    .cards{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+    .journey-grid-wrap{
       padding:0 14px;
     }
 
-    .ec{
-      background:linear-gradient(180deg, rgba(20,20,20,.96) 0%, rgba(14,14,14,.96) 100%);
-      border:1px solid var(--line);
-      border-radius:14px;
+    .section-label{
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--text-dim);
+      margin:0 4px 12px;
+    }
+
+    .journey-grid .icon-card-grid{
+      gap:10px;
+    }
+
+    .journey-grid .icon-card{
+      border-radius:16px;
+      align-items:flex-start;
+      padding:14px;
+      position:relative;
       overflow:hidden;
-      cursor:pointer;
-      opacity:0;
-      transform:translateY(16px);
-      transition:
-        opacity .45s ease,
-        transform .45s ease,
-        border-color .2s ease,
-        background .2s ease,
-        box-shadow .2s ease;
       box-shadow:0 10px 26px rgba(0,0,0,.18);
     }
 
-    .ec.show{
-      opacity:1;
-      transform:translateY(0);
+    .journey-grid .icon-card::after{
+      content:"";
+      position:absolute;
+      inset:auto -20% -50% auto;
+      width:90px;
+      height:90px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,204,77,.08), transparent 68%);
+      pointer-events:none;
     }
 
-    .ec:hover{
-      border-color:var(--line-2);
-      background:linear-gradient(180deg, rgba(24,24,24,.98) 0%, rgba(16,16,16,.98) 100%);
-      box-shadow:0 14px 30px rgba(0,0,0,.24);
-    }
-
-    .ec.primary{
-      border-left:3px solid var(--gold);
-    }
-
-    .ec.resume{
-      border-left:3px solid rgba(255,255,255,.38);
-    }
-
-    .ec-title-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:18px;
-      transition:padding .35s ease;
-    }
-
-    .ec.expanded .ec-title-row{
-      padding-bottom:12px;
-    }
-
-    .ec-lbl{
-      flex:1;
-      font-family:var(--font-serif);
-      font-size:16px;
-      font-weight:600;
-      color:var(--text-strong);
-      line-height:1.35;
-      letter-spacing:-.01em;
-    }
-
-    .ec.resume .ec-lbl{
-      color:var(--text);
-    }
-
-    .ch-b{
-      display:inline-block;
-      margin-left:8px;
-      padding:3px 7px;
-      border-radius:999px;
-      background:rgba(255,255,255,.06);
-      color:var(--text-dim);
-      font-size:9px;
-      font-weight:700;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      vertical-align:middle;
-    }
-
-    .ec-ind{
-      flex-shrink:0;
+    .journey-grid .icon-card-title{
       font-size:15px;
-      color:var(--text-faint);
-      transition:transform .3s ease, color .2s ease;
+      line-height:1.25;
     }
 
-    .ec:hover .ec-ind{
-      color:var(--text-soft);
-    }
-
-    .ec.expanded .ec-ind{
-      transform:rotate(90deg);
-      color:var(--gold);
-    }
-
-    .ec-detail{
-      max-height:0;
-      overflow:hidden;
-      opacity:0;
-      transition:max-height .45s cubic-bezier(.4,0,.2,1), opacity .35s ease;
-    }
-
-    .ec.expanded .ec-detail{
-      max-height:220px;
-      opacity:1;
-    }
-
-    .ec-detail-inner{
-      padding:14px 18px 18px;
-      border-top:1px solid var(--line);
-    }
-
-    .ec-desc{
-      font-size:13px;
-      color:var(--text-soft);
-      line-height:1.75;
-      letter-spacing:.01em;
-    }
-
-    .ec-commit{
-      display:block;
-      margin-top:12px;
-      padding-top:10px;
-      border-top:1px solid rgba(255,255,255,.06);
+    .journey-grid .icon-card-sub{
       font-size:11px;
-      font-weight:600;
-      color:var(--text-dim);
-      letter-spacing:.02em;
-      line-height:1.6;
+      line-height:1.55;
+      margin-top:5px;
     }
 
-    .ec.primary .ec-commit{
-      color:rgba(255,204,77,.72);
+    .journey-grid .icon-card-ico{
+      width:20px;
+      height:20px;
     }
 
-    .spacer{
-      height:24px;
+    .explore-card{
+      margin-bottom:10px;
+    }
+
+    .explore-card .icon-card{
+      border-color:var(--gold-line);
+      background:linear-gradient(180deg, rgba(255,204,77,.08) 0%, rgba(255,255,255,.03) 100%);
+    }
+
+    .resume-slot{
+      margin-bottom:10px;
+    }
+
+    .resume-slot .icon-card{
+      border-color:rgba(255,255,255,.18);
+    }
+
+    .footer-space{
+      height:22px;
     }
 
     @media (max-width:430px){
       .intro{
-        padding:32px 22px 40px;
+        padding:30px 18px 34px;
       }
 
       .intro-face{
-        width:160px;
-        height:160px;
+        width:156px;
+        height:156px;
       }
 
       .intro-main{
         font-size:20px;
       }
 
-      .hl-main{
+      .hero-main{
         font-size:29px;
       }
 
-      .ec-lbl{
-        font-size:15px;
+      .journey-grid .icon-card-title{
+        font-size:14px;
       }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <div class="index-app-shell">
+    <div class="index-shell">
       <div class="intro" id="intro">
         <div class="intro-face" id="intro-face">
           <img
@@ -516,6 +470,8 @@
           </div>
         </div>
 
+        <div class="intro-icon-grid" id="intro-icon-grid"></div>
+
         <button class="btn-reveal" id="btn-reveal" type="button">
           Show me what I’m missing
         </button>
@@ -523,11 +479,7 @@
 
       <header class="hdr" id="hdr">
         <div class="hdr-l">
-          <svg class="hdr-ico" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-            <rect width="26" height="26" rx="5" fill="#111111"></rect>
-            <path d="M13 4L3 12h3v9h6v-5h2v5h6V12h3L13 4z" fill="white" opacity=".9"></path>
-            <path d="M18 18l3-3-3-3M21 15H13" stroke="#FFCC4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
+          <div class="hdr-ico" id="hdr-home-ico"></div>
           <div>
             <div class="hdr-t">Home Buyer <span>Journey</span></div>
             <div class="hdr-s">George Kindler · The Closing Pros</div>
@@ -552,203 +504,27 @@
           </div>
         </div>
 
-        <section class="headline" id="headline">
-          <div class="hl-main">
-            Where buyers lose money —<br>
-            <span>without realizing it.</span>
-          </div>
-          <div class="hl-sub">
-            Start anywhere, or follow the full journey from first contact to closing.
+        <section class="hero" id="hero">
+          <div class="hero-main">
+            Learn the buyer process<br>
+            <span>without the noise.</span>
           </div>
         </section>
 
-        <div class="tension-line" id="tension-line">
-          Most buyers skip the part that costs them. Don’t.
-        </div>
-        <div class="tension-sub" id="tension-sub">
-          Tap any section to open it, or follow the journey step by step.
+        <div class="hero-sub" id="hero-sub">
+          Scan it faster. Start anywhere. Or follow the full journey from first contact to closing with icon-led chapter cards instead of walls of text.
         </div>
 
-        <section class="cards" id="cards">
-          <div class="ec primary" id="c0" data-file="01-preapproval.html" data-event="start">
-            <div class="ec-title-row">
-              <div class="ec-lbl">What actually happens when you click “Contact Agent”</div>
-              <span class="ec-ind">&#8250;</span>
-            </div>
-            <div class="ec-detail">
-              <div class="ec-detail-inner">
-                <div class="ec-desc">
-                  The agent who calls you paid to be there. That changes everything before you ever see a house.
-                </div>
-                <span class="ec-commit">
-                  Start here if you haven’t made any moves yet.
-                </span>
-              </div>
-            </div>
-          </div>
+        <section class="journey-grid-wrap" id="journey-grid-wrap">
+          <div class="section-label">Start here</div>
+          <div class="resume-slot" id="resume-slot"></div>
+          <div class="explore-card" id="explore-card"></div>
 
-          <div class="ec" id="c1" data-file="02-affordability.html" data-event="afford">
-            <div class="ec-title-row">
-              <div class="ec-lbl">
-                Where buyers accidentally overpay — before they even make an offer
-                <span class="ch-b">Ch. 2</span>
-              </div>
-              <span class="ec-ind">&#8250;</span>
-            </div>
-            <div class="ec-detail">
-              <div class="ec-detail-inner">
-                <div class="ec-desc">
-                  The number your lender approved is not the number you should spend. Most agents never make that distinction.
-                </div>
-                <span class="ec-commit">
-                  I will never tell you to max it out.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ec" id="c2" data-file="03-interior.html" data-event="interior">
-            <div class="ec-title-row">
-              <div class="ec-lbl">
-                What I look at the moment we walk in — and what you should too
-                <span class="ch-b">Ch. 3</span>
-              </div>
-              <span class="ec-ind">&#8250;</span>
-            </div>
-            <div class="ec-detail">
-              <div class="ec-detail-inner">
-                <div class="ec-desc">
-                  Most buyers look at countertops and paint. I look at the basement, the panel, the roof, and the mechanicals. Walk through a house the way I do.
-                </div>
-                <span class="ec-commit">
-                  What costs money is rarely what costs paint.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ec" id="c3" data-file="05-pre-offer.html" data-event="offer">
-            <div class="ec-title-row">
-              <div class="ec-lbl">
-                Where buyers get pushed into offers they can’t take back
-                <span class="ch-b">Ch. 4</span>
-              </div>
-              <span class="ec-ind">&#8250;</span>
-            </div>
-            <div class="ec-detail">
-              <div class="ec-detail-inner">
-                <div class="ec-desc">
-                  Competing offers, manufactured urgency, escalation clauses. What agents say, what it means, and what actually gets your offer accepted.
-                </div>
-                <span class="ec-commit">
-                  No version held back. All of it.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ec" id="c4" data-file="06-under-contract.html" data-event="contract">
-            <div class="ec-title-row">
-              <div class="ec-lbl">
-                Offer accepted: where deals fall apart
-                <span class="ch-b">Ch. 5</span>
-              </div>
-              <span class="ec-ind">&#8250;</span>
-            </div>
-            <div class="ec-detail">
-              <div class="ec-detail-inner">
-                <div class="ec-desc">
-                  Earnest money. Inspection windows. Day Zero actions. Small mistakes here can quietly kill a deal after you think you’re safe.
-                </div>
-                <span class="ec-commit">
-                  This is where most buyers lose control. You won’t.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ec" id="c5" data-file="06b-deadlines.html" data-event="deadlines">
-            <div class="ec-title-row">
-              <div class="ec-lbl">
-                Three deadlines running in parallel — miss any one and the protection is gone
-                <span class="ch-b">Ch. 6</span>
-              </div>
-              <span class="ec-ind">&#8250;</span>
-            </div>
-            <div class="ec-detail">
-              <div class="ec-detail-inner">
-                <div class="ec-desc">
-                  Loan contingency. Appraisal. Title. They all run simultaneously from Day 1. Every one has a hard stop. I track all three so nothing slips.
-                </div>
-                <span class="ec-commit">
-                  Miss a deadline once and you can’t un-miss it.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ec" id="c6" data-file="07-inspection.html" data-event="inspect">
-            <div class="ec-title-row">
-              <div class="ec-lbl">
-                This is where buyers miss the problems they end up paying for
-                <span class="ch-b">Ch. 7</span>
-              </div>
-              <span class="ec-ind">&#8250;</span>
-            </div>
-            <div class="ec-detail">
-              <div class="ec-detail-inner">
-                <div class="ec-desc">
-                  By the time most buyers read the inspection report, their earnest money is already at risk. The items that matter most are rarely the ones at the top.
-                </div>
-                <span class="ec-commit">
-                  It’s not my house. I will never overlook a repair to get you to close.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ec" id="c7" data-file="08-walkthrough.html" data-event="walkthrough">
-            <div class="ec-title-row">
-              <div class="ec-lbl">
-                The final walk-through is not a second showing — it’s a condition verification
-                <span class="ch-b">Ch. 8</span>
-              </div>
-              <span class="ec-ind">&#8250;</span>
-            </div>
-            <div class="ec-detail">
-              <div class="ec-detail-inner">
-                <div class="ec-desc">
-                  Same condition as the day you made the offer. Agreed repairs complete. Seller out. Utilities on. If anything is wrong, you address it before you sign — not after.
-                </div>
-                <span class="ec-commit">
-                  After you sign, your leverage is gone.
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ec" id="c8" data-file="09-closing.html" data-event="closing">
-            <div class="ec-title-row">
-              <div class="ec-lbl">
-                What you’re signing at closing — and what most buyers don’t catch
-                <span class="ch-b">Ch. 9</span>
-              </div>
-              <span class="ec-ind">&#8250;</span>
-            </div>
-            <div class="ec-detail">
-              <div class="ec-detail-inner">
-                <div class="ec-desc">
-                  The final walk. The closing table. The documents. Wire fraud. What the note and deed of trust actually say. Your job is to fall in love with the house.
-                </div>
-                <span class="ec-commit">
-                  My job is to make sure you don’t own a disaster.
-                </span>
-              </div>
-            </div>
-          </div>
+          <div class="section-label">Journey chapters</div>
+          <div class="journey-grid" id="journey-grid"></div>
         </section>
 
-        <div class="spacer"></div>
+        <div class="footer-space"></div>
       </main>
 
       <footer class="ftr" id="ftr">
@@ -774,9 +550,102 @@
       "use strict";
 
       var STORAGE_KEY = "stl_journey_v1";
-      var state = loadState();
 
-      var cardIds = ["c0", "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"];
+      var ICONS = {
+        house: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M6.5 10.5V20h11V10.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        calculator: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2.5" stroke="currentColor" stroke-width="1.8"></rect><path d="M8 7.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path><path d="M8 12h2M14 12h2M8 16h2M14 16h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
+        target: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"></circle><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"></circle><circle cx="12" cy="12" r="1.25" fill="currentColor"></circle></svg>',
+        document: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3.5h6l4 4V20a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 7 20V5a1.5 1.5 0 0 1 1.5-1.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M14 3.5V8h4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M9.5 12h5M9.5 15.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
+        calendar: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2.5" stroke="currentColor" stroke-width="1.8"></rect><path d="M8 3.5v4M16 3.5v4M4 9.5h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
+        magnifier: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5" stroke="currentColor" stroke-width="1.8"></circle><path d="M15 15l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
+        route: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6" cy="18" r="2" fill="currentColor"></circle><circle cx="18" cy="6" r="2" fill="currentColor"></circle><path d="M8 18c3 0 3-4 6-4s3-4 4-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
+        key: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="8.5" cy="12" r="3.5" stroke="currentColor" stroke-width="1.8"></circle><path d="M12 12h7m-2 0v-2m-2 2v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        contact: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 5.5h12A1.5 1.5 0 0 1 19.5 7v10A1.5 1.5 0 0 1 18 18.5H6A1.5 1.5 0 0 1 4.5 17V7A1.5 1.5 0 0 1 6 5.5Z" stroke="currentColor" stroke-width="1.8"></path><path d="M5 7l7 5 7-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+        map: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 6.5 9 4l6 2.5 4.5-2v13L15 20l-6-2.5-4.5 2v-13Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M9 4v13.5M15 6.5V20" stroke="currentColor" stroke-width="1.8"></path></svg>'
+      };
+
+      var JOURNEY_CARDS = [
+        {
+          icon: "contact",
+          title: "Contact Agent",
+          sub: "What actually happens the moment you tap.",
+          file: "01-preapproval.html",
+          event: "start"
+        },
+        {
+          icon: "calculator",
+          title: "Affordability",
+          sub: "What your approval actually means.",
+          file: "02-affordability.html",
+          event: "afford"
+        },
+        {
+          icon: "house",
+          title: "The Interior",
+          sub: "How George reads a house on entry.",
+          file: "03-interior.html",
+          event: "interior"
+        },
+        {
+          icon: "target",
+          title: "Pre-Offer",
+          sub: "Competition, urgency, and leverage.",
+          file: "05-pre-offer.html",
+          event: "offer"
+        },
+        {
+          icon: "document",
+          title: "Under Contract",
+          sub: "Where deals quietly go sideways.",
+          file: "06-under-contract.html",
+          event: "contract"
+        },
+        {
+          icon: "calendar",
+          title: "Deadlines",
+          sub: "Three clocks running at once.",
+          file: "06b-deadlines.html",
+          event: "deadlines"
+        },
+        {
+          icon: "magnifier",
+          title: "Inspection",
+          sub: "What buyers miss and later pay for.",
+          file: "07-inspection.html",
+          event: "inspect"
+        },
+        {
+          icon: "route",
+          title: "Walk-Through",
+          sub: "Condition verification before signing.",
+          file: "08-walkthrough.html",
+          event: "walkthrough"
+        },
+        {
+          icon: "key",
+          title: "Closing",
+          sub: "What you’re signing and what matters.",
+          file: "09-closing.html",
+          event: "closing"
+        }
+      ];
+
+      var INTRO_ICON_CARDS = [
+        { icon: "contact", title: "Lead Flow" },
+        { icon: "calculator", title: "Budget" },
+        { icon: "house", title: "Condition" },
+        { icon: "key", title: "Closing" }
+      ];
+
+      var EXPLORE_CARD = [
+        {
+          icon: "map",
+          title: "Explore the Buyer Journey",
+          sub: "See the full route as one connected experience.",
+          file: "01-preapproval.html",
+          event: "explore_journey"
+        }
+      ];
 
       function loadState() {
         try {
@@ -809,6 +678,8 @@
         }
       }
 
+      var state = loadState();
+
       function saveState() {
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -825,145 +696,49 @@
         return document.getElementById(id);
       }
 
-      function showRevealButton() {
-        window.setTimeout(function () {
-          var button = byId("btn-reveal");
-          if (button) {
-            button.classList.add("show");
-          }
-        }, 1100);
+      function renderIcon(name) {
+        return ICONS[name] || ICONS.house;
       }
 
-      function revealSite() {
-        var face = byId("intro-face");
-        var intro = byId("intro");
-        var header = byId("hdr");
-        var footer = byId("ftr");
-        var gStrip = byId("g-strip");
-        var headline = byId("headline");
-        var tensionLine = byId("tension-line");
-        var tensionSub = byId("tension-sub");
+      function renderCards(targetId, cards) {
+        var target = byId(targetId);
+        if (!target) return;
 
-        if (face) {
-          face.classList.add("swapped");
-        }
+        target.innerHTML =
+          '<div class="icon-card-grid">' +
+            cards.map(function (card) {
+              return (
+                '<button class="icon-card" type="button" data-file="' + card.file + '" data-event="' + card.event + '">' +
+                  '<span class="icon-card-ico">' + renderIcon(card.icon) + "</span>" +
+                  '<span class="icon-card-copy">' +
+                    '<span class="icon-card-title">' + card.title + "</span>" +
+                    (card.sub ? '<span class="icon-card-sub">' + card.sub + "</span>" : "") +
+                  "</span>" +
+                "</button>"
+              );
+            }).join("") +
+          "</div>";
 
-        window.setTimeout(function () {
-          if (intro) {
-            intro.classList.add("gone");
-          }
-        }, 500);
-
-        window.setTimeout(function () {
-          if (header) {
-            header.classList.add("show");
-          }
-          if (footer) {
-            footer.classList.add("show");
-          }
-        }, 650);
-
-        window.setTimeout(function () {
-          if (gStrip) {
-            gStrip.classList.add("show");
-          }
-          if (headline) {
-            headline.classList.add("show");
-          }
-          if (tensionLine) {
-            tensionLine.classList.add("show");
-          }
-          if (tensionSub) {
-            tensionSub.classList.add("show");
-          }
-        }, 930);
-
-        animateCards();
-        window.setTimeout(checkResume, 1500);
-
-        track("journey_intro_tap", {});
-      }
-
-      function animateCards() {
-        var baseDelay = 1500;
-        var cardInterval = 650;
-        var expandDelay = 650;
-        var collapseDelay = 2600;
-
-        cardIds.forEach(function (id, index) {
-          var appearAt = baseDelay + index * cardInterval;
-          var expandAt = appearAt + expandDelay;
-          var collapseAt = expandAt + collapseDelay;
-
-          window.setTimeout(function () {
-            var card = byId(id);
-            if (card) {
-              card.classList.add("show");
+        Array.prototype.forEach.call(target.querySelectorAll(".icon-card"), function (button) {
+          button.addEventListener("click", function () {
+            var file = button.getAttribute("data-file");
+            var eventName = button.getAttribute("data-event");
+            if (eventName) {
+              state.jumpEntry = eventName;
+              saveState();
+              track("journey_entry", { entry_point: eventName });
             }
-          }, appearAt);
-
-          window.setTimeout(function () {
-            var card = byId(id);
-            if (card && !card.dataset.manualToggle) {
-              card.classList.add("expanded");
+            if (file) {
+              window.location.href = file;
             }
-          }, expandAt);
-
-          window.setTimeout(function () {
-            var card = byId(id);
-            if (card && !card.dataset.manualToggle) {
-              card.classList.remove("expanded");
-            }
-          }, collapseAt);
+          });
         });
       }
 
-      function collapseOthers(activeCard) {
-        var cards = document.querySelectorAll(".ec");
-        cards.forEach(function (card) {
-          if (card !== activeCard) {
-            card.classList.remove("expanded");
-            delete card.dataset.manualToggle;
-            if (card._collapseTimer) {
-              clearTimeout(card._collapseTimer);
-              card._collapseTimer = null;
-            }
-          }
-        });
-      }
+      function renderResumeCard() {
+        var slot = byId("resume-slot");
+        if (!slot) return;
 
-      function go(file, eventName) {
-        state.jumpEntry = eventName;
-        saveState();
-        track("journey_entry", { entry_point: eventName });
-        window.location.href = file;
-      }
-
-      function handleCardClick(card) {
-        var file = card.getAttribute("data-file");
-        var eventName = card.getAttribute("data-event") || "start";
-
-        if (card.classList.contains("expanded")) {
-          go(file, eventName);
-          return;
-        }
-
-        collapseOthers(card);
-        card.classList.add("expanded");
-        card.dataset.manualToggle = "1";
-
-        if (card._collapseTimer) {
-          clearTimeout(card._collapseTimer);
-        }
-
-        card._collapseTimer = window.setTimeout(function () {
-          card.classList.remove("expanded");
-          delete card.dataset.manualToggle;
-          card._collapseTimer = null;
-        }, 10000);
-      }
-
-      function checkResume() {
         var files = {
           1: "01-preapproval.html",
           2: "02-affordability.html",
@@ -979,43 +754,73 @@
         var labels = {
           1: "Pre-Approval",
           2: "Affordability",
-          3: "Interior Showing",
+          3: "The Interior",
           4: "Pre-Offer Strategy",
           5: "Under Contract",
-          6: "The Deadlines",
-          7: "Inspection Report",
-          8: "Final Walk-Through",
-          9: "Closing Day"
+          6: "Deadlines",
+          7: "Inspection",
+          8: "Walk-Through",
+          9: "Closing"
         };
 
-        if (!state.lastChapter || state.lastChapter < 2) {
+        if (!state.lastChapter || state.lastChapter < 2 || !files[state.lastChapter]) {
+          slot.innerHTML = "";
           return;
         }
 
-        var chapter = state.lastChapter;
-        var file = files[chapter];
-        var cards = byId("cards");
+        renderCards("resume-slot", [{
+          icon: "route",
+          title: "Resume Chapter " + state.lastChapter,
+          sub: labels[state.lastChapter],
+          file: files[state.lastChapter],
+          event: "resume_ch" + state.lastChapter
+        }]);
+      }
 
-        if (!file || !cards || byId("resume-card")) {
-          return;
-        }
+      function showRevealButton() {
+        window.setTimeout(function () {
+          var button = byId("btn-reveal");
+          if (button) button.classList.add("show");
+        }, 1100);
 
-        var resumeCard = document.createElement("div");
-        resumeCard.id = "resume-card";
-        resumeCard.className = "ec resume show";
-        resumeCard.setAttribute("data-file", file);
-        resumeCard.setAttribute("data-event", "resume_ch" + chapter);
-        resumeCard.innerHTML =
-          '<div class="ec-title-row">' +
-            '<div class="ec-lbl">Continue where you left off — Chapter ' + chapter + ", " + labels[chapter] + "</div>" +
-            '<span class="ec-ind">&#8250;</span>' +
-          "</div>";
+        window.setTimeout(function () {
+          var grid = byId("intro-icon-grid");
+          if (grid) grid.classList.add("show");
+        }, 600);
+      }
 
-        resumeCard.addEventListener("click", function () {
-          go(file, "resume_ch" + chapter);
-        });
+      function revealSite() {
+        var face = byId("intro-face");
+        var intro = byId("intro");
+        var header = byId("hdr");
+        var footer = byId("ftr");
+        var gStrip = byId("g-strip");
+        var hero = byId("hero");
+        var heroSub = byId("hero-sub");
+        var journeyGridWrap = byId("journey-grid-wrap");
 
-        cards.insertBefore(resumeCard, cards.firstChild);
+        if (face) face.classList.add("swapped");
+
+        window.setTimeout(function () {
+          if (intro) intro.classList.add("gone");
+        }, 500);
+
+        window.setTimeout(function () {
+          if (header) header.classList.add("show");
+          if (footer) footer.classList.add("show");
+        }, 650);
+
+        window.setTimeout(function () {
+          if (gStrip) gStrip.classList.add("show");
+          if (hero) hero.classList.add("show");
+          if (heroSub) heroSub.classList.add("show");
+        }, 900);
+
+        window.setTimeout(function () {
+          if (journeyGridWrap) journeyGridWrap.classList.add("show");
+        }, 1150);
+
+        track("journey_intro_tap", {});
       }
 
       function bindEvents() {
@@ -1023,17 +828,30 @@
         if (revealButton) {
           revealButton.addEventListener("click", revealSite);
         }
-
-        var cards = document.querySelectorAll(".ec");
-        cards.forEach(function (card) {
-          card.addEventListener("click", function () {
-            handleCardClick(card);
-          });
-        });
       }
 
-      bindEvents();
-      showRevealButton();
+      function init() {
+        var hdrIcon = byId("hdr-home-ico");
+        if (hdrIcon) hdrIcon.innerHTML = renderIcon("house");
+
+        renderCards("intro-icon-grid", INTRO_ICON_CARDS.map(function (card, index) {
+          return {
+            icon: card.icon,
+            title: card.title,
+            sub: "",
+            file: "",
+            event: "intro_icon_" + index
+          };
+        }));
+
+        renderCards("explore-card", EXPLORE_CARD);
+        renderCards("journey-grid", JOURNEY_CARDS);
+        renderResumeCard();
+        bindEvents();
+        showRevealButton();
+      }
+
+      init();
     })();
   </script>
 </body>
