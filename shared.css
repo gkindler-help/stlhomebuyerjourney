@@ -1511,9 +1511,11 @@ svg {
 
   .gc-photo { width: 96px !important; height: 96px !important; }
 
-  .gc-stats     { padding: 16px 18px; }/* ============================================================
-   GLOBAL FIX: Prevent bottom nav (.bnav) from overlapping content cards
-   Added for pre-offer and similar chapters with tall question cards
+  .gc-stats     { padding: 16px 18px; }
+   
+   /* ============================================================
+   CLEAN BOTTOM NAV FIX - Keeps nav locked at bottom
+   Prevents overlap without pushing content too far
    ============================================================ */
 
 .stage,
@@ -1524,35 +1526,35 @@ main,
 details,
 .qna-section,
 .expandable-card {
-    padding-bottom: 110px !important;
-    margin-bottom: 20px;
+    padding-bottom: 80px !important;     /* Reduced — enough space without breaking flex */
     box-sizing: border-box;
 }
 
-/* Extra breathing room for the very last card/section */
+/* Only the very last item gets extra margin */
 details:last-of-type,
 .card:last-child,
 .qna-section:last-child {
-    margin-bottom: 140px;
+    margin-bottom: 100px;
 }
 
-/* Make the bottom navigation more visible and elevated */
+/* Lock .bnav properly at the bottom */
 .bnav {
-    background: rgba(5, 5, 5, 0.98) !important;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);
+    flex-shrink: 0;
+    position: relative;
+    background: rgba(8,8,8,0.98) !important;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.7);
     z-index: 60;
-    border-top: 1px solid var(--line-2);
+    border-top: 1px solid var(--line2);
 }
 
-/* Optional: Slightly larger safe area for iPhone home indicator */
-@media (max-width: 480px) {
+/* Safe area for iPhone home indicator */
+@media (max-width: 430px) {
     .stage,
     main,
-    .content-area {
-        padding-bottom: 130px !important;
+    details {
+        padding-bottom: 100px !important;
     }
-}
-  .gc-about     { padding: 16px 18px 0; }
-  .gc-context-wrap { padding: 14px 18px 0; }
-  .gc-call      { margin: 18px 18px 0; }
+    details:last-of-type {
+        margin-bottom: 120px;
+    }
 }
