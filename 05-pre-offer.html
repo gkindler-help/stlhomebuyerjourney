@@ -223,5 +223,63 @@ window.SCENES = [
 ];
 </script>
 <script src="shared.js"></script>
+  <script>
+// George live reactions on expandable sections — works with shared.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Adjust this selector to match exactly how your Q&A sections are built
+    const expandables = document.querySelectorAll('details, .qna-item, .toggle-section, .expandable');
+
+    expandables.forEach(section => {
+        // Native <details> support or click fallback
+        section.addEventListener('toggle', handleSectionOpen);
+        if (!section.tagName || section.tagName.toLowerCase() !== 'details') {
+            section.addEventListener('click', handleSectionOpen);
+        }
+    });
+
+    function handleSectionOpen(e) {
+        const isOpening = e.type === 'toggle' ? e.target.open : true;
+        if (!isOpening) return;
+
+        const titleEl = e.target.querySelector('summary') || e.target.querySelector('h3, .question-title') || e.target;
+        const title = (titleEl.textContent || '').trim().toLowerCase();
+
+        // Call shared.js functions if they exist
+        if (typeof showGeorgeReaction === 'function') {
+            if (title.includes('offer') || title.includes('price')) {
+                showGeorgeReaction("I run fresh comps and absorption data right before we tour. Here's what I actually tell clients...", 3200);
+            } else if (title.includes('less than list') || title.includes('below')) {
+                showGeorgeReaction("We can go under list when the numbers support it. Let me show you the data I look at...", 2800);
+            } else if (title.includes('tour') || title.includes('pull') || title.includes('information')) {
+                showGeorgeReaction("Before we even arrive I pull tax records, days on market, price changes, and seller motivation. It all feeds the offer.", 3500);
+            } else {
+                showGeorgeReaction("Good question — this is exactly the kind of thing we discuss on a real tour.", 2500);
+            }
+        } 
+        // Fallback if shared.js interrupt is available
+        else if (typeof showInterrupt === 'function') {
+            showInterrupt({
+                title: "George says",
+                text: "This is the exact kind of intel that shapes a strong offer.",
+                delay: 1500
+            });
+        }
+    }
+
+    // Bonus: Tie "Walk me through it" button to a George intro
+    const walkBtn = document.querySelector('button, a').closest('*:contains("Walk me through it"), .walk-btn, [data-action="walk"]');
+    if (walkBtn) {
+        walkBtn.addEventListener('click', () => {
+            if (typeof showInterrupt === 'function') {
+                showInterrupt({
+                    title: "Let's walk through my pre-offer process",
+                    text: "I'll show you how I gather information before, during, and after the tour — and how everything feeds into the offer.",
+                    delay: 600
+                });
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>
