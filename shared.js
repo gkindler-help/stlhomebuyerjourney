@@ -1,7 +1,6 @@
 /* /shared.js
    STL Home Buyer Journey
    Shared platform controller
-   Global-only foundation pass
    - Shared shell/layout
    - Navigation/state
    - Drawer/deep dives
@@ -9,6 +8,7 @@
    - About George card
    - Icon system
    - Visual cue system
+   - Journey rail
    - Global helper exposure for other pages
 */
 (function () {
@@ -207,7 +207,7 @@
     var style = document.createElement("style");
     style.id = "shared-platform-style";
     style.textContent = [
-      ".hdr-ico svg,.icon-card-ico svg,.scene-chip-ico svg,.ji-icon svg,.gc-call-ico svg,.gc-context-ico svg{width:100%;height:100%;display:block;}",
+      ".hdr-ico svg,.icon-card-ico svg,.scene-chip-ico svg,.ji-icon svg,.gc-call-ico svg,.gc-context-ico svg,.journey-rail-item svg{width:100%;height:100%;display:block;}",
       ".hdr-ico{display:flex;align-items:center;justify-content:center;}",
       ".george-float{width:188px !important;left:0;bottom:0;cursor:pointer;}",
       ".george-float img{border-radius:58% 58% 0 0;}",
@@ -255,7 +255,18 @@
       ".int-face{position:relative;cursor:pointer;}",
       ".int-ring{inset:-6px;}",
       ".jump-item{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:12px;}",
-      "@media (max-width:430px){.george-float{width:164px !important;}.scene-caption{padding-left:170px !important;}.gc-photo{width:96px !important;height:96px !important;}}"
+      ".journey-rail-trigger{position:fixed;right:14px;bottom:146px;z-index:89;display:flex;align-items:center;gap:6px;background:rgba(16,16,16,.96);border:1px solid rgba(255,204,77,.34);border-radius:999px;padding:8px 13px;color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.4);transition:border-color .18s ease,color .18s ease,background .18s ease,opacity .18s ease;}",
+      ".journey-rail-trigger:hover{border-color:rgba(255,204,77,.5);background:rgba(255,204,77,.08);}",
+      ".journey-rail{position:fixed;top:92px;right:8px;bottom:84px;width:72px;z-index:88;pointer-events:none;opacity:0;transform:translateX(18px);transition:opacity .28s ease,transform .28s ease;}",
+      ".journey-rail.open{opacity:1;transform:translateX(0);pointer-events:auto;}",
+      ".journey-rail-inner{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;overflow-y:auto;padding:6px 2px;}",
+      ".journey-rail-inner::-webkit-scrollbar{display:none;}",
+      ".journey-rail-item{width:56px;min-height:56px;border:1px solid var(--line-2);border-radius:16px;background:rgba(10,10,10,.92);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .18s ease,background .18s ease,transform .12s ease;box-shadow:0 8px 20px rgba(0,0,0,.28);}",
+      ".journey-rail-item:hover{border-color:var(--gold-line);background:rgba(255,255,255,.04);}",
+      ".journey-rail-item:active{transform:scale(.97);}",
+      ".journey-rail-item svg{width:20px;height:20px;}",
+      ".journey-rail-item.active{border-color:var(--gold-line);background:rgba(255,204,77,.1);}",
+      "@media (max-width:430px){.george-float{width:164px !important;}.scene-caption{padding-left:170px !important;}.gc-photo{width:96px !important;height:96px !important;}.journey-rail{right:6px;width:66px;top:88px;bottom:82px;}.journey-rail-item{width:52px;min-height:52px;}.journey-rail-trigger{right:12px;bottom:138px;}}"
     ].join("");
     document.head.appendChild(style);
   }
@@ -323,6 +334,10 @@
       '    <div class="ftr-r"><a href="' + escapeAttr(APP_CONFIG.guidesUrl) + '" target="_blank" rel="noopener">Free Guides &rarr;</a></div>',
       "  </footer>",
       '  <button class="jump-trigger" id="jump-trigger" type="button">&#8942; Jump</button>',
+      '  <button class="journey-rail-trigger" id="journey-rail-trigger" type="button" aria-label="Open journey rail">Explore</button>',
+      '  <div class="journey-rail" id="journey-rail" aria-hidden="true">',
+      '    <div class="journey-rail-inner" id="journey-rail-inner"></div>',
+      "  </div>",
       '  <div class="jump-ov" id="jump-ov">',
       '    <div class="jump-sh">',
       '      <div class="jump-hnd"></div>',
@@ -418,6 +433,7 @@
     safelyBind(byId("btn-next"), "click", nextScene);
     safelyBind(byId("ask-george"), "click", askGeorge);
     safelyBind(byId("jump-trigger"), "click", openJump);
+    safelyBind(byId("journey-rail-trigger"), "click", toggleJourneyRail);
     safelyBind(byId("int-btn"), "click", function () { dismissInterrupt(false); });
     safelyBind(byId("int-skip"), "click", function () {
       dismissInterrupt(false);
@@ -444,24 +460,13 @@
       if (event.key === "Escape") {
         closePop();
         if (byId("jump-ov")) byId("jump-ov").classList.remove("open");
+        if (byId("journey-rail")) {
+          byId("journey-rail").classList.remove("open");
+          byId("journey-rail").setAttribute("aria-hidden", "true");
+        }
         dismissInterrupt(true);
       }
     });
-
-    window.openJump = openJump;
-    window.jumpTo = jumpTo;
-    window.nextScene = nextScene;
-    window.prevScene = prevScene;
-    window.askGeorge = askGeorge;
-    window.showDeep = function (button) {
-      if (!button) return;
-      showDeep(button.getAttribute("data-title"), button.getAttribute("data-body"));
-    };
-    window.closePop = closePop;
-    window.openDrawer = openDrawer;
-    window.closeDrawer = closeDrawer;
-    window.toggleCard = toggleCard;
-    window.dismissInterrupt = dismissInterrupt;
   }
 
   function loadGeorgeImage(img, src, fallbackEl) {
@@ -578,6 +583,8 @@
       askButton.style.display = "none";
       askButton.classList.remove("show");
     }
+
+    highlightJourneyRail();
 
     state.lastStep = idx;
     state.lastChapter = getChapterNumber();
@@ -726,4 +733,464 @@
       card.innerHTML =
         '<button class="choice-card-header" type="button" data-choice-index="' + index + '">' +
         "<span>" + (choice.label || "") + '</span><span class="card-chevron">▼</span></button>' +
-        '<div class="
+        '<div class="choice-card-body"><div class="choice-card-response">' +
+        nl2br(choice.response || "") +
+        deepButton +
+        "</div></div>";
+
+      container.appendChild(card);
+    });
+
+    Array.prototype.forEach.call(container.querySelectorAll("[data-choice-index]"), function (button) {
+      button.addEventListener("click", function () {
+        toggleCard(Number(button.getAttribute("data-choice-index")), choices.length);
+      });
+    });
+
+    Array.prototype.forEach.call(container.querySelectorAll(".card-deep"), function (button) {
+      button.addEventListener("click", function (event) {
+        event.stopPropagation();
+        showDeep(button.getAttribute("data-title"), button.getAttribute("data-body"));
+      });
+    });
+  }
+
+  function toggleCard(idx, total) {
+    for (var i = 0; i < total; i += 1) {
+      var card = byId("card-" + i);
+      if (!card) continue;
+      if (i === idx) card.classList.toggle("open");
+      else card.classList.remove("open");
+    }
+
+    track("choice_tap", {
+      chapter: getChapterNumber(),
+      card: idx
+    });
+  }
+
+  function openDrawer() {
+    var drawer = byId("drawer");
+    if (drawer) drawer.classList.add("open");
+  }
+
+  function closeDrawer() {
+    var drawer = byId("drawer");
+    if (drawer) drawer.classList.remove("open");
+  }
+
+  function typeText(text, elementId) {
+    var element = byId(elementId);
+    if (!element) return;
+
+    element.innerHTML = "";
+    var index = 0;
+    var timer = setInterval(function () {
+      element.innerHTML = nl2br(String(text || "").slice(0, index));
+      index += 1;
+      if (index > String(text || "").length) clearInterval(timer);
+    }, 14);
+  }
+
+  function showInterrupt(interrupt) {
+    setText("int-title", interrupt.title || "");
+    typeText(interrupt.text || "", "int-text");
+
+    var intButton = byId("int-btn");
+    if (intButton) intButton.textContent = interrupt.btnText || "Got it";
+
+    var skipButton = byId("int-skip");
+    if (skipButton) {
+      if (interrupt.skipLabel) {
+        skipButton.textContent = interrupt.skipLabel;
+        skipButton.style.display = "block";
+      } else {
+        skipButton.style.display = "none";
+      }
+    }
+
+    if (byId("int-dim")) byId("int-dim").classList.add("active");
+    if (byId("int-card")) byId("int-card").classList.add("active");
+
+    closeDrawer();
+  }
+
+  function dismissInterrupt(silent) {
+    if (interruptTimer) {
+      clearTimeout(interruptTimer);
+      interruptTimer = null;
+    }
+
+    interruptDismissed = true;
+    if (byId("int-dim")) byId("int-dim").classList.remove("active");
+    if (byId("int-card")) byId("int-card").classList.remove("active");
+
+    var scene = getScenes()[currentSceneIndex];
+    if (!silent && scene && scene.choices && scene.choices.length) {
+      setTimeout(openDrawer, 320);
+    }
+
+    if (!silent) {
+      var askButton = byId("ask-george");
+      if (askButton) {
+        askButton.style.display = "block";
+        askButton.classList.add("show");
+      }
+    }
+  }
+
+  function askGeorge() {
+    var scene = getScenes()[currentSceneIndex];
+    if (scene && scene.interrupt) {
+      showInterrupt(scene.interrupt);
+      return;
+    }
+    openGeorgeCard();
+  }
+
+  function showDeep(title, body) {
+    setText("gc-context-label", title || "What’s in this picture?");
+    setText("gc-context-copy", body || "");
+
+    var pop = byId("pop");
+    var card = byId("pop-sh");
+    var context = byId("gc-context-copy");
+
+    if (context) context.classList.add("open");
+    if (!pop || !card) return;
+
+    pop.style.display = "flex";
+    requestAnimationFrame(function () {
+      pop.style.opacity = "1";
+      pop.style.pointerEvents = "all";
+      card.classList.add("open");
+    });
+  }
+
+  function openGeorgeCard() {
+    var pop = byId("pop");
+    var card = byId("pop-sh");
+    if (!pop || !card) return;
+
+    pop.style.display = "flex";
+    requestAnimationFrame(function () {
+      pop.style.opacity = "1";
+      pop.style.pointerEvents = "all";
+      card.classList.add("open");
+    });
+  }
+
+  function closePop() {
+    var pop = byId("pop");
+    var card = byId("pop-sh");
+    if (!pop || !card) return;
+
+    pop.style.opacity = "0";
+    pop.style.pointerEvents = "none";
+    card.classList.remove("open");
+
+    setTimeout(function () {
+      pop.style.display = "none";
+    }, 260);
+  }
+
+  function toggleGeorgeContext() {
+    var copy = byId("gc-context-copy");
+    if (copy) copy.classList.toggle("open");
+  }
+
+  function nextScene() {
+    var scenes = getScenes();
+    var scene = scenes[currentSceneIndex];
+    if (!scene) return;
+
+    if (scene.type === "photo-reveal" && window._prAnswered && typeof window.prContinue === "function") {
+      window.prContinue();
+      return;
+    }
+
+    if (scene.isLast) {
+      if (!Array.isArray(state.chaptersVisited)) state.chaptersVisited = [];
+      if (state.chaptersVisited.indexOf(getChapterNumber()) === -1) {
+        state.chaptersVisited.push(getChapterNumber());
+      }
+      state.lastChapter = scene.nextChapter || (getChapterNumber() + 1);
+      state.lastStep = 0;
+      saveState();
+      window.location.href = scene.nextFile || "index.html";
+      return;
+    }
+
+    if (currentSceneIndex < scenes.length - 1) {
+      currentSceneIndex += 1;
+      renderScene(currentSceneIndex);
+    }
+  }
+
+  function prevScene() {
+    if (currentSceneIndex > 0) {
+      currentSceneIndex -= 1;
+      renderScene(currentSceneIndex);
+      return;
+    }
+    window.location.href = getPrevFile();
+  }
+
+  function openJump() {
+    var visited = Array.isArray(state.chaptersVisited) ? state.chaptersVisited : [];
+    var container = byId("jump-items");
+    var overlay = byId("jump-ov");
+    if (!container || !overlay) return;
+
+    container.innerHTML = APP_CONFIG.chapters.map(function (chapter) {
+      var isCurrent = chapter.ch === getChapterNumber();
+      var isVisited = visited.indexOf(chapter.ch) !== -1 && !isCurrent;
+
+      return (
+        '<div class="jump-item ' + (isCurrent ? "cur-ch" : "") + '" onclick="SharedPlatform.jumpTo(\'' + chapter.file + "'," + chapter.ch + ')">' +
+          '<div class="ji-dot ' + (isCurrent ? "cur" : isVisited ? "vis" : "") + '"></div>' +
+          '<div class="ji-icon">' + renderIcon(chapter.icon || "house") + "</div>" +
+          '<div class="ji-lbl">' + chapter.label + (isCurrent ? " ← here" : "") + "</div>" +
+          '<div class="ji-arr">' + (isCurrent ? "" : "›") + "</div>" +
+        "</div>"
+      );
+    }).join("");
+
+    overlay.classList.add("open");
+  }
+
+  function jumpTo(file, chapterNumber) {
+    var overlay = byId("jump-ov");
+    if (chapterNumber === getChapterNumber()) {
+      if (overlay) overlay.classList.remove("open");
+      return;
+    }
+
+    if (!Array.isArray(state.chaptersVisited)) state.chaptersVisited = [];
+    if (state.chaptersVisited.indexOf(getChapterNumber()) === -1) {
+      state.chaptersVisited.push(getChapterNumber());
+    }
+
+    state.jumpEntry = "jump_ch" + chapterNumber;
+    saveState();
+    window.location.href = file;
+  }
+
+  function renderIconCardGrid(target, cards) {
+    if (!target) return;
+    target.innerHTML =
+      '<div class="icon-card-grid">' +
+        cards.map(function (card) {
+          return (
+            '<button class="icon-card" type="button" data-file="' + escapeAttr(card.file || "") + '" data-event="' + escapeAttr(card.event || "") + '">' +
+              '<span class="icon-card-ico">' + renderIcon(card.icon || "house") + "</span>" +
+              '<span class="icon-card-copy">' +
+                '<span class="icon-card-title">' + (card.title || "") + "</span>" +
+                (card.sub ? '<span class="icon-card-sub">' + card.sub + "</span>" : "") +
+              "</span>" +
+            "</button>"
+          );
+        }).join("") +
+      "</div>";
+
+    Array.prototype.forEach.call(target.querySelectorAll(".icon-card"), function (button) {
+      button.addEventListener("click", function () {
+        var file = button.getAttribute("data-file");
+        var eventName = button.getAttribute("data-event");
+        if (eventName) {
+          state.jumpEntry = eventName;
+          saveState();
+          track("journey_entry", { entry_point: eventName });
+        }
+        if (file) window.location.href = file;
+      });
+    });
+  }
+
+  function createJourneyCardHTML(card) {
+    return (
+      '<div class="journey-card ' + (card.cardClass || "") + '" data-file="' + escapeAttr(card.file || "") + '" data-event="' + escapeAttr(card.event || "") + '">' +
+        '<div class="journey-card-head">' +
+          '<div class="journey-card-icon">' + renderIcon(card.icon || "house") + "</div>" +
+          '<div class="journey-card-body">' +
+            '<div class="journey-card-title">' + (card.title || "") + "</div>" +
+          "</div>" +
+          '<span class="journey-card-arrow">&#8250;</span>' +
+        "</div>" +
+        '<div class="journey-card-detail">' +
+          '<div class="journey-card-detail-inner">' +
+            '<div class="journey-card-desc">' + (card.desc || "") + "</div>" +
+            (card.commit ? '<span class="journey-card-commit">' + card.commit + "</span>" : "") +
+          "</div>" +
+        "</div>" +
+      "</div>"
+    );
+  }
+
+  function renderJourneyCardList(target, cards) {
+    if (!target) return;
+    target.innerHTML = cards.map(createJourneyCardHTML).join("");
+
+    Array.prototype.forEach.call(target.querySelectorAll(".journey-card"), function (card) {
+      card.addEventListener("click", function () {
+        handleJourneyCardClick(card);
+      });
+    });
+  }
+
+  function handleJourneyCardClick(card) {
+    var file = card.getAttribute("data-file");
+    var eventName = card.getAttribute("data-event") || "start";
+
+    if (card.classList.contains("expanded")) {
+      if (eventName) {
+        state.jumpEntry = eventName;
+        saveState();
+        track("journey_entry", { entry_point: eventName });
+      }
+      if (file) window.location.href = file;
+      return;
+    }
+
+    collapseJourneySiblings(card);
+    card.classList.add("expanded");
+    card.dataset.manualToggle = "1";
+
+    if (card._collapseTimer) {
+      clearTimeout(card._collapseTimer);
+    }
+
+    card._collapseTimer = setTimeout(function () {
+      card.classList.remove("expanded");
+      delete card.dataset.manualToggle;
+      card._collapseTimer = null;
+    }, 10000);
+  }
+
+  function collapseJourneySiblings(activeCard) {
+    var cards = document.querySelectorAll(".journey-card");
+    Array.prototype.forEach.call(cards, function (card) {
+      if (card !== activeCard) {
+        card.classList.remove("expanded");
+        delete card.dataset.manualToggle;
+        if (card._collapseTimer) {
+          clearTimeout(card._collapseTimer);
+          card._collapseTimer = null;
+        }
+      }
+    });
+  }
+
+  function renderJourneyRail() {
+    var railInner = byId("journey-rail-inner");
+    if (!railInner) return;
+
+    railInner.innerHTML = (APP_CONFIG.chapters || []).map(function (chapter) {
+      return (
+        '<button class="journey-rail-item" type="button" data-file="' + escapeAttr(chapter.file || "") + '" data-ch="' + chapter.ch + '" aria-label="' + escapeAttr(chapter.label || "") + '" title="' + escapeAttr(chapter.label || "") + '">' +
+          renderIcon(chapter.icon || "house") +
+        "</button>"
+      );
+    }).join("");
+
+    Array.prototype.forEach.call(railInner.querySelectorAll(".journey-rail-item"), function (button) {
+      button.addEventListener("click", function () {
+        var chapterNumber = Number(button.getAttribute("data-ch"));
+        var file = button.getAttribute("data-file");
+        if (!file) return;
+
+        if (chapterNumber === getChapterNumber()) {
+          highlightJourneyRail();
+          return;
+        }
+
+        if (!Array.isArray(state.chaptersVisited)) state.chaptersVisited = [];
+        if (state.chaptersVisited.indexOf(getChapterNumber()) === -1) {
+          state.chaptersVisited.push(getChapterNumber());
+        }
+
+        state.jumpEntry = "rail_ch" + chapterNumber;
+        saveState();
+        window.location.href = file;
+      });
+    });
+
+    highlightJourneyRail();
+  }
+
+  function highlightJourneyRail(activeChapter) {
+    var railInner = byId("journey-rail-inner");
+    if (!railInner) return;
+
+    var current = typeof activeChapter === "number" ? activeChapter : getChapterNumber();
+
+    Array.prototype.forEach.call(railInner.querySelectorAll(".journey-rail-item"), function (button) {
+      var chapterNumber = Number(button.getAttribute("data-ch"));
+      toggleClass(button, "active", chapterNumber === current);
+    });
+  }
+
+  function toggleJourneyRail(forceOpen) {
+    var rail = byId("journey-rail");
+    if (!rail) return;
+
+    var open = typeof forceOpen === "boolean" ? forceOpen : !rail.classList.contains("open");
+    rail.classList.toggle("open", open);
+    rail.setAttribute("aria-hidden", open ? "false" : "true");
+  }
+
+  function getState() {
+    return JSON.parse(JSON.stringify(state));
+  }
+
+  function init() {
+    injectPlatformStyles();
+
+    window.SharedPlatform = {
+      icons: ICONS,
+      renderIcon: renderIcon,
+      renderIconCardGrid: renderIconCardGrid,
+      renderJourneyCardList: renderJourneyCardList,
+      createJourneyCardHTML: createJourneyCardHTML,
+      handleJourneyCardClick: handleJourneyCardClick,
+      collapseJourneySiblings: collapseJourneySiblings,
+      renderJourneyRail: renderJourneyRail,
+      highlightJourneyRail: highlightJourneyRail,
+      toggleJourneyRail: toggleJourneyRail,
+      jumpTo: jumpTo,
+      openGeorgeCard: openGeorgeCard,
+      closePop: closePop,
+      showDeep: showDeep,
+      openDrawer: openDrawer,
+      closeDrawer: closeDrawer,
+      dismissInterrupt: dismissInterrupt,
+      setGeorgeState: setGeorgeState,
+      activateSpotlight: activateSpotlight,
+      renderSceneChips: renderSceneChips,
+      renderSceneCues: renderSceneCues,
+      getState: getState,
+      saveState: saveState,
+      track: track
+    };
+
+    var scenes = getScenes();
+    if (!scenes.length) return;
+
+    ensureShell();
+    renderJourneyRail();
+    bindShellEvents();
+
+    currentSceneIndex = Math.min(
+      state.lastChapter === getChapterNumber() ? (state.lastStep || 0) : 0,
+      scenes.length - 1
+    );
+
+    renderScene(currentSceneIndex);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
