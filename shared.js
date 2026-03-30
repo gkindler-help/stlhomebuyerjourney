@@ -1,6 +1,7 @@
 /* /shared.js
    STL Home Buyer Journey
    Shared platform controller
+   Global-only foundation pass
    - Shared shell/layout
    - Navigation/state
    - Drawer/deep dives
@@ -8,7 +9,7 @@
    - About George card
    - Icon system
    - Visual cue system
-   - Mobile-first chapter renderer
+   - Global helper exposure for other pages
 */
 (function () {
   "use strict";
@@ -275,7 +276,7 @@
       '<div class="app">',
       '  <header class="hdr">',
       '    <div class="hdr-l">',
-      '      <div class="hdr-ico">' + renderIcon("house") + '</div>',
+      '      <div class="hdr-ico">' + renderIcon("house") + "</div>",
       '      <div>',
       '        <div class="hdr-t">' + APP_CONFIG.title.replace("Journey", "<span>Journey</span>") + "</div>",
       '        <div class="hdr-s">' + APP_CONFIG.subtitle + "</div>",
@@ -362,13 +363,13 @@
       '      <div class="gc-about" id="gc-about"></div>',
       '      <div class="gc-context-wrap">',
       '        <button class="gc-context-btn" id="gc-context-btn" type="button">',
-      '          <span class="gc-context-ico">' + renderIcon("map") + '</span>',
+      '          <span class="gc-context-ico">' + renderIcon("map") + "</span>",
       '          <span id="gc-context-label"></span>',
       "        </button>",
       '        <div class="gc-context-copy" id="gc-context-copy"></div>',
       "      </div>",
       '      <a class="gc-call" id="gc-call" href="#">',
-      '        <span class="gc-call-ico" style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;">' + renderIcon("phone") + '</span>',
+      '        <span class="gc-call-ico" style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;">' + renderIcon("phone") + "</span>",
       '        <span id="gc-call-label"></span>',
       "      </a>",
       "    </div>",
@@ -461,7 +462,6 @@
     window.closeDrawer = closeDrawer;
     window.toggleCard = toggleCard;
     window.dismissInterrupt = dismissInterrupt;
-    window.renderIconCardGrid = renderIconCardGrid;
   }
 
   function loadGeorgeImage(img, src, fallbackEl) {
@@ -726,300 +726,4 @@
       card.innerHTML =
         '<button class="choice-card-header" type="button" data-choice-index="' + index + '">' +
         "<span>" + (choice.label || "") + '</span><span class="card-chevron">▼</span></button>' +
-        '<div class="choice-card-body"><div class="choice-card-response">' +
-        nl2br(choice.response || "") +
-        deepButton +
-        "</div></div>";
-
-      container.appendChild(card);
-    });
-
-    Array.prototype.forEach.call(container.querySelectorAll("[data-choice-index]"), function (button) {
-      button.addEventListener("click", function () {
-        toggleCard(Number(button.getAttribute("data-choice-index")), choices.length);
-      });
-    });
-
-    Array.prototype.forEach.call(container.querySelectorAll(".card-deep"), function (button) {
-      button.addEventListener("click", function (event) {
-        event.stopPropagation();
-        showDeep(button.getAttribute("data-title"), button.getAttribute("data-body"));
-      });
-    });
-  }
-
-  function toggleCard(idx, total) {
-    for (var i = 0; i < total; i += 1) {
-      var card = byId("card-" + i);
-      if (!card) continue;
-      if (i === idx) card.classList.toggle("open");
-      else card.classList.remove("open");
-    }
-
-    track("choice_tap", {
-      chapter: getChapterNumber(),
-      card: idx
-    });
-  }
-
-  function openDrawer() {
-    var drawer = byId("drawer");
-    if (drawer) drawer.classList.add("open");
-  }
-
-  function closeDrawer() {
-    var drawer = byId("drawer");
-    if (drawer) drawer.classList.remove("open");
-  }
-
-  function typeText(text, elementId) {
-    var element = byId(elementId);
-    if (!element) return;
-
-    element.innerHTML = "";
-    var index = 0;
-    var timer = setInterval(function () {
-      element.innerHTML = nl2br(String(text || "").slice(0, index));
-      index += 1;
-      if (index > String(text || "").length) clearInterval(timer);
-    }, 14);
-  }
-
-  function showInterrupt(interrupt) {
-    setText("int-title", interrupt.title || "");
-    typeText(interrupt.text || "", "int-text");
-
-    var intButton = byId("int-btn");
-    if (intButton) intButton.textContent = interrupt.btnText || "Got it";
-
-    var skipButton = byId("int-skip");
-    if (skipButton) {
-      if (interrupt.skipLabel) {
-        skipButton.textContent = interrupt.skipLabel;
-        skipButton.style.display = "block";
-      } else {
-        skipButton.style.display = "none";
-      }
-    }
-
-    if (byId("int-dim")) byId("int-dim").classList.add("active");
-    if (byId("int-card")) byId("int-card").classList.add("active");
-
-    closeDrawer();
-  }
-
-  function dismissInterrupt(silent) {
-    if (interruptTimer) {
-      clearTimeout(interruptTimer);
-      interruptTimer = null;
-    }
-
-    interruptDismissed = true;
-    if (byId("int-dim")) byId("int-dim").classList.remove("active");
-    if (byId("int-card")) byId("int-card").classList.remove("active");
-
-    var scene = getScenes()[currentSceneIndex];
-    if (!silent && scene && scene.choices && scene.choices.length) {
-      setTimeout(openDrawer, 320);
-    }
-
-    if (!silent) {
-      var askButton = byId("ask-george");
-      if (askButton) {
-        askButton.style.display = "block";
-        askButton.classList.add("show");
-      }
-    }
-  }
-
-  function askGeorge() {
-    var scene = getScenes()[currentSceneIndex];
-    if (scene && scene.interrupt) {
-      showInterrupt(scene.interrupt);
-      return;
-    }
-    openGeorgeCard();
-  }
-
-  function showDeep(title, body) {
-    setText("gc-context-label", title || "What’s in this picture?");
-    setText("gc-context-copy", body || "");
-
-    var pop = byId("pop");
-    var card = byId("pop-sh");
-    var context = byId("gc-context-copy");
-
-    if (context) context.classList.add("open");
-    if (!pop || !card) return;
-
-    pop.style.display = "flex";
-    requestAnimationFrame(function () {
-      pop.style.opacity = "1";
-      pop.style.pointerEvents = "all";
-      card.classList.add("open");
-    });
-  }
-
-  function openGeorgeCard() {
-    var pop = byId("pop");
-    var card = byId("pop-sh");
-    if (!pop || !card) return;
-
-    pop.style.display = "flex";
-    requestAnimationFrame(function () {
-      pop.style.opacity = "1";
-      pop.style.pointerEvents = "all";
-      card.classList.add("open");
-    });
-  }
-
-  function closePop() {
-    var pop = byId("pop");
-    var card = byId("pop-sh");
-    if (!pop || !card) return;
-
-    pop.style.opacity = "0";
-    pop.style.pointerEvents = "none";
-    card.classList.remove("open");
-
-    setTimeout(function () {
-      pop.style.display = "none";
-    }, 260);
-  }
-
-  function toggleGeorgeContext() {
-    var copy = byId("gc-context-copy");
-    if (copy) copy.classList.toggle("open");
-  }
-
-  function nextScene() {
-    var scenes = getScenes();
-    var scene = scenes[currentSceneIndex];
-    if (!scene) return;
-
-    if (scene.type === "photo-reveal" && window._prAnswered && typeof window.prContinue === "function") {
-      window.prContinue();
-      return;
-    }
-
-    if (scene.isLast) {
-      if (!Array.isArray(state.chaptersVisited)) state.chaptersVisited = [];
-      if (state.chaptersVisited.indexOf(getChapterNumber()) === -1) {
-        state.chaptersVisited.push(getChapterNumber());
-      }
-      state.lastChapter = scene.nextChapter || (getChapterNumber() + 1);
-      state.lastStep = 0;
-      saveState();
-      window.location.href = scene.nextFile || "index.html";
-      return;
-    }
-
-    if (currentSceneIndex < scenes.length - 1) {
-      currentSceneIndex += 1;
-      renderScene(currentSceneIndex);
-    }
-  }
-
-  function prevScene() {
-    if (currentSceneIndex > 0) {
-      currentSceneIndex -= 1;
-      renderScene(currentSceneIndex);
-      return;
-    }
-    window.location.href = getPrevFile();
-  }
-
-  function openJump() {
-    var visited = Array.isArray(state.chaptersVisited) ? state.chaptersVisited : [];
-    var container = byId("jump-items");
-    var overlay = byId("jump-ov");
-    if (!container || !overlay) return;
-
-    container.innerHTML = APP_CONFIG.chapters.map(function (chapter) {
-      var isCurrent = chapter.ch === getChapterNumber();
-      var isVisited = visited.indexOf(chapter.ch) !== -1 && !isCurrent;
-
-      return (
-        '<div class="jump-item ' + (isCurrent ? "cur-ch" : "") + '" onclick="jumpTo(\'' + chapter.file + "'," + chapter.ch + ')">' +
-          '<div class="ji-dot ' + (isCurrent ? "cur" : isVisited ? "vis" : "") + '"></div>' +
-          '<div class="ji-icon">' + renderIcon(chapter.icon || "house") + "</div>" +
-          '<div class="ji-lbl">' + chapter.label + (isCurrent ? " ← here" : "") + "</div>" +
-          '<div class="ji-arr">' + (isCurrent ? "" : "›") + "</div>" +
-        "</div>"
-      );
-    }).join("");
-
-    overlay.classList.add("open");
-  }
-
-  function jumpTo(file, chapterNumber) {
-    var overlay = byId("jump-ov");
-    if (chapterNumber === getChapterNumber()) {
-      if (overlay) overlay.classList.remove("open");
-      return;
-    }
-
-    if (!Array.isArray(state.chaptersVisited)) state.chaptersVisited = [];
-    if (state.chaptersVisited.indexOf(getChapterNumber()) === -1) {
-      state.chaptersVisited.push(getChapterNumber());
-    }
-
-    state.jumpEntry = "jump_ch" + chapterNumber;
-    saveState();
-    window.location.href = file;
-  }
-
-  function renderIconCardGrid(target, cards) {
-    if (!target) return;
-    target.innerHTML =
-      '<div class="icon-card-grid">' +
-        cards.map(function (card) {
-          return (
-            '<button class="icon-card" type="button" data-file="' + escapeAttr(card.file || "") + '" data-event="' + escapeAttr(card.event || "") + '">' +
-              '<span class="icon-card-ico">' + renderIcon(card.icon || "house") + "</span>" +
-              '<span class="icon-card-copy">' +
-                '<span class="icon-card-title">' + (card.title || "") + "</span>" +
-                (card.sub ? '<span class="icon-card-sub">' + card.sub + "</span>" : "") +
-              "</span>" +
-            "</button>"
-          );
-        }).join("") +
-      "</div>";
-
-    Array.prototype.forEach.call(target.querySelectorAll(".icon-card"), function (button) {
-      button.addEventListener("click", function () {
-        var file = button.getAttribute("data-file");
-        var eventName = button.getAttribute("data-event");
-        if (eventName) {
-          state.jumpEntry = eventName;
-          saveState();
-          track("journey_entry", { entry_point: eventName });
-        }
-        if (file) window.location.href = file;
-      });
-    });
-  }
-
-  function init() {
-    injectPlatformStyles();
-
-    var scenes = getScenes();
-    if (!scenes.length) return;
-
-    ensureShell();
-    bindShellEvents();
-
-    currentSceneIndex = Math.min(
-      state.lastChapter === getChapterNumber() ? (state.lastStep || 0) : 0,
-      scenes.length - 1
-    );
-
-    renderScene(currentSceneIndex);
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-})();
+        '<div class="
