@@ -45,7 +45,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      padding:34px 20px 38px;
+      padding:40px 28px 48px;
       background:
         radial-gradient(circle at 50% 18%, rgba(255,204,77,.08), transparent 24%),
         linear-gradient(180deg, #090909 0%, #050505 100%);
@@ -60,14 +60,14 @@
     }
 
     .intro-face{
-      width:172px;
-      height:172px;
+      width:180px;
+      height:180px;
       position:relative;
-      margin-bottom:24px;
+      margin-bottom:28px;
       flex-shrink:0;
       border-radius:50%;
       overflow:hidden;
-      border:1px solid rgba(255,204,77,.24);
+      border:1px solid rgba(255,204,77,.22);
       background:linear-gradient(180deg, #171717 0%, #101010 100%);
       box-shadow:0 20px 50px rgba(0,0,0,.45);
     }
@@ -102,7 +102,7 @@
       width:100%;
       max-width:320px;
       text-align:center;
-      margin-bottom:18px;
+      margin-bottom:42px;
     }
 
     .intro-main{
@@ -134,54 +134,6 @@
     .intro-detail em{
       font-style:normal;
       color:var(--gold);
-    }
-
-    .intro-icon-grid{
-      width:100%;
-      max-width:320px;
-      margin:0 0 18px;
-      opacity:0;
-      transform:translateY(10px);
-      transition:opacity .45s ease, transform .45s ease;
-    }
-
-    .intro-icon-grid.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    .intro-icon-grid .icon-card-grid{
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:10px;
-    }
-
-    .intro-icon-grid .icon-card{
-      min-height:72px;
-      padding:12px;
-      border-radius:14px;
-      align-items:flex-start;
-      flex-direction:column;
-      gap:8px;
-      text-align:left;
-      box-shadow:0 8px 22px rgba(0,0,0,.2);
-    }
-
-    .intro-icon-grid .icon-card-copy{
-      width:100%;
-    }
-
-    .intro-icon-grid .icon-card-title{
-      font-size:13px;
-      line-height:1.2;
-    }
-
-    .intro-icon-grid .icon-card-sub{
-      display:none;
-    }
-
-    .intro-icon-grid .icon-card-ico{
-      width:18px;
-      height:18px;
     }
 
     .btn-reveal{
@@ -233,7 +185,7 @@
       overflow-y:auto;
       overflow-x:hidden;
       -webkit-overflow-scrolling:touch;
-      padding:0 0 20px;
+      padding-bottom:24px;
     }
 
     .main::-webkit-scrollbar{
@@ -241,18 +193,20 @@
     }
 
     .g-strip,
-    .hero,
-    .hero-sub,
-    .journey-grid-wrap{
+    .headline,
+    .tension-line,
+    .tension-sub,
+    .cards{
       opacity:0;
       transform:translateY(10px);
       transition:opacity .45s ease, transform .45s ease;
     }
 
     .g-strip.show,
-    .hero.show,
-    .hero-sub.show,
-    .journey-grid-wrap.show{
+    .headline.show,
+    .tension-line.show,
+    .tension-sub.show,
+    .cards.show{
       opacity:1;
       transform:translateY(0);
     }
@@ -261,12 +215,12 @@
       display:flex;
       align-items:flex-end;
       gap:0;
-      padding:18px 18px 0;
+      padding:20px 18px 0;
     }
 
     .gs-face{
-      width:60px;
-      height:60px;
+      width:58px;
+      height:58px;
       flex-shrink:0;
       position:relative;
       margin-bottom:-2px;
@@ -314,127 +268,262 @@
       letter-spacing:.03em;
     }
 
-    .hero{
-      padding:16px 18px 10px;
+    .headline{
+      padding:16px 18px 18px;
     }
 
-    .hero-main{
+    .hl-main{
       font-family:var(--font-serif);
       font-size:32px;
       font-weight:700;
       color:var(--text-strong);
-      line-height:1.08;
-      margin-bottom:10px;
+      line-height:1.12;
+      margin-bottom:12px;
       letter-spacing:-.02em;
       text-shadow:0 2px 16px rgba(0,0,0,.45);
     }
 
-    .hero-main span{
+    .hl-main span{
       color:var(--gold);
     }
 
-    .hero-sub{
-      padding:0 18px 16px;
+    .hl-sub{
       font-size:13px;
+      font-weight:400;
       color:var(--text-soft);
-      line-height:1.72;
-      max-width:430px;
+      line-height:1.75;
+      letter-spacing:.01em;
+      max-width:420px;
     }
 
-    .journey-grid-wrap{
-      padding:0 14px;
+    .tension-line{
+      padding:0 18px 4px;
+      font-size:12px;
+      font-weight:700;
+      color:var(--text);
+      letter-spacing:.02em;
+      line-height:1.5;
     }
 
-    .section-label{
-      font-size:10px;
-      font-weight:800;
-      letter-spacing:.12em;
-      text-transform:uppercase;
+    .tension-sub{
+      padding:0 18px 16px;
+      font-size:11px;
+      font-weight:400;
       color:var(--text-dim);
-      margin:0 4px 12px;
+      letter-spacing:.02em;
+      line-height:1.6;
     }
 
-    .journey-grid .icon-card-grid{
+    .cards{
+      padding:0 14px;
+      display:flex;
+      flex-direction:column;
       gap:10px;
     }
 
-    .journey-grid .icon-card{
+    .journey-card{
+      background:linear-gradient(180deg, rgba(20,20,20,.96) 0%, rgba(14,14,14,.96) 100%);
+      border:1px solid var(--line);
       border-radius:16px;
-      align-items:flex-start;
-      padding:14px;
-      position:relative;
       overflow:hidden;
+      cursor:pointer;
+      opacity:0;
+      transform:translateY(16px);
+      transition:
+        opacity .45s ease,
+        transform .45s ease,
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
       box-shadow:0 10px 26px rgba(0,0,0,.18);
     }
 
-    .journey-grid .icon-card::after{
-      content:"";
-      position:absolute;
-      inset:auto -20% -50% auto;
-      width:90px;
-      height:90px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(255,204,77,.08), transparent 68%);
-      pointer-events:none;
+    .journey-card.show{
+      opacity:1;
+      transform:translateY(0);
     }
 
-    .journey-grid .icon-card-title{
-      font-size:15px;
-      line-height:1.25;
+    .journey-card:hover{
+      border-color:var(--line-2);
+      background:linear-gradient(180deg, rgba(24,24,24,.98) 0%, rgba(16,16,16,.98) 100%);
+      box-shadow:0 14px 30px rgba(0,0,0,.24);
     }
 
-    .journey-grid .icon-card-sub{
-      font-size:11px;
-      line-height:1.55;
-      margin-top:5px;
+    .journey-card:active{
+      transform:scale(.99);
     }
 
-    .journey-grid .icon-card-ico{
-      width:20px;
-      height:20px;
+    .journey-card.primary{
+      border-left:3px solid var(--gold);
     }
 
-    .explore-card{
-      margin-bottom:10px;
+    .journey-card.resume{
+      border-left:3px solid rgba(255,255,255,.34);
     }
 
-    .explore-card .icon-card{
+    .journey-card.explore{
+      border-left:3px solid var(--gold);
       border-color:var(--gold-line);
-      background:linear-gradient(180deg, rgba(255,204,77,.08) 0%, rgba(255,255,255,.03) 100%);
+      background:linear-gradient(180deg, rgba(255,204,77,.08) 0%, rgba(14,14,14,.96) 100%);
     }
 
-    .resume-slot{
-      margin-bottom:10px;
+    .journey-card-head{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:18px;
+      min-height:92px;
+      transition:min-height .28s ease, padding .28s ease, gap .28s ease;
     }
 
-    .resume-slot .icon-card{
-      border-color:rgba(255,255,255,.18);
+    .journey-card.stage-title .journey-card-head,
+    .journey-card.stage-detail .journey-card-head{
+      min-height:76px;
+      padding-bottom:14px;
+      gap:12px;
     }
 
-    .footer-space{
+    .journey-card-icon{
+      width:54px;
+      height:54px;
+      flex-shrink:0;
+      color:var(--gold);
+      transition:width .28s ease, height .28s ease, transform .28s ease, color .2s ease;
+    }
+
+    .journey-card.stage-title .journey-card-icon,
+    .journey-card.stage-detail .journey-card-icon{
+      width:22px;
       height:22px;
+      transform:translateY(-1px);
+    }
+
+    .journey-card-body{
+      flex:1;
+      min-width:0;
+    }
+
+    .journey-card-title{
+      display:none;
+      font-family:var(--font-serif);
+      font-size:16px;
+      font-weight:600;
+      color:var(--text-strong);
+      line-height:1.35;
+      letter-spacing:-.01em;
+    }
+
+    .journey-card.stage-title .journey-card-title,
+    .journey-card.stage-detail .journey-card-title{
+      display:block;
+    }
+
+    .journey-card.resume .journey-card-title{
+      color:var(--text);
+    }
+
+    .journey-card-badge{
+      display:inline-block;
+      margin-left:8px;
+      padding:3px 7px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      color:var(--text-dim);
+      font-size:9px;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      vertical-align:middle;
+    }
+
+    .journey-card-arrow{
+      flex-shrink:0;
+      font-size:15px;
+      color:var(--text-faint);
+      line-height:1;
+      transition:transform .28s ease, color .2s ease;
+    }
+
+    .journey-card.stage-icon .journey-card-arrow{
+      opacity:.35;
+    }
+
+    .journey-card.stage-title .journey-card-arrow{
+      transform:rotate(0deg);
+      color:var(--text-soft);
+    }
+
+    .journey-card.stage-detail .journey-card-arrow{
+      transform:rotate(90deg);
+      color:var(--gold);
+    }
+
+    .journey-card-detail{
+      max-height:0;
+      overflow:hidden;
+      opacity:0;
+      transition:max-height .45s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+    }
+
+    .journey-card.stage-detail .journey-card-detail{
+      max-height:240px;
+      opacity:1;
+    }
+
+    .journey-card-detail-inner{
+      padding:0 18px 18px 54px;
+      border-top:1px solid var(--line);
+      padding-top:14px;
+    }
+
+    .journey-card-desc{
+      font-size:13px;
+      color:var(--text-soft);
+      line-height:1.75;
+      letter-spacing:.01em;
+    }
+
+    .journey-card-commit{
+      display:block;
+      margin-top:12px;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.06);
+      font-size:11px;
+      font-weight:600;
+      color:var(--text-dim);
+      letter-spacing:.02em;
+      line-height:1.6;
+    }
+
+    .journey-card.primary .journey-card-commit,
+    .journey-card.explore .journey-card-commit{
+      color:rgba(255,204,77,.72);
+    }
+
+    .spacer{
+      height:24px;
     }
 
     @media (max-width:430px){
       .intro{
-        padding:30px 18px 34px;
+        padding:32px 22px 40px;
       }
 
       .intro-face{
-        width:156px;
-        height:156px;
+        width:160px;
+        height:160px;
       }
 
       .intro-main{
         font-size:20px;
       }
 
-      .hero-main{
+      .hl-main{
         font-size:29px;
       }
 
-      .journey-grid .icon-card-title{
-        font-size:14px;
+      .journey-card-title{
+        font-size:15px;
       }
     }
   </style>
@@ -465,21 +554,19 @@
             They were counting on that.
           </div>
           <div class="intro-detail">
-            That’s why your agent paid Zillow —<br>
+            That's why your agent paid Zillow —<br>
             <em>before you ever picked up the phone.</em>
           </div>
         </div>
 
-        <div class="intro-icon-grid" id="intro-icon-grid"></div>
-
         <button class="btn-reveal" id="btn-reveal" type="button">
-          Show me what I’m missing
+          Show me what I'm missing
         </button>
       </div>
 
       <header class="hdr" id="hdr">
         <div class="hdr-l">
-          <div class="hdr-ico" id="hdr-home-ico"></div>
+          <div class="hdr-ico" id="hdr-home-icon"></div>
           <div>
             <div class="hdr-t">Home Buyer <span>Journey</span></div>
             <div class="hdr-s">George Kindler · The Closing Pros</div>
@@ -504,27 +591,25 @@
           </div>
         </div>
 
-        <section class="hero" id="hero">
-          <div class="hero-main">
-            Learn the buyer process<br>
-            <span>without the noise.</span>
+        <section class="headline" id="headline">
+          <div class="hl-main">
+            Where buyers lose money —<br>
+            <span>without realizing it.</span>
+          </div>
+          <div class="hl-sub">
+            Start anywhere, or follow the full journey from first contact to closing.
           </div>
         </section>
 
-        <div class="hero-sub" id="hero-sub">
-          Scan it faster. Start anywhere. Or follow the full journey from first contact to closing with icon-led chapter cards instead of walls of text.
+        <div class="tension-line" id="tension-line">
+          Most buyers skip the part that costs them. Don’t.
+        </div>
+        <div class="tension-sub" id="tension-sub">
+          Tap any section to open it, or follow the journey step by step.
         </div>
 
-        <section class="journey-grid-wrap" id="journey-grid-wrap">
-          <div class="section-label">Start here</div>
-          <div class="resume-slot" id="resume-slot"></div>
-          <div class="explore-card" id="explore-card"></div>
-
-          <div class="section-label">Journey chapters</div>
-          <div class="journey-grid" id="journey-grid"></div>
-        </section>
-
-        <div class="footer-space"></div>
+        <section class="cards" id="cards"></section>
+        <div class="spacer"></div>
       </main>
 
       <footer class="ftr" id="ftr">
@@ -550,102 +635,21 @@
       "use strict";
 
       var STORAGE_KEY = "stl_journey_v1";
+      var platform = window.SharedPlatform;
 
-      var ICONS = {
-        house: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 11.5L12 4l9 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M6.5 10.5V20h11V10.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
-        calculator: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2.5" stroke="currentColor" stroke-width="1.8"></rect><path d="M8 7.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path><path d="M8 12h2M14 12h2M8 16h2M14 16h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
-        target: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"></circle><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"></circle><circle cx="12" cy="12" r="1.25" fill="currentColor"></circle></svg>',
-        document: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3.5h6l4 4V20a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 7 20V5a1.5 1.5 0 0 1 1.5-1.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M14 3.5V8h4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M9.5 12h5M9.5 15.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
-        calendar: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2.5" stroke="currentColor" stroke-width="1.8"></rect><path d="M8 3.5v4M16 3.5v4M4 9.5h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
-        magnifier: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5" stroke="currentColor" stroke-width="1.8"></circle><path d="M15 15l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
-        route: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6" cy="18" r="2" fill="currentColor"></circle><circle cx="18" cy="6" r="2" fill="currentColor"></circle><path d="M8 18c3 0 3-4 6-4s3-4 4-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>',
-        key: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="8.5" cy="12" r="3.5" stroke="currentColor" stroke-width="1.8"></circle><path d="M12 12h7m-2 0v-2m-2 2v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
-        contact: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 5.5h12A1.5 1.5 0 0 1 19.5 7v10A1.5 1.5 0 0 1 18 18.5H6A1.5 1.5 0 0 1 4.5 17V7A1.5 1.5 0 0 1 6 5.5Z" stroke="currentColor" stroke-width="1.8"></path><path d="M5 7l7 5 7-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
-        map: '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 6.5 9 4l6 2.5 4.5-2v13L15 20l-6-2.5-4.5 2v-13Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M9 4v13.5M15 6.5V20" stroke="currentColor" stroke-width="1.8"></path></svg>'
-      };
+      function byId(id) {
+        return document.getElementById(id);
+      }
 
-      var JOURNEY_CARDS = [
-        {
-          icon: "contact",
-          title: "Contact Agent",
-          sub: "What actually happens the moment you tap.",
-          file: "01-preapproval.html",
-          event: "start"
-        },
-        {
-          icon: "calculator",
-          title: "Affordability",
-          sub: "What your approval actually means.",
-          file: "02-affordability.html",
-          event: "afford"
-        },
-        {
-          icon: "house",
-          title: "The Interior",
-          sub: "How George reads a house on entry.",
-          file: "03-interior.html",
-          event: "interior"
-        },
-        {
-          icon: "target",
-          title: "Pre-Offer",
-          sub: "Competition, urgency, and leverage.",
-          file: "05-pre-offer.html",
-          event: "offer"
-        },
-        {
-          icon: "document",
-          title: "Under Contract",
-          sub: "Where deals quietly go sideways.",
-          file: "06-under-contract.html",
-          event: "contract"
-        },
-        {
-          icon: "calendar",
-          title: "Deadlines",
-          sub: "Three clocks running at once.",
-          file: "06b-deadlines.html",
-          event: "deadlines"
-        },
-        {
-          icon: "magnifier",
-          title: "Inspection",
-          sub: "What buyers miss and later pay for.",
-          file: "07-inspection.html",
-          event: "inspect"
-        },
-        {
-          icon: "route",
-          title: "Walk-Through",
-          sub: "Condition verification before signing.",
-          file: "08-walkthrough.html",
-          event: "walkthrough"
-        },
-        {
-          icon: "key",
-          title: "Closing",
-          sub: "What you’re signing and what matters.",
-          file: "09-closing.html",
-          event: "closing"
+      function track(eventName, payload) {
+        if (platform && typeof platform.track === "function") {
+          platform.track(eventName, payload || {});
+          return;
         }
-      ];
-
-      var INTRO_ICON_CARDS = [
-        { icon: "contact", title: "Lead Flow" },
-        { icon: "calculator", title: "Budget" },
-        { icon: "house", title: "Condition" },
-        { icon: "key", title: "Closing" }
-      ];
-
-      var EXPLORE_CARD = [
-        {
-          icon: "map",
-          title: "Explore the Buyer Journey",
-          sub: "See the full route as one connected experience.",
-          file: "01-preapproval.html",
-          event: "explore_journey"
+        if (typeof window.gtag === "function") {
+          window.gtag("event", eventName, payload || {});
         }
-      ];
+      }
 
       function loadState() {
         try {
@@ -686,59 +690,149 @@
         } catch (error) {}
       }
 
-      function track(eventName, payload) {
-        if (typeof window.gtag === "function") {
-          window.gtag("event", eventName, payload || {});
+      var CARD_DATA = [
+        {
+          id: "explore",
+          icon: "map",
+          file: "01-preapproval.html",
+          event: "explore_journey",
+          title: "Explore the Buyer Journey",
+          desc: "See the full route from first contact to closing — in order, with all nine chapters connected.",
+          commit: "Follow the full journey step by step.",
+          cardClass: "explore"
+        },
+        {
+          id: "c0",
+          icon: "contact",
+          file: "01-preapproval.html",
+          event: "start",
+          title: "What actually happens when you click “Contact Agent”",
+          desc: "The agent who calls you paid to be there. That changes everything before you ever see a house.",
+          commit: "Start here if you haven’t made any moves yet.",
+          cardClass: "primary"
+        },
+        {
+          id: "c1",
+          icon: "calculator",
+          file: "02-affordability.html",
+          event: "afford",
+          title: "Where buyers accidentally overpay — before they even make an offer <span class=\"journey-card-badge\">Ch. 2</span>",
+          desc: "The number your lender approved is not the number you should spend. Most agents never make that distinction.",
+          commit: "I will never tell you to max it out."
+        },
+        {
+          id: "c2",
+          icon: "house",
+          file: "03-interior.html",
+          event: "interior",
+          title: "What I look at the moment we walk in — and what you should too <span class=\"journey-card-badge\">Ch. 3</span>",
+          desc: "Most buyers look at countertops and paint. I look at the basement, the panel, the roof, and the mechanicals. Walk through a house the way I do.",
+          commit: "What costs money is rarely what costs paint."
+        },
+        {
+          id: "c3",
+          icon: "target",
+          file: "05-pre-offer.html",
+          event: "offer",
+          title: "Where buyers get pushed into offers they can’t take back <span class=\"journey-card-badge\">Ch. 4</span>",
+          desc: "Competing offers, manufactured urgency, escalation clauses. What agents say, what it means, and what actually gets your offer accepted.",
+          commit: "No version held back. All of it."
+        },
+        {
+          id: "c4",
+          icon: "document",
+          file: "06-under-contract.html",
+          event: "contract",
+          title: "Offer accepted: where deals fall apart <span class=\"journey-card-badge\">Ch. 5</span>",
+          desc: "Earnest money. Inspection windows. Day Zero actions. Small mistakes here can quietly kill a deal after you think you’re safe.",
+          commit: "This is where most buyers lose control. You won’t."
+        },
+        {
+          id: "c5",
+          icon: "calendar",
+          file: "06b-deadlines.html",
+          event: "deadlines",
+          title: "Three deadlines running in parallel — miss any one and the protection is gone <span class=\"journey-card-badge\">Ch. 6</span>",
+          desc: "Loan contingency. Appraisal. Title. They all run simultaneously from Day 1. Every one has a hard stop. I track all three so nothing slips.",
+          commit: "Miss a deadline once and you can’t un-miss it."
+        },
+        {
+          id: "c6",
+          icon: "magnifier",
+          file: "07-inspection.html",
+          event: "inspect",
+          title: "This is where buyers miss the problems they end up paying for <span class=\"journey-card-badge\">Ch. 7</span>",
+          desc: "By the time most buyers read the inspection report, their earnest money is already at risk. The items that matter most are rarely the ones at the top.",
+          commit: "It’s not my house. I will never overlook a repair to get you to close."
+        },
+        {
+          id: "c7",
+          icon: "route",
+          file: "08-walkthrough.html",
+          event: "walkthrough",
+          title: "The final walk-through is not a second showing — it’s a condition verification <span class=\"journey-card-badge\">Ch. 8</span>",
+          desc: "Same condition as the day you made the offer. Agreed repairs complete. Seller out. Utilities on. If anything is wrong, you address it before you sign — not after.",
+          commit: "After you sign, your leverage is gone."
+        },
+        {
+          id: "c8",
+          icon: "key",
+          file: "09-closing.html",
+          event: "closing",
+          title: "What you’re signing at closing — and what most buyers don’t catch <span class=\"journey-card-badge\">Ch. 9</span>",
+          desc: "The final walk. The closing table. The documents. Wire fraud. What the note and deed of trust actually say. Your job is to fall in love with the house.",
+          commit: "My job is to make sure you don’t own a disaster."
         }
-      }
-
-      function byId(id) {
-        return document.getElementById(id);
-      }
+      ];
 
       function renderIcon(name) {
-        return ICONS[name] || ICONS.house;
+        if (platform && typeof platform.renderIcon === "function") {
+          return platform.renderIcon(name);
+        }
+        return "";
       }
 
-      function renderCards(targetId, cards) {
-        var target = byId(targetId);
-        if (!target) return;
+      function go(file, eventName) {
+        state.jumpEntry = eventName;
+        saveState();
+        track("journey_entry", { entry_point: eventName });
+        window.location.href = file;
+      }
 
-        target.innerHTML =
-          '<div class="icon-card-grid">' +
-            cards.map(function (card) {
-              return (
-                '<button class="icon-card" type="button" data-file="' + card.file + '" data-event="' + card.event + '">' +
-                  '<span class="icon-card-ico">' + renderIcon(card.icon) + "</span>" +
-                  '<span class="icon-card-copy">' +
-                    '<span class="icon-card-title">' + card.title + "</span>" +
-                    (card.sub ? '<span class="icon-card-sub">' + card.sub + "</span>" : "") +
-                  "</span>" +
-                "</button>"
-              );
-            }).join("") +
-          "</div>";
+      function createCardHTML(card) {
+        return (
+          '<div class="journey-card stage-icon ' + (card.cardClass || "") + '" id="' + card.id + '" data-file="' + card.file + '" data-event="' + card.event + '">' +
+            '<div class="journey-card-head">' +
+              '<div class="journey-card-icon">' + renderIcon(card.icon) + '</div>' +
+              '<div class="journey-card-body">' +
+                '<div class="journey-card-title">' + card.title + '</div>' +
+              '</div>' +
+              '<span class="journey-card-arrow">&#8250;</span>' +
+            '</div>' +
+            '<div class="journey-card-detail">' +
+              '<div class="journey-card-detail-inner">' +
+                '<div class="journey-card-desc">' + card.desc + '</div>' +
+                '<span class="journey-card-commit">' + card.commit + '</span>' +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
+      }
 
-        Array.prototype.forEach.call(target.querySelectorAll(".icon-card"), function (button) {
-          button.addEventListener("click", function () {
-            var file = button.getAttribute("data-file");
-            var eventName = button.getAttribute("data-event");
-            if (eventName) {
-              state.jumpEntry = eventName;
-              saveState();
-              track("journey_entry", { entry_point: eventName });
-            }
-            if (file) {
-              window.location.href = file;
-            }
+      function renderCards() {
+        var cards = byId("cards");
+        if (!cards) return;
+
+        cards.innerHTML = CARD_DATA.map(createCardHTML).join("");
+
+        Array.prototype.forEach.call(cards.querySelectorAll(".journey-card"), function (card) {
+          card.addEventListener("click", function () {
+            advanceCard(card);
           });
         });
       }
 
-      function renderResumeCard() {
-        var slot = byId("resume-slot");
-        if (!slot) return;
-
+      function insertResumeCard() {
         var files = {
           1: "01-preapproval.html",
           2: "02-affordability.html",
@@ -754,27 +848,73 @@
         var labels = {
           1: "Pre-Approval",
           2: "Affordability",
-          3: "The Interior",
+          3: "Interior Showing",
           4: "Pre-Offer Strategy",
           5: "Under Contract",
-          6: "Deadlines",
-          7: "Inspection",
-          8: "Walk-Through",
-          9: "Closing"
+          6: "The Deadlines",
+          7: "Inspection Report",
+          8: "Final Walk-Through",
+          9: "Closing Day"
         };
 
-        if (!state.lastChapter || state.lastChapter < 2 || !files[state.lastChapter]) {
-          slot.innerHTML = "";
+        if (!state.lastChapter || state.lastChapter < 2 || !files[state.lastChapter]) return;
+
+        var cards = byId("cards");
+        if (!cards) return;
+
+        var chapter = state.lastChapter;
+        var resumeHTML = createCardHTML({
+          id: "resume-card",
+          icon: "route",
+          file: files[chapter],
+          event: "resume_ch" + chapter,
+          title: "Continue where you left off — Chapter " + chapter + ", " + labels[chapter],
+          desc: "Pick back up where you stopped in the journey.",
+          commit: "Continue from your last chapter.",
+          cardClass: "resume"
+        });
+
+        cards.insertAdjacentHTML("afterbegin", resumeHTML);
+
+        var resumeCard = byId("resume-card");
+        if (resumeCard) {
+          resumeCard.addEventListener("click", function () {
+            advanceCard(resumeCard);
+          });
+        }
+      }
+
+      function advanceCard(card) {
+        var stage = card.dataset.stage || "icon";
+
+        if (stage === "icon") {
+          collapseOtherCards(card);
+          card.dataset.stage = "title";
+          card.classList.remove("stage-icon", "stage-detail");
+          card.classList.add("stage-title");
           return;
         }
 
-        renderCards("resume-slot", [{
-          icon: "route",
-          title: "Resume Chapter " + state.lastChapter,
-          sub: labels[state.lastChapter],
-          file: files[state.lastChapter],
-          event: "resume_ch" + state.lastChapter
-        }]);
+        if (stage === "title") {
+          collapseOtherCards(card);
+          card.dataset.stage = "detail";
+          card.classList.remove("stage-icon", "stage-title");
+          card.classList.add("stage-detail");
+          return;
+        }
+
+        go(card.getAttribute("data-file"), card.getAttribute("data-event") || "start");
+      }
+
+      function collapseOtherCards(activeCard) {
+        var cards = document.querySelectorAll(".journey-card");
+        Array.prototype.forEach.call(cards, function (card) {
+          if (card !== activeCard) {
+            card.dataset.stage = "icon";
+            card.classList.remove("stage-title", "stage-detail");
+            card.classList.add("stage-icon");
+          }
+        });
       }
 
       function showRevealButton() {
@@ -782,11 +922,6 @@
           var button = byId("btn-reveal");
           if (button) button.classList.add("show");
         }, 1100);
-
-        window.setTimeout(function () {
-          var grid = byId("intro-icon-grid");
-          if (grid) grid.classList.add("show");
-        }, 600);
       }
 
       function revealSite() {
@@ -795,9 +930,10 @@
         var header = byId("hdr");
         var footer = byId("ftr");
         var gStrip = byId("g-strip");
-        var hero = byId("hero");
-        var heroSub = byId("hero-sub");
-        var journeyGridWrap = byId("journey-grid-wrap");
+        var headline = byId("headline");
+        var tensionLine = byId("tension-line");
+        var tensionSub = byId("tension-sub");
+        var cards = byId("cards");
 
         if (face) face.classList.add("swapped");
 
@@ -812,15 +948,26 @@
 
         window.setTimeout(function () {
           if (gStrip) gStrip.classList.add("show");
-          if (hero) hero.classList.add("show");
-          if (heroSub) heroSub.classList.add("show");
-        }, 900);
+          if (headline) headline.classList.add("show");
+          if (tensionLine) tensionLine.classList.add("show");
+          if (tensionSub) tensionSub.classList.add("show");
+          if (cards) cards.classList.add("show");
+        }, 930);
 
-        window.setTimeout(function () {
-          if (journeyGridWrap) journeyGridWrap.classList.add("show");
-        }, 1150);
-
+        animateCards();
         track("journey_intro_tap", {});
+      }
+
+      function animateCards() {
+        var list = Array.prototype.slice.call(document.querySelectorAll(".journey-card"));
+        var baseDelay = 1400;
+        var interval = 220;
+
+        list.forEach(function (card, index) {
+          window.setTimeout(function () {
+            card.classList.add("show");
+          }, baseDelay + index * interval);
+        });
       }
 
       function bindEvents() {
@@ -831,22 +978,16 @@
       }
 
       function init() {
-        var hdrIcon = byId("hdr-home-ico");
-        if (hdrIcon) hdrIcon.innerHTML = renderIcon("house");
+        if (!platform || typeof platform.renderIcon !== "function") {
+          setTimeout(init, 30);
+          return;
+        }
 
-        renderCards("intro-icon-grid", INTRO_ICON_CARDS.map(function (card, index) {
-          return {
-            icon: card.icon,
-            title: card.title,
-            sub: "",
-            file: "",
-            event: "intro_icon_" + index
-          };
-        }));
+        var hdrIcon = byId("hdr-home-icon");
+        if (hdrIcon) hdrIcon.innerHTML = platform.renderIcon("house");
 
-        renderCards("explore-card", EXPLORE_CARD);
-        renderCards("journey-grid", JOURNEY_CARDS);
-        renderResumeCard();
+        renderCards();
+        insertResumeCard();
         bindEvents();
         showRevealButton();
       }
