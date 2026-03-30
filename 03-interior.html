@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Home Buyer Journey · Chapter 3 · The Interior</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EEE14BZT9P"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EEE14BZT9P');</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── CHAPTER 3 ONLY: Photo reveal scene ── */
+.photo-reveal-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;background:var(--bg);padding:0;}
+.pr-photo{width:100%;height:55%;overflow:hidden;position:relative;flex-shrink:0;}
+.pr-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%;transform:scale(1.12);transform-origin:center center;animation:subtle-kb 20s ease-in-out infinite alternate;}
+@keyframes subtle-kb{from{transform:scale(1.12);}to{transform:scale(1.18);}}
+.pr-listing-badge{position:absolute;top:10px;left:10px;background:rgba(8,8,8,.85);border:1px solid var(--line-2);border-radius:3px;padding:5px 10px;font-family:var(--font-sans);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);}
+.pr-mls{position:absolute;bottom:10px;right:10px;font-family:var(--font-sans);font-size:8px;color:rgba(255,255,255,.2);letter-spacing:.04em;}
+.pr-question{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 24px;width:100%;}
+.pr-q-text{font-family:var(--font-serif);font-size:22px;font-weight:600;color:var(--text-strong);text-align:center;line-height:1.25;margin-bottom:24px;letter-spacing:-0.01em;}
+.pr-btns{display:flex;gap:12px;width:100%;max-width:280px;}
+.pr-btn{flex:1;padding:14px;border-radius:4px;font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:all .15s;border:1px solid var(--line-2);}
+.pr-btn.yes{background:transparent;color:var(--text-soft);}
+.pr-btn.no{background:var(--white);color:#080808;}
+.pr-btn:active{transform:scale(.97);}
+.pr-btn:hover.yes{border-color:var(--text-faint);color:var(--text-strong);}
+.pr-george-row{display:none;align-items:flex-end;gap:0;width:100%;padding:0 16px;margin-top:4px;}
+.pr-george-row.show{display:flex;}
+.pr-face{width:72px;height:72px;flex-shrink:0;position:relative;margin-bottom:-4px;}
+.pr-face img{width:100%;height:100%;object-fit:contain;object-position:bottom center;display:block;}
+.pr-face .fb{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;font-family:var(--font-serif);font-size:13px;color:var(--text-faint);z-index:-1;}
+.pr-bubble{flex:1;background:var(--surface);border:1px solid var(--line-2);border-radius:0 10px 10px 10px;padding:12px 14px;font-family:var(--font-sans);font-size:13px;color:var(--text-soft);line-height:1.6;position:relative;}
+.pr-bubble::before{content:'';position:absolute;left:-7px;top:10px;border:6px solid transparent;border-right-color:var(--line-2);}
+.pr-bubble::after{content:'';position:absolute;left:-5px;top:11px;border:5px solid transparent;border-right-color:var(--surface);}
+.pr-bubble strong{color:var(--text-strong);}
+.pr-continue-btn{width:calc(100% - 32px);margin:14px 16px 0;padding:13px;background:var(--white);border:none;border-radius:4px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#080808;cursor:pointer;display:none;transition:background .15s;}
+.pr-continue-btn.show{display:block;}
+.pr-continue-btn:hover{background:rgba(255,255,255,.88);}
+.pr-continue-btn:active{transform:scale(.98);}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+window.CHAPTER_NUM   = 3;
+window.CHAPTER_LABEL = 'Interior Showing';
+window.PREV_FILE     = '02-affordability.html';
+
+var PHOTOS = {
+  livingRoom:  'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85',
+  livingRoom2: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&q=85',
+  kitchen:     'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=85',
+  exterior:    'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  stairs:      'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=900&q=85',
+  basement:    'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=900&q=85',
+  bedroom:     'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=900&q=85',
+};
+
+window.SCENES = [
+// 0 — PHOTO REVEAL
+{
+  type:'photo-reveal',
+  bg:'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=85',
+  george:'serious',
+  room:'Listing Photo',
+  title:'Notice something off with this picture?',
+  sub:'',
+  photoReveal:{
+    question:'Notice something off with this picture?',
+    yesResponse:'Good eye.',
+    noResponse:'You should.',
+    george:'Well, you should — because sellers hire professional photographers. Every home you walk into will feel a little smaller than what the pictures show. Because if they used cell phone pictures, no one would walk through the door.',
+    btnText:'Got it — let\'s go inside'
+  },
+  choices:[]
+},
+// 1 — ENTER THE HOUSE
+{
+  bg:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george:'serious',
+  room:'Exterior',
+  title:'Let\'s go inside.',
+  sub:'I\'ve already been looking at things out front. Now we go through the door.',
+  interrupt:{
+    title:'Before we walk in.',
+    text:'Most buyers walk through a house thinking about paint colors. I\'m looking at the things that cost money after you close.',
+    btnText:'I\'m ready'
+  },
+  choices:[
+    {label:'What were you looking at outside?',icon:'',
+     response:'Roof line, grading around the foundation, any staining under the eaves. I didn\'t see anything alarming but I want to check the gutters from inside.',
+     deep:{title:'Exterior red flags',body:'Negative grading — ground sloping toward the foundation — is one of the most common causes of basement moisture. It costs almost nothing to fix early. It costs a lot when it\'s been wet for ten years.'}
+    },
+    {label:'What\'s the first thing you check inside?',icon:'',
+     response:'Floors. I walk on them. I\'m listening for soft spots near bathrooms and kitchen. That\'s where water damage hides.',
+     deep:{title:'Sub-floor damage',body:'Soft spots around toilets and under sinks are usually from slow leaks over years. By the time you feel it underfoot the sub-floor has already deteriorated. Repair costs range from $500 to $4,000+ depending on how far it spread.'}
+    }
+  ]
+},
+// 2 — FLOOR PLAN / FLOW
+{
+  bg:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=900&q=85',
+  george:'welcome',
+  room:'Living Room',
+  title:'Walk the floor plan.',
+  sub:'The layout tells you things the listing photos don\'t.',
+  choices:[
+    {label:'What are you looking for in the layout?',icon:'',
+     response:'Load-bearing walls. Older homes in St. Louis were built with plaster and wood lath. Every wall isn\'t moveable. If the buyer wants open concept, I need to know that before they\'re in love with a gut job.',
+     deep:{title:'Load-bearing walls',body:'Removing a load-bearing wall without a proper beam runs $3,000 to $10,000+ and requires permits. An unpermitted wall removal is a liability that follows the property — not the seller. I flag unpermitted work every time.'}
+    },
+    {label:'The rooms feel small. Is that a problem?',icon:'',
+     response:'Not inherently. 1960s St. Louis homes are tighter than new construction. What matters is ceiling height and window placement. Low ceilings feel worse than small rooms.',
+     deep:{title:'Room size vs ceiling height',body:'An 8-foot ceiling in a 12x12 room feels like a box. The same room with 9-foot ceilings and two windows feels fine. Before you write off a smaller house, stand in it for a minute.'}
+    }
+  ]
+},
+// 3 — OUTLETS
+{
+  bg:'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=900&q=85',
+  george:'serious',
+  room:'Living Room',
+  title:'Two-prong outlets.',
+  sub:'This house has them. Here\'s what that means for you.',
+  interrupt:{
+    title:'This is a tell.',
+    text:'Two-prong outlets mean the electrical system hasn\'t been updated since before 1960. That\'s not automatically a deal killer — but it means the panel, the wiring, and the grounding all need to be looked at carefully.',
+    btnText:'Show me the panel later'
+  },
+  choices:[
+    {label:'How much does rewiring cost?',icon:'',
+     response:'A full rewire on a 1,200 sq ft house runs $8,000 to $15,000 depending on access. Partial updates — just adding grounds — are cheaper but don\'t solve the underlying age of the system.',
+     deep:{title:'Aluminum wiring',body:'Homes built in the late 60s and 70s sometimes have aluminum branch wiring. It\'s not always dangerous but it needs pigtailing at every connection or replacement. Insurance companies flag it. Ask me if you\'re in that era.'}
+    },
+    {label:'Can I just add adapters?',icon:'',
+     response:'You can. But that\'s a buyer solution to a seller problem. I use this in negotiations — not as an afterthought.',
+     deep:{title:'Negotiation leverage',body:'Ungrounded outlets, two-prong wiring, and missing GFCI protection near water are all code violations in a sale. They\'re also negotiating tools. I don\'t overlook them — I use them.'}
+    }
+  ]
+},
+// 4 — WINDOWS
+{
+  bg:'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=900&q=85',
+  george:'serious',
+  room:'Living Room',
+  title:'Fogged window seals.',
+  sub:'Look at the corner of that window. See the haze? That\'s a failed IGU.',
+  choices:[
+    {label:'What\'s an IGU?',icon:'',
+     response:'Insulated Glass Unit. Double-pane windows trap argon gas between the panes for insulation. When the seal fails, moisture gets in. You get fogging, condensation, and lost efficiency.',
+     deep:{title:'Replacement cost',body:'Replacing just the glass unit in a standard double-hung window runs $150 to $400 per window. Full window replacement is $300 to $800+. A house with 12 fogged windows is a $4,000+ item — and it shows up on FHA/VA appraisals as a required repair.'}
+    },
+    {label:'Is this a deal breaker?',icon:'',
+     response:'No. But it goes on the list. I count the windows with failed seals and roll them into the inspection request. Sellers who dismiss this are negotiating against themselves.',
+    }
+  ]
+},
+// 5 — BASEMENT TRANSITION
+{
+  bg:'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=900&q=85',
+  george:'serious',
+  room:'Basement Stairs',
+  title:'We\'re going downstairs.',
+  sub:'This is where I learn the most about a house.',
+  interrupt:{
+    title:'Everything changes down here.',
+    text:'The basement tells me what the house has been through. Water intrusion, structural movement, deferred maintenance — it all lives down here. Most buyers rush through it. We don\'t.',
+    btnText:'Let\'s go down'
+  },
+  choices:[]
+},
+// 6 — BASEMENT OVERVIEW
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement',
+  title:'First impression.',
+  sub:'I look at four things immediately: smell, light, walls, ceiling.',
+  choices:[
+    {label:'What does the smell tell you?',icon:'',
+     response:'Musty = moisture history. Earthy = water intrusion, possibly active. Fresh air = either legitimately dry or they staged it. I check the walls regardless.',
+     deep:{title:'Efflorescence',body:'White mineral deposits on block or poured concrete walls mean water has been moving through the wall. It\'s not always active but it tells a story. Heavy efflorescence on multiple walls is a drainage problem, not a cosmetic one.'}
+    },
+    {label:'What are you looking for on the ceiling?',icon:'',
+     response:'Joists, plumbing, and any previous repairs. A sister joist — a new board nailed next to an old one — means someone knew there was a problem and patched it. I want to know what caused it.',
+    },
+    {label:'Is finished basement good or bad?',icon:'',
+     response:'Depends entirely on what\'s behind the drywall. A finished basement can hide water damage, mold, and structural issues for years. I always ask if there are photos from before it was finished.',
+     deep:{title:'This is where you need the right inspector',body:'You can hire any inspector you want — and you should choose someone you trust. The one I recommend uses a thermal imaging camera and a moisture meter as standard equipment. In Missouri, I consider those non-negotiable on any finished basement. Thermal shows temperature differentials behind walls that indicate moisture or missing insulation. A moisture meter confirms it. Without those two tools, you are guessing. Make sure your inspector has them before you book.'}
+    }
+  ]
+},
+// 7 — PANEL
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement',
+  title:'The electrical panel.',
+  sub:'I check the brand before I open it.',
+  interrupt:{
+    title:'Federal Pacific. We have a problem.',
+    text:'Federal Pacific Stab-Lok panels have a documented history of breaker failure. Many insurance carriers won\'t write a policy on a home with one. No insurance means no mortgage.',
+    btnText:'What does this mean for my offer?'
+  },
+  choices:[
+    {label:'How much to replace a panel?',icon:'',
+     response:'Full panel replacement with a modern 200-amp service runs $3,500 to $6,500 depending on the scope. On an FHA or VA loan this is a required repair — the appraiser will flag it.',
+     deep:{title:'Insurance implications',body:'Several major carriers in Missouri will not write homeowner\'s policies on Federal Pacific or Zinsco panels. Without insurance you cannot close a financed purchase. I identify this before we write an offer — not after inspection.'}
+    },
+    {label:'Can the seller just leave it?',icon:'',
+     response:'On a conventional loan sometimes. On FHA or VA, no — the appraiser will call it. On any loan, the insurance question makes it a deal point either way.',
+    },
+    {label:'What if the panel is fine?',icon:'',
+     response:'Then we move on. I\'m not looking to find problems — I\'m looking to find your problems before they become your problem after closing.',
+    }
+  ]
+},
+// 8 — FOUNDATION
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Foundation Walls',
+  title:'Reading the cracks.',
+  sub:'Not all cracks are equal. I need you to understand the difference.',
+  choices:[
+    {label:'Vertical cracks — what do they mean?',icon:'',
+     response:'Vertical hairline cracks in poured concrete are usually settlement — normal over 50+ years. I watch for width and if they\'ve been repaired before. One repair isn\'t alarming. Multiple repairs tell a story.',
+     deep:{title:'Epoxy injection',body:'Epoxy-injected cracks mean a previous owner knew there was an issue and addressed it. That\'s actually a positive sign if done correctly. What I\'m looking for is whether the crack re-opened after injection — that means movement is still happening.'}
+    },
+    {label:'Horizontal cracks — how serious?',icon:'',
+     response:'Horizontal cracks in block walls are a structural red flag. They indicate lateral pressure from soil. This is the one that stops me cold. I want a structural engineer before we go further.',
+     deep:{title:'Cost of horizontal crack repair',body:'Wall repair for horizontal cracking runs $5,000 to $30,000+ depending on severity. Full wall replacement can reach $50,000+. I\'ve walked buyers away from houses over this. It\'s the right call every time.'}
+    },
+    {label:'Stair-step cracks in block?',icon:'',
+     response:'Stair-step cracks follow the mortar joints in block walls. They indicate differential settlement. Worth noting but less urgent than horizontal. Still goes on the list.',
+    }
+  ]
+},
+// 9 — JOISTS
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement Ceiling',
+  title:'Look up.',
+  sub:'The floor joists above us are the structure of the first floor.',
+  choices:[
+    {label:'What am I looking at?',icon:'',
+     response:'Joist span, any notching, any sister joists, any signs of moisture damage or insect activity. In pre-1960 construction I\'m also looking for old-growth lumber — it\'s actually stronger than modern dimensional lumber.',
+     deep:{title:'Notched joists',body:'Plumbers and electricians sometimes notch or drill through joists to run pipes and wires. Done correctly it\'s fine. Notched in the wrong location — especially in the top or bottom third — it weakens the joist significantly. This is a code violation in new construction.'}
+    },
+    {label:'What does moisture damage look like?',icon:'',
+     response:'Dark staining, soft wood, any white or black fungal growth. A soft spot I can push with my thumb is active decay. That joist needs to be sistered or replaced.',
+    },
+    {label:'What\'s a sister joist?',icon:'',
+     response:'A new joist nailed alongside a damaged one to restore strength. It\'s a legitimate repair when done correctly. I want to know what caused the original damage — not just that it was patched.',
+    }
+  ]
+},
+// 10 — SEWER
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement',
+  title:'The main stack.',
+  sub:'Cast iron or PVC. Pre-1960 usually has both. Sometimes worse.',
+  choices:[
+    {label:'What are you looking for here?',icon:'',
+     response:'Rust, active leaks, improper connections, and signs of a belly in the main line. A belly — where the pipe sags — causes backups. You won\'t see it from here. You need a camera scope.',
+     deep:{title:'Sewer scope cost',body:'A sewer scope inspection runs $150 to $300 and is the most important $200 you\'ll spend on a pre-1960 house. A clay tile main line with a belly and root intrusion can cost $5,000 to $15,000 to repair or replace.'}
+    },
+    {label:'Who pays for sewer repairs?',icon:'',
+     response:'After closing, you do. This is one of the most commonly missed and most expensive post-close surprises. I request a sewer scope on every pre-1960 city home before we finalize the inspection period.',
+    }
+  ]
+},
+// 11 — MOISTURE
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Basement',
+  title:'Moisture detection.',
+  sub:'My hand against the wall. My eyes on the floor line. My nose.',
+  interrupt:{
+    title:'This corner is wet.',
+    text:'Active moisture in the basement. I need to determine whether this is surface condensation, wall seepage, or floor seepage. Each one has a different fix and a different price.',
+    btnText:'What does this change?'
+  },
+  choices:[
+    {label:'How do we know what type of moisture?',icon:'',
+     response:'Tape plastic sheeting to the wall, seal the edges, wait 24 hours. Moisture on the outside is condensation. Moisture behind the plastic means it\'s coming through the wall.',
+     deep:{title:'Waterproofing costs',body:'Interior waterproofing with a drain tile system runs $5,000 to $15,000. Exterior waterproofing — the right fix for wall seepage — runs $10,000 to $30,000+. I use active moisture as a hard negotiating point.'}
+    },
+    {label:'Is a sump pump good or bad?',icon:'',
+     response:'A sump pump tells me water management was already a known issue. It\'s not automatically bad. What I want to know is whether it runs constantly or just in heavy rain.',
+    }
+  ]
+},
+// 12 — HVAC
+{
+  bg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+  george:'serious',
+  room:'Mechanical Room',
+  title:'Age the mechanicals.',
+  sub:'I\'m not looking at how they work. I\'m looking at when they\'ll stop.',
+  choices:[
+    {label:'How do I know how old the furnace is?',icon:'',
+     response:'The serial number. Most manufacturers encode the date in the first four digits. A furnace over 18 years old is near end of life. A 22-year-old furnace is a negotiating point, not a footnote.',
+     deep:{title:'HVAC replacement cost',body:'A furnace and AC replacement runs $5,000 to $12,000 depending on size and efficiency. If both are the same age and near end of life, I roll that cost into the offer price — not the inspection request. The seller expects the inspection to find it. I already know.'}
+    },
+    {label:'Water heater — what\'s the lifespan?',icon:'',
+     response:'Tank water heaters last 10 to 12 years. If this one is over 10 years old, you\'re buying someone else\'s replacement. I note it. Sometimes I use it. Depends on the rest of the list.',
+    },
+    {label:'Should I ask for a home warranty?',icon:'',
+     response:'A home warranty covers some appliance failures but not pre-existing conditions. It\'s a negotiating tool, not a safety net. Don\'t mistake it for one.',
+    }
+  ]
+},
+// 13 — SUMMARY
+{
+  bg:'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=85',
+  george:'proud',
+  room:'George\'s Call',
+  title:'Here\'s what I found.',
+  sub:'This is the conversation most buyers never have with their agent.',
+  interrupt:{
+    title:'Here\'s where we stand.',
+    text:'Federal Pacific panel. Two-prong outlets. Fogged windows on three units. Moisture in the northwest corner. HVAC is 17 years old. None of this is a deal killer. All of it goes on the list.',
+    btnText:'What do we do with this?'
+  },
+  choices:[
+    {label:'Do we walk away?',icon:'',
+     response:'Not from this. But I\'m going to price every one of those items into our offer or our inspection request. The seller is going to feel this list.',
+    },
+    {label:'What\'s the number?',icon:'',
+     response:'Panel: $4,500. Moisture remediation: $3,000 to scope and address the source. HVAC credit: $3,000. Windows: $900. We\'re at roughly $11,000 in known items. That changes my offer number.',
+     deep:{title:'Offer strategy with a list',body:'I don\'t ask for everything in the inspection request. That signals desperation. I pick the structural and safety items — panel, moisture, foundation — and negotiate those hard. The cosmetic items I use to justify a lower initial offer price. Two different conversations, two different outcomes.'}
+    }
+  ],
+  nextLabel:'Pre-Offer Strategy \u2192',
+  nextFile:'05-pre-offer.html',
+  nextChapter:4,
+  isLast:true
+}
+];
+</script>
+<script>
+// Photo reveal handlers — chapter 3 specific
+function renderPhotoReveal(sc,idx){
+  var pr=sc.photoReveal;
+  var stage=document.getElementById('stage');
+  document.getElementById('scene-bg').style.opacity='0';
+  var gf=document.getElementById('george-float'); if(gf) gf.classList.add('hidden');
+  var cap=document.getElementById('scene-caption'); if(cap) cap.style.opacity='0';
+  if(window.SharedPlatform) SharedPlatform.closeDrawer();
+  document.getElementById('prog').style.width=Math.round((idx/(window.SCENES.length-1))*100)+'%';
+  document.getElementById('scene-lbl').textContent=sc.room;
+  var existing=document.getElementById('photo-reveal-el');
+  if(existing) existing.remove();
+  var el=document.createElement('div');
+  el.id='photo-reveal-el'; el.className='photo-reveal-scene';
+  el.innerHTML=
+    '<div class="pr-photo">'
+    +'<img referrerpolicy="no-referrer" src="'+sc.bg+'" alt="listing photo">'
+    +'<div class="pr-listing-badge">Listing Photo</div>'
+    +'<div class="pr-mls">MARIS MLS \u00b7 Professional Photography</div>'
+    +'</div>'
+    +'<div class="pr-question">'
+    +'<div class="pr-q-text">'+pr.question+'</div>'
+    +'<div class="pr-btns">'
+    +'<button class="pr-btn yes" onclick="prAnswer(\'yes\')">Yes</button>'
+    +'<button class="pr-btn no" onclick="prAnswer(\'no\')">No</button>'
+    +'</div>'
+    +'</div>'
+    +'<div class="pr-george-row" id="pr-george-row">'
+    +'<div class="pr-face"><img referrerpolicy="no-referrer" src="assets/george-serious.png" onerror="this.style.display=\'none\'"><div class="fb">GK</div></div>'
+    +'<div class="pr-bubble" id="pr-bubble"></div>'
+    +'</div>'
+    +'<button class="pr-continue-btn" id="pr-continue-btn" onclick="prContinue()">'+pr.btnText+' \u2192</button>';
+  stage.appendChild(el);
+  document.getElementById('btn-back').disabled=(idx===0);
+  document.getElementById('btn-next').disabled=true;
+  document.getElementById('btn-next').textContent='Next \u2192';
+  document.getElementById('btn-next').classList.remove('gold');
+  var SK='stl_journey_v1';
+  try{ var s=JSON.parse(localStorage.getItem(SK)||'{}'); s.lastStep=idx; s.lastChapter=3; localStorage.setItem(SK,JSON.stringify(s)); }catch(e){}
+  window._prData=pr; window._prAnswered=false;
+}
+
+function prAnswer(answer){
+  if(window._prAnswered) return;
+  window._prAnswered=true;
+  var pr=window._prData;
+  document.querySelectorAll('.pr-btn').forEach(function(b){ b.style.opacity='.3'; b.style.pointerEvents='none'; });
+  var setupLine=answer==='yes'?'<strong>Good eye.</strong> ':'<strong>Well, you should.</strong> ';
+  var row=document.getElementById('pr-george-row');
+  var bubble=document.getElementById('pr-bubble');
+  if(row) row.classList.add('show');
+  if(bubble){
+    bubble.innerHTML=setupLine;
+    var span=document.createElement('span');
+    bubble.appendChild(span);
+    var i=0; var text=pr.george;
+    var iv=setInterval(function(){
+      span.textContent=text.slice(0,i); i++;
+      if(i>text.length){
+        clearInterval(iv);
+        var btn=document.getElementById('pr-continue-btn');
+        if(btn) btn.classList.add('show');
+        var btnNext=document.getElementById('btn-next');
+        if(btnNext){ btnNext.disabled=false; btnNext.textContent='Next \u2192'; }
+      }
+    },18);
+  }
+  if(typeof gtag==='function') gtag('event','photo_reveal_answer',{answer:answer,chapter:3});
+}
+
+function prContinue(){
+  var el=document.getElementById('photo-reveal-el');
+  if(el) el.remove();
+  document.getElementById('scene-bg').style.opacity='1';
+  var gf=document.getElementById('george-float'); if(gf) gf.classList.remove('hidden');
+  var cap=document.getElementById('scene-caption'); if(cap) cap.style.opacity='1';
+  window._prAnswered=false;
+  // advance via shared.js renderScene
+  var SK='stl_journey_v1';
+  try{ var s=JSON.parse(localStorage.getItem(SK)||'{}'); s.lastStep=(s.lastStep||0)+1; localStorage.setItem(SK,JSON.stringify(s)); }catch(e){}
+  if(window.SharedPlatform && typeof window.SharedPlatform.renderScene==='function'){
+    var next=(window._ch3cur||0)+1;
+    window._ch3cur=next;
+    window.SharedPlatform.renderScene(next);
+  }
+}
+
+// Expose renderPhotoReveal for shared.js renderScene dispatch
+window.renderPhotoReveal=renderPhotoReveal;
+</script>
+<script src="shared.js"></script>
+</body>
+</html>
