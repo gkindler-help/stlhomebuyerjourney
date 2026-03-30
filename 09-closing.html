@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Home Buyer Journey · Chapter 9 · Closing Day</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EEE14BZT9P"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EEE14BZT9P');</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── CHAPTER 9 ONLY: Wire fraud scene styles ── */
+.sc-room {
+  font-family: var(--font-serif);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 16px rgba(0,0,0,.6);
+  text-transform: none;
+}
+.wire-rule-card {
+  background: rgba(224,85,85,.08);
+  border: 1px solid rgba(224,85,85,.25);
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--red);
+  line-height: 1.65;
+}
+/* red interrupt button variant */
+.int-btn.red-btn {
+  background: var(--red);
+  color: var(--white);
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+window.CHAPTER_NUM   = 9;
+window.CHAPTER_LABEL = 'Closing Day';
+window.PREV_FILE     = '08-walkthrough.html';
+
+var PHOTOS = {
+  signing:   'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=900&q=85',
+  cd:        'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=85',
+  keys:      'https://images.unsplash.com/photo-1600607687939-ce8a6d9d3c8c?w=900&q=85',
+  celebrate: 'https://images.unsplash.com/photo-1560184897-ae75f418493e?w=900&q=85',
+};
+
+window.SCENES = [
+// 0 — WIRE FRAUD — skippable interrupt, choice-card story beats
+{
+  bg:'https://images.unsplash.com/photo-1423345420913-c18a9d51f541?w=900&q=85',
+  george:'serious',
+  room:'Before We Close',
+  title:'Did this buyer just lie to me?',
+  sub:'One thing I need you to hear before we walk in.',
+  interrupt:{
+    title:'Before we go in — read this.',
+    text:'This is a true story from my career. It is the reason I tell every client the same thing before every wire. Read it. Then skip if you want.',
+    btnText:'Tell me the story',
+    skipLabel:'Skip \u2014 take me to closing',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'The wire fraud story. True. Every word.',
+  choices:[
+    {label:'Did this buyer just lie to me?',
+     response:'"Did this buyer just tell me a lie to kill their deal and get their earnest money back?" That was my first thought.\n\nExperienced real estate investor. Had done dozens of deals. Two days before closing I get a call. They wired their $27,000 down payment and closing funds to the wrong account. To an individual in Nebraska. Not the title company. Gone.',
+    },
+    {label:'They said they followed the instructions.',
+     response:'They said they received wiring instructions by email and followed them.\n\nMy first instinct as a listing agent protecting my seller was skepticism. This is a sophisticated investor. They know how closings work. They know you verify wiring instructions. Was this a convenient story to walk away from a deal and get their earnest money back?\n\nI\'ve had buyers try to walk away before. Hardship, change of heart, found a better home after exhausting inspections.',
+    },
+    {label:'So I did my homework.',
+     response:'I wanted to see every detail to understand how this happened. Sure enough the email looked completely legit — down to the email signature for the title company.\n\nThe wire fraud was real. The wiring instructions looked legit.\n\nSomeone had intercepted email communication, created a fake account that looked nearly identical to the title company, and sent fraudulent wiring instructions two days before closing. The buyer followed them without calling to verify.\n\n$27,000 disappeared to Nebraska in under 60 seconds.',
+     deep:{title:'The wire fraud was real.',body:'This is not a hypothetical. This happened on a transaction I was involved in. A sophisticated investor who had done dozens of deals was taken for $27,000 by a phishing email that looked exactly like a legitimate title company communication. The email had the correct branding, the correct signature, the correct contact names. The only thing wrong was the account number at the end.\n\nNobody caught it because nobody called to verify.'}
+    },
+    {label:'Now I had a different call to make.',
+     response:'I went to my seller — who had been through the ringer with St. Louis county building division — and laid out the situation. I reminded her of her rights under the contract. The buyer had failed to perform. The earnest money was hers. Legally she was entitled to every dollar.\n\nShe kept it. To be honest I was a little beside myself — but I understood. This sale meant everything to this seller and now she had to put her home search on hold.\n\nI did not fight her on it. It was her right. But it was the only time in 12 years I felt genuinely bad watching earnest money change hands.',
+     deep:{title:'Why nobody was obligated to help',body:'The buyer failed to perform. Under the Missouri residential purchase agreement, failure to deliver funds at closing is a default. The seller had every right to retain the earnest money. The title company could not intervene. I could not force the seller to return it. The buyer had no legal remedy against the seller.\n\nThe only party legally liable for the loss was the criminal who intercepted the email — and they were in Nebraska, possibly untraceable.\n\nExperience did not protect this investor. Following instructions from an email did.'}
+    },
+    {label:'Here is the rule. Every deal. No exceptions.',
+     response:'Before you wire a single dollar — call your title company directly using a phone number you looked up yourself. Not a number from an email. Not a number from a document someone sent you. A number you found independently.\n\nVerify the account. Verify the amount. Then wire.\n\nI tell every client this on every deal — whether it\'s earnest money or down payment at closing.\n\nWire fraud is real. It happens two days before closing. It happens to people who have done this before. And when it happens nobody in the transaction is obligated to save you.\n\nVerify before you wire. Every single time.',
+     deep:{title:'How to find the real phone number',body:'Go directly to the title company\'s official website — not a link in an email, not a number on a document you were sent. Find the main office number on their website directly. Call that number. Ask for the closing department. Give them your file number. Ask them to confirm the wiring instructions verbally.\n\nThis takes 90 seconds. It has saved buyers thousands of dollars.\n\nIf the title company is legitimate, they will be happy to confirm. If anyone tries to discourage you from making that call — that is your signal.'}
+    }
+  ]
+},
+// 1 — CLOSING DISCLOSURE
+{
+  bg:PHOTOS.cd,
+  george:'papers',
+  room:'3 Days Before',
+  title:'The Closing Disclosure arrives.',
+  sub:'You get it 3 business days before closing. Read it.',
+  interrupt:{
+    title:'This is the document that matters.',
+    text:'The CD shows your final loan terms, every fee, and your cash to close. You have 3 days to review it. Use them. If anything has changed from your Loan Estimate, now is when you find out.',
+    btnText:'Walk me through it',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'What to check on the Closing Disclosure.',
+  choices:[
+    {label:'What am I looking for?',
+     response:'Your loan amount and interest rate — confirm they match what you locked. Your monthly payment. Every fee line. And most importantly, the cash to close figure — what you actually need to bring.',
+     deep:{title:'Why the number almost never matches the estimate exactly',body:'The Loan Estimate you got at application was based on projected figures. The CD reflects actuals — the real property tax proration, the exact title insurance premium, the final prepaid interest based on your actual closing date. Small changes are normal. A large change in a fee category should prompt a question to your lender before you show up at the table.'}
+    },
+    {label:'What if something looks wrong?',
+     response:'Call your lender that day. Not the day of closing. You have 3 days for a reason. Fee errors, rate changes, term changes — these can be corrected before you sign. After you sign, they cannot.',
+     deep:{title:'What can and can\'t change at closing',body:'Under federal law, certain fees cannot increase between the Loan Estimate and the CD — including lender fees and title insurance if you used the lender\'s provider. Other fees, like prepaid interest and property tax prorations, can change based on the actual closing date. If a fee that shouldn\'t change did change, file a complaint with the CFPB. Your lender knows this. Most discrepancies are errors, not fraud — but you need to catch them before closing.'}
+    },
+    {label:'Cash to close — where does that number come from?',
+     response:'Down payment plus closing costs minus any seller credits minus your earnest money deposit. The CD shows the exact math. Your wire or certified check needs to match this number to the dollar.',
+     deep:{title:'How to wire your closing funds correctly',body:'Before you wire a single dollar, call the title company directly — using a phone number you looked up yourself. Not a number from any email. Not a number from any document someone sent you. A number you found independently on the title company\'s official website or from a card you received in person. Verify the account number and the amount. Then wire. Wire fraud targeting homebuyers is real and it happens two days before closing. Verify before you wire. Every single time.'}
+    }
+  ]
+},
+// 2 — WHAT YOU'RE SIGNING
+{
+  bg:PHOTOS.signing,
+  george:'papers',
+  room:'Closing Table',
+  title:'Here\'s what you\'re actually signing.',
+  sub:'Most buyers have never seen these documents before.',
+  interrupt:{
+    title:'You are signing a lot of paper today.',
+    text:'Most of it is required by the lender. Three documents matter most. I\'ll walk you through each one before you sign anything.',
+    btnText:'Walk me through them',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'The three documents that matter most.',
+  choices:[
+    {label:'The Promissory Note',
+     response:'Your personal promise to repay the loan. It states the loan amount, the interest rate, the term, and the consequences of default. This is the document that makes you personally liable. Read the interest rate and the term before you sign it.',
+     deep:{title:'What happens if you default',body:'The promissory note creates your personal liability. The deed of trust creates the lien on the property. If you stop paying, the lender can foreclose on the home through the deed of trust and sue you personally through the note. In Missouri, a deficiency judgment is possible — meaning if the foreclosure sale doesn\'t cover the full debt, the lender can come after other assets. Understand what you are signing before you sign it.'}
+    },
+    {label:'The Deed of Trust',
+     response:'The document that pledges your home as collateral for the loan. It gives the lender the right to foreclose if you default. This is what gets recorded against the property. The lender holds this until the loan is paid off.',
+     deep:{title:'How the deed of trust gets released',body:'When you pay off the loan — at sale, refinance, or final payoff — the lender records a Deed of Release or Deed of Reconveyance that removes the lien from the property. This has to be recorded by the lender. If you pay off a mortgage and the lien is not released, it becomes a title issue for the next sale. Keep documentation of every payoff.'}
+    },
+    {label:'The Settlement Statement',
+     response:'The final accounting of every dollar in the transaction — what the seller receives, what you owe, every credit and debit. Cross-reference this against your CD. If the numbers don\'t match, ask before you sign.',
+     deep:{title:'The line that surprises buyers most',body:'Property tax prorations. In Missouri, property taxes are paid in arrears — meaning the seller owes you for the portion of the year they owned the home. That credit appears on the settlement statement. Most buyers don\'t notice it, but it\'s real money. On a $280,000 home in a typical St. Louis municipality, the property tax proration can run $1,200 to $2,000 depending on when in the year you close.'}
+    }
+  ]
+},
+// 3 — KEYS
+{
+  bg:PHOTOS.keys,
+  george:'proud',
+  room:'Closing Day',
+  title:'Possession at closing.',
+  sub:'Per this contract — the keys are yours when the deed records.',
+  interrupt:{
+    title:'The deed records today.',
+    text:'In Missouri, possession transfers at closing. The moment the title company confirms the deed has been recorded with the county, the home is yours. I will be there.',
+    btnText:'What happens after I leave?',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'What happens after you leave the closing table.',
+  choices:[
+    {label:'When does my first payment hit?',
+     response:'Mortgage payments are paid in arrears. If you close in March, your first payment is due May 1 — covering April\'s interest. The lender will send you a welcome letter with the first payment date and instructions. Do not miss it.',
+     deep:{title:'The prepaid interest on your CD',body:'At closing you prepay interest from your closing date to the end of the month. That\'s why closing earlier in the month costs more in prepaid interest — you\'re covering more days. Some buyers strategically close near the end of the month to minimize prepaid interest. The tradeoff is a tighter timeline if anything goes wrong.'}
+    },
+    {label:'When does the deed record?',
+     response:'The title company submits the deed to the county recorder the day of closing — sometimes same-day, sometimes next business day depending on the county. You own the home from the moment of signing but the deed is the official public record. Your title insurance kicks in from closing.',
+    },
+    {label:'What does the lender send me?',
+     response:'A welcome letter with your loan number, payment address, and first payment date. Your loan may be sold to a servicer within 60 days — this is normal. You\'ll get a notice and your payment address will change. Never stop making payments during a transfer.',
+     deep:{title:'Loan servicing transfers — what to do',body:'Lenders frequently sell the servicing rights to your loan after closing. You will receive a goodbye letter from your original lender and a hello letter from the new servicer. Both must arrive 15 days before the transfer takes effect. During the 60-day grace period after transfer, you cannot be charged a late fee if you mistakenly send payment to the old servicer. Keep both letters. Update your autopay immediately on receipt of the hello letter.'}
+    }
+  ]
+},
+// 4 — FINAL
+{
+  bg:PHOTOS.celebrate,
+  george:'proud',
+  room:'You\'re Home',
+  title:'You did this right.',
+  sub:'You understood the process. You asked the questions. You protected yourself.',
+  interrupt:{
+    title:'Most buyers never know any of this.',
+    text:'You do now. That is the difference between a buyer who got lucky and a buyer who was prepared. Congratulations on your new home.',
+    btnText:'Call George \u2014 314.435.1087'
+  },
+  choices:[],
+  isLast:true,
+  nextLabel:'Start Over \u2192',
+  nextFile:'index.html',
+  nextChapter:1
+}
+];
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

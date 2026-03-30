@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Home Buyer Journey · George Kindler</title>
+
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EEE14BZT9P"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EEE14BZT9P');</script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Shared visual system -->
+<link rel="stylesheet" href="shared.css">
+
+<style>
+/* ============================================================
+   INDEX-ONLY STYLES
+   shared.css owns the global system.
+   This block owns only what is unique to index.html.
+   ============================================================ */
+
+/* ── LAYOUT ── */
+.idx-app {
+  width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  background: #080808;
+}
+@media (min-width: 768px)  { .idx-app { max-width: 540px; margin: 0 auto; } }
+@media (min-width: 1024px) { .idx-app { max-width: 640px; } }
+
+/* ── INTRO OVERLAY ── */
+.intro {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  background: #080808;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 36px 48px;
+  transition: opacity .6s ease, transform .6s ease;
+}
+.intro.gone {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+}
+
+/* George — intro face */
+.intro-face {
+  width: 180px;
+  height: 180px;
+  position: relative;
+  margin-bottom: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #2a2a2a;
+  background: #111111;
+}
+.intro-face img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: opacity .65s ease;
+}
+.intro-face img.raised  { opacity: 1; }
+.intro-face img.normal  { opacity: 0; }
+.intro-face.swapped img.raised { opacity: 0; }
+.intro-face.swapped img.normal { opacity: 1; }
+.intro-face .fb {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  color: rgba(255,255,255,.2);
+  z-index: -1;
+}
+
+/* Intro copy */
+.intro-copy {
+  text-align: center;
+  max-width: 280px;
+  margin-bottom: 44px;
+}
+.intro-main {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.65;
+  margin-bottom: 16px;
+  letter-spacing: .01em;
+}
+.intro-main strong { font-weight: 600; }
+.intro-detail {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255,255,255,.82);
+  line-height: 1.7;
+  border-left: 1px solid rgba(255,255,255,.15);
+  padding: 0 0 0 14px;
+  text-align: left;
+  letter-spacing: .01em;
+}
+.intro-detail em {
+  font-style: normal;
+  color: #FFCC4D;
+}
+
+/* Reveal button */
+.btn-reveal {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #080808;
+  background: #ffffff;
+  border: none;
+  border-radius: 3px;
+  padding: 14px 36px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .35s ease, transform .35s ease, background .15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.btn-reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+.btn-reveal:hover  { background: rgba(255,255,255,.88); }
+.btn-reveal:active { transform: scale(.97) !important; }
+
+/* ── HEADER (hidden until reveal) ── */
+.hdr.idx-hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.hdr.idx-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── SCROLLABLE MAIN ── */
+.idx-main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 0 20px;
+  min-height: 0;
+}
+.idx-main::-webkit-scrollbar { display: none; }
+
+/* ── GEORGE STRIP ── */
+.g-strip {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  padding: 20px 18px 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.g-strip.show { opacity: 1; transform: translateY(0); }
+
+.gs-face {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  position: relative;
+  margin-bottom: -2px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #2a2a2a;
+}
+.gs-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.gs-face .fb {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: rgba(255,255,255,.2);
+  z-index: -1;
+}
+.gs-info {
+  padding-left: 12px;
+  padding-bottom: 6px;
+  flex: 1;
+}
+.gs-name {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+.gs-tag {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255,255,255,.82);
+  letter-spacing: .02em;
+}
+
+/* ── HEADLINE ── */
+.headline {
+  padding: 16px 18px 18px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.headline.show { opacity: 1; transform: translateY(0); }
+
+.hl-main {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.12;
+  margin-bottom: 10px;
+  letter-spacing: -.01em;
+}
+.hl-main span { color: #FFCC4D; }
+
+.hl-sub {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,.82);
+  line-height: 1.65;
+  letter-spacing: .01em;
+}
+
+/* ── TENSION CUE ── */
+.tension-line {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,.82);
+  letter-spacing: .02em;
+  line-height: 1.5;
+  padding: 0 18px 4px;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+.tension-line.show { opacity: 1; }
+
+.tension-sub {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255,255,255,.65);
+  letter-spacing: .02em;
+  line-height: 1.5;
+  padding: 0 18px 16px;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+.tension-sub.show { opacity: 1; }
+
+/* ── ICON CARD GRID ── */
+/*
+  Post-intro interaction:
+  State 0 (default): large icon only, no text, all cards same size
+  State 1 (clicked once): all icons shrink, clicked card shows title
+  State 2 (clicked twice): clicked card shows title + summary + commit
+  State 3 (clicked three times): navigate
+*/
+
+.idx-cards {
+  padding: 0 14px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+.idx-cards.show { opacity: 1; }
+
+/* Each chapter card */
+.ch-card {
+  background: rgba(255,255,255,.025);
+  border: 1px solid #282828;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 10px 16px;
+  cursor: pointer;
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    transform .15s ease,
+    padding .3s ease;
+  position: relative;
+  min-height: 96px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ch-card:active { transform: scale(.97); }
+
+/* State: any card clicked — grid compresses, icons shrink */
+.idx-cards.activated .ch-card {
+  padding: 14px 8px 12px;
+  min-height: 80px;
+}
+
+/* Active card — highlighted */
+.ch-card.active {
+  border-color: rgba(255,204,77,.5);
+  background: rgba(255,204,77,.05);
+}
+
+/* Icon image — 56px default, shrinks when grid activated */
+.ch-card-ico {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width .3s ease, height .3s ease;
+  flex-shrink: 0;
+}
+.ch-card-ico img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Fallback number shown when PNG missing */
+.ch-card-ico .ico-fallback {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 700;
+  color: #FFCC4D;
+  line-height: 1;
+}
+
+/* Shrink icon after first click anywhere */
+.idx-cards.activated .ch-card-ico {
+  width: 36px;
+  height: 36px;
+}
+.idx-cards.activated .ch-card-ico .ico-fallback {
+  font-size: 20px;
+}
+
+/* Title — hidden until state 1 */
+.ch-card-title {
+  display: none;
+  font-family: var(--font-serif);
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.35;
+  text-align: center;
+  margin-top: 10px;
+  letter-spacing: -.005em;
+}
+.ch-card.active .ch-card-title {
+  display: block;
+}
+
+/* Summary + commit — hidden until state 2 */
+.ch-card-detail {
+  display: none;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  width: 100%;
+}
+.ch-card.revealed .ch-card-detail {
+  display: block;
+}
+.ch-card-desc {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255,255,255,.65);
+  line-height: 1.6;
+  text-align: center;
+  letter-spacing: .01em;
+}
+.ch-card-commit {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255,204,77,.7);
+  letter-spacing: .03em;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Ch 1 primary accent */
+.ch-card.primary {
+  border-left: 2px solid #FFCC4D;
+}
+
+/* ── RESUME CARD ── */
+.resume-card {
+  margin: 0 14px 10px;
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.12);
+  border-left: 3px solid rgba(255,255,255,.3);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .4s ease, border-color .18s, background .18s;
+}
+.resume-card.show { opacity: 1; }
+.resume-card:hover { border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.035); }
+.resume-lbl {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,.92);
+  line-height: 1.3;
+  flex: 1;
+}
+.resume-arr {
+  font-size: 16px;
+  color: rgba(255,255,255,.3);
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+/* ── FOOTER (hidden until reveal) ── */
+.idx-ftr {
+  background: rgba(5,5,5,.98);
+  border-top: 1px solid #1e1e1e;
+  padding: 8px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.idx-ftr.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.idx-ftr-l {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 400;
+  color: rgba(255,255,255,.4);
+  line-height: 1.6;
+  letter-spacing: .02em;
+}
+.idx-ftr-r a {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #FFCC4D;
+  text-decoration: none;
+  opacity: .7;
+  transition: opacity .15s;
+}
+.idx-ftr-r a:hover { opacity: 1; }
+
+/* Spacer at bottom of scroll */
+.idx-spacer { height: 20px; }
+</style>
+</head>
+
+<body>
+<div class="idx-app">
+
+  <!-- ═══════════════════════════════════
+       PHASE 1 — CINEMATIC INTRO
+       Copy preserved exactly from original.
+       No changes permitted here.
+  ════════════════════════════════════ -->
+  <div class="intro" id="intro">
+
+    <div class="intro-face" id="intro-face">
+      <img class="raised"
+           src="assets/george-serious.png"
+           alt="George Kindler"
+           onerror="this.style.display='none'">
+      <img class="normal"
+           src="assets/george-welcome.png"
+           alt="George Kindler"
+           onerror="this.style.display='none'">
+      <div class="fb">GK</div>
+    </div>
+
+    <div class="intro-copy">
+      <div class="intro-main">
+        You tapped <strong>Request Tour.</strong><br>
+        They were counting on that.
+      </div>
+      <div class="intro-detail">
+        That's why your agent paid Zillow &mdash;<br>
+        <em>before you ever picked up the phone.</em>
+      </div>
+    </div>
+
+    <button class="btn-reveal" id="btn-reveal" type="button">
+      Show me what I'm missing
+    </button>
+
+  </div><!-- /intro -->
+
+
+  <!-- ═══════════════════════════════════
+       HEADER
+  ════════════════════════════════════ -->
+  <header class="hdr idx-hidden" id="hdr">
+    <div class="hdr-l">
+      <svg class="hdr-ico" viewBox="0 0 26 26" fill="none">
+        <rect width="26" height="26" rx="5" fill="#111111"/>
+        <path d="M13 4L3 12h3v9h6v-5h2v5h6V12h3L13 4z" fill="white" opacity=".9"/>
+        <path d="M18 18l3-3-3-3M21 15H13" stroke="#D4A017" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="hdr-t">Home Buyer <span>Journey</span></div>
+        <div class="hdr-s">George Kindler &middot; The Closing Pros</div>
+      </div>
+    </div>
+    <a class="btn-at" href="https://gkindler-help.github.io/stl-buyer-guide/index.html">&larr; All Tools</a>
+  </header>
+
+
+  <!-- ═══════════════════════════════════
+       MAIN — scrollable
+  ════════════════════════════════════ -->
+  <div class="idx-main" id="idx-main">
+
+    <!-- George strip -->
+    <div class="g-strip" id="g-strip">
+      <div class="gs-face">
+        <img src="assets/george-welcome.png"
+             alt="George Kindler"
+             onerror="this.style.display='none'">
+        <div class="fb">GK</div>
+      </div>
+      <div class="gs-info">
+        <div class="gs-name">George Kindler</div>
+        <div class="gs-tag">The Closing Pros LLC &middot; 314.435.1087</div>
+      </div>
+    </div>
+
+    <!-- Headline -->
+    <div class="headline" id="headline">
+      <div class="hl-main">Where buyers lose money &mdash;<br><span>without realizing it.</span></div>
+      <div class="hl-sub">Start anywhere &mdash; or follow the full journey from start to closing.</div>
+    </div>
+
+    <!-- Tension cue -->
+    <div class="tension-line" id="tension-line">Most buyers skip the part that costs them. Don&rsquo;t.</div>
+    <div class="tension-sub"  id="tension-sub">Tap any section to open it &mdash; or follow the journey step by step.</div>
+
+    <!-- Resume card (injected by JS if applicable) -->
+    <div id="resume-slot"></div>
+
+    <!-- ═══════════════════════════════════
+         ICON CARD GRID
+         3-click interaction:
+           Click 1 → activates grid (icons shrink), shows this card's title
+           Click 2 → reveals summary + commit on this card
+           Click 3 → navigates to chapter
+    ════════════════════════════════════ -->
+    <div class="idx-cards" id="idx-cards">
+
+      <!-- Ch. 1 — Pre-Approval -->
+      <div class="ch-card primary" id="cc0" data-file="01-preapproval.html" data-event="start">
+        <div class="ch-card-ico" id="ico0">
+          <img src="assets/icon-ch1.png" alt="" onerror="this.parentNode.innerHTML='<span class=\'ico-fallback\'>1</span>'">
+        </div>
+        <div class="ch-card-title">What actually happens when you click &ldquo;Contact Agent&rdquo;</div>
+        <div class="ch-card-detail">
+          <div class="ch-card-desc">The agent who calls you paid to be there. That changes everything before you ever see a house.</div>
+          <span class="ch-card-commit">Start here if you haven&rsquo;t made any moves yet.</span>
+        </div>
+      </div>
+
+      <!-- Ch. 2 — Affordability -->
+      <div class="ch-card" id="cc1" data-file="02-affordability.html" data-event="afford">
+        <div class="ch-card-ico" id="ico1">
+          <img src="assets/icon-ch2.png" alt="" onerror="this.parentNode.innerHTML='<span class=\'ico-fallback\'>2</span>'">
+        </div>
+        <div class="ch-card-title">Where buyers accidentally overpay &mdash; before they even make an offer</div>
+        <div class="ch-card-detail">
+          <div class="ch-card-desc">The number your lender approved is not the number you should spend. Most agents never make that distinction.</div>
+          <span class="ch-card-commit">I will never tell you to max it out.</span>
+        </div>
+      </div>
+
+      <!-- Ch. 3 — Interior -->
+      <div class="ch-card" id="cc2" data-file="03-interior.html" data-event="interior">
+        <div class="ch-card-ico" id="ico2">
+          <img src="assets/icon-ch3.png" alt="" onerror="this.parentNode.innerHTML='<span class=\'ico-fallback\'>3</span>'">
+        </div>
+        <div class="ch-card-title">What I look at the moment we walk in &mdash; and what you should too</div>
+        <div class="ch-card-detail">
+          <div class="ch-card-desc">Most buyers look at countertops and paint. I look at the basement, the panel, the roof, and the mechanicals. Walk through a house the way I do.</div>
+          <span class="ch-card-commit">What costs money is rarely what costs paint.</span>
+        </div>
+      </div>
+
+      <!-- Ch. 4 — Pre-Offer -->
+      <div class="ch-card" id="cc3" data-file="05-pre-offer.html" data-event="offer">
+        <div class="ch-card-ico" id="ico3">
+          <img src="assets/icon-ch4.png" alt="" onerror="this.parentNode.innerHTML='<span class=\'ico-fallback\'>4</span>'">
+        </div>
+        <div class="ch-card-title">Where buyers get pushed into offers they can&rsquo;t take back</div>
+        <div class="ch-card-detail">
+          <div class="ch-card-desc">Competing offers, manufactured urgency, escalation clauses. What agents say, what it means, and what actually gets your offer accepted.</div>
+          <span class="ch-card-commit">No version held back. All of it.</span>
+        </div>
+      </div>
+
+      <!-- Ch. 5 — Under Contract -->
+      <div class="ch-card" id="cc4" data-file="06-under-contract.html" data-event="contract">
+        <div class="ch-card-ico" id="ico4">
+          <img src="assets/icon-ch5.png" alt="" onerror="this.parentNode.innerHTML='<span class=\'ico-fallback\'>5</span>'">
+        </div>
+        <div class="ch-card-title">Offer accepted: where deals fall apart</div>
+        <div class="ch-card-detail">
+          <div class="ch-card-desc">Earnest money. Inspection windows. Day Zero actions. Small mistakes here can quietly kill a deal after you think you&rsquo;re safe.</div>
+          <span class="ch-card-commit">This is where most buyers lose control. You won&rsquo;t.</span>
+        </div>
+      </div>
+
+      <!-- Ch. 6 — Deadlines -->
+      <div class="ch-card" id="cc5" data-file="06b-deadlines.html" data-event="deadlines">
+        <div class="ch-card-ico" id="ico5">
+          <img src="assets/icon-ch6.png" alt="" onerror="this.parentNode.innerHTML='<span class=\'ico-fallback\'>6</span>'">
+        </div>
+        <div class="ch-card-title">Three deadlines running in parallel &mdash; miss any one and the protection is gone</div>
+        <div class="ch-card-detail">
+          <div class="ch-card-desc">Loan contingency. Appraisal. Title. They all run simultaneously from Day 1. Every one has a hard stop. I track all three so nothing slips.</div>
+          <span class="ch-card-commit">Miss a deadline once and you can&rsquo;t un-miss it.</span>
+        </div>
+      </div>
+
+      <!-- Ch. 7 — Inspection -->
+      <div class="ch-card" id="cc6" data-file="07-inspection.html" data-event="inspect">
+        <div class="ch-card-ico" id="ico6">
+          <img src="assets/icon-ch7.png" alt="" onerror="this.parentNode.innerHTML='<span class=\'ico-fallback\'>7</span>'">
+        </div>
+        <div class="ch-card-title">This is where buyers miss the problems they end up paying for</div>
+        <div class="ch-card-detail">
+          <div class="ch-card-desc">By the time most buyers read the inspection report, their earnest money is already at risk. The items that matter most are rarely the ones at the top.</div>
+          <span class="ch-card-commit">It&rsquo;s not my house. I will never overlook a repair to get you to close.</span>
+        </div>
+      </div>
+
+      <!-- Ch. 8 — Walk-Through -->
+      <div class="ch-card" id="cc7" data-file="08-walkthrough.html" data-event="walkthrough">
+        <div class="ch-card-ico" id="ico7">
+          <img src="assets/icon-ch8.png" alt="" onerror="this.parentNode.innerHTML='<span class=\'ico-fallback\'>8</span>'">
+        </div>
+        <div class="ch-card-title">The final walk-through is not a second showing &mdash; it&rsquo;s a condition verification</div>
+        <div class="ch-card-detail">
+          <div class="ch-card-desc">Same condition as the day you made the offer. Agreed repairs complete. Seller out. Utilities on. If anything is wrong, you address it before you sign &mdash; not after.</div>
+          <span class="ch-card-commit">After you sign, your leverage is gone.</span>
+        </div>
+      </div>
+
+      <!-- Ch. 9 — Closing -->
+      <div class="ch-card" id="cc8" data-file="09-closing.html" data-event="closing">
+        <div class="ch-card-ico" id="ico8">
+          <img src="assets/icon-ch9.png" alt="" onerror="this.parentNode.innerHTML='<span class=\'ico-fallback\'>9</span>'">
+        </div>
+        <div class="ch-card-title">What you&rsquo;re signing at closing &mdash; and what most buyers don&rsquo;t catch</div>
+        <div class="ch-card-detail">
+          <div class="ch-card-desc">The final walk. The closing table. The documents. Wire fraud. What the note and deed of trust actually say. Your job is to fall in love with the house.</div>
+          <span class="ch-card-commit">My job is to make sure you don&rsquo;t own a disaster.</span>
+        </div>
+      </div>
+
+    </div><!-- /idx-cards -->
+
+    <div class="idx-spacer"></div>
+
+  </div><!-- /idx-main -->
+
+
+  <!-- ═══════════════════════════════════
+       FOOTER
+  ════════════════════════════════════ -->
+  <footer class="idx-ftr" id="ftr">
+    <div class="idx-ftr-l">
+      George Kindler &middot; 314.435.1087<br>
+      The Closing Pros LLC &middot; Licensed Missouri Agent
+    </div>
+    <div class="idx-ftr-r">
+      <a href="https://sites.google.com/view/st-louis-real-estate-guides/freestlouisrealestateguides"
+         target="_blank" rel="noopener">Free Guides &rarr;</a>
+    </div>
+  </footer>
+
+</div><!-- /idx-app -->
+
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── STATE ── */
+  var SK = 'stl_journey_v1';
+  var S  = { amount:280000, loan:'conventional', zip:'63123',
+             lessons:[], lastChapter:1, lastStep:0,
+             chaptersVisited:[], jumpEntry:null };
+  try {
+    var sv = JSON.parse(localStorage.getItem(SK) || '{}');
+    if (sv.loan) Object.assign(S, sv);
+  } catch (e) {}
+  function save() { try { localStorage.setItem(SK, JSON.stringify(S)); } catch (e) {} }
+
+  /* ── SHOW REVEAL BUTTON AFTER 1.2s ── */
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var b = document.getElementById('btn-reveal');
+      if (b) b.classList.add('show');
+    }, 1200);
+  });
+
+  /* ── REVEAL BUTTON CLICK ── */
+  document.getElementById('btn-reveal').addEventListener('click', revealSite);
+
+  function revealSite() {
+    /* Swap George face */
+    var face = document.getElementById('intro-face');
+    if (face) face.classList.add('swapped');
+
+    /* Fade intro */
+    setTimeout(function () {
+      var intro = document.getElementById('intro');
+      if (intro) intro.classList.add('gone');
+    }, 520);
+
+    /* Header + footer */
+    setTimeout(function () {
+      var h = document.getElementById('hdr');
+      var f = document.getElementById('ftr');
+      if (h) { h.classList.remove('idx-hidden'); h.classList.add('idx-visible'); }
+      if (f) f.classList.add('show');
+    }, 680);
+
+    /* George strip + headline + tension */
+    setTimeout(function () {
+      var gs = document.getElementById('g-strip');
+      var hl = document.getElementById('headline');
+      var tl = document.getElementById('tension-line');
+      var ts = document.getElementById('tension-sub');
+      if (gs) gs.classList.add('show');
+      if (hl) hl.classList.add('show');
+      if (tl) tl.classList.add('show');
+      if (ts) ts.classList.add('show');
+    }, 980);
+
+    /* Icon grid arrives */
+    setTimeout(function () {
+      var grid = document.getElementById('idx-cards');
+      if (grid) grid.classList.add('show');
+    }, 1400);
+
+    /* Resume card check */
+    setTimeout(checkResume, 1600);
+
+    if (typeof gtag === 'function') gtag('event', 'journey_intro_tap', {});
+  }
+
+  /* ── 3-CLICK CARD INTERACTION ── */
+  /*
+    clickState per card:
+      0 = untouched (icon only)
+      1 = first click — grid activates, title shown
+      2 = second click — detail revealed
+      3 = third click — navigate
+  */
+  var gridActivated = false;
+
+  var cards = document.querySelectorAll('.ch-card');
+  Array.prototype.forEach.call(cards, function (card) {
+    card._clickState = 0;
+    card.addEventListener('click', function () { handleCardClick(card); });
+  });
+
+  function handleCardClick(card) {
+    var state = card._clickState || 0;
+
+    if (state === 0) {
+      /* First click — activate grid, show this card's title */
+      activateGrid();
+      setActiveCard(card);
+      card._clickState = 1;
+      return;
+    }
+
+    if (state === 1) {
+      /* Second click — only if this card is already active */
+      if (!card.classList.contains('active')) {
+        /* Clicked a different card — just switch active */
+        setActiveCard(card);
+        card._clickState = 1;
+        return;
+      }
+      /* Reveal detail */
+      card.classList.add('revealed');
+      card._clickState = 2;
+      return;
+    }
+
+    if (state === 2) {
+      if (!card.classList.contains('active')) {
+        setActiveCard(card);
+        card._clickState = 1;
+        return;
+      }
+      /* Third click — navigate */
+      navigate(card);
+    }
+  }
+
+  function activateGrid() {
+    if (gridActivated) return;
+    gridActivated = true;
+    var grid = document.getElementById('idx-cards');
+    if (grid) grid.classList.add('activated');
+  }
+
+  function setActiveCard(card) {
+    /* Deactivate all others */
+    Array.prototype.forEach.call(cards, function (c) {
+      if (c !== card) {
+        c.classList.remove('active', 'revealed');
+        c._clickState = gridActivated ? 0 : 0;
+      }
+    });
+    card.classList.add('active');
+  }
+
+  function navigate(card) {
+    var file  = card.getAttribute('data-file');
+    var event = card.getAttribute('data-event') || 'start';
+    if (typeof gtag === 'function') gtag('event', 'journey_entry', { entry_point: event });
+    S.jumpEntry = event;
+    save();
+    if (file) window.location.href = file;
+  }
+
+  /* ── RESUME CARD ── */
+  function checkResume() {
+    var saved = JSON.parse(localStorage.getItem(SK) || '{}');
+    if (!saved.lastChapter || saved.lastChapter < 2) return;
+
+    var files  = { 1:'01-preapproval.html', 2:'02-affordability.html',
+                   3:'03-interior.html',    4:'05-pre-offer.html',
+                   5:'06-under-contract.html', 6:'06b-deadlines.html',
+                   7:'07-inspection.html',  8:'08-walkthrough.html',
+                   9:'09-closing.html' };
+    var labels = { 1:'Pre-Approval',    2:'Affordability',      3:'Interior Showing',
+                   4:'Pre-Offer Strategy', 5:'Under Contract',  6:'The Deadlines',
+                   7:'Inspection Report', 8:'Final Walk-Through', 9:'Closing Day' };
+
+    var ch   = saved.lastChapter;
+    var file = files[ch];
+    if (!file) return;
+
+    var slot = document.getElementById('resume-slot');
+    if (!slot) return;
+
+    var r = document.createElement('div');
+    r.className = 'resume-card';
+    r.innerHTML =
+      '<div class="resume-lbl">Continue where you left off &mdash; Chapter ' + ch + ', ' + labels[ch] + '</div>' +
+      '<span class="resume-arr">&#8250;</span>';
+    r.addEventListener('click', function () {
+      if (typeof gtag === 'function') gtag('event', 'journey_entry', { entry_point: 'resume_ch' + ch });
+      S.jumpEntry = 'resume_ch' + ch;
+      save();
+      window.location.href = file;
+    });
+    slot.appendChild(r);
+
+    /* Fade resume card in */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { r.classList.add('show'); });
+    });
+  }
+
+})();
+</script>
+
+</body>
+</html>

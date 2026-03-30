@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Home Buyer Journey · Chapter 5 · Under Contract</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EEE14BZT9P"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-EEE14BZT9P');</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<div id="app"></div>
+<script>
+window.CHAPTER_NUM   = 5;
+window.CHAPTER_LABEL = 'Under Contract';
+window.PREV_FILE     = '05-pre-offer.html';
+
+var PHOTOS = {
+  desk:       'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=85',
+  contract:   'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=900&q=85',
+  calendar:   'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=900&q=85',
+  money:      'https://images.unsplash.com/photo-1616514197671-15d99ce7a6f8?w=900&q=85',
+  inspection: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=900&q=85',
+  negotiate:  'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&q=85',
+  mortgage:   'https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=900&q=85',
+  appraisal:  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&q=85',
+  title:      'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=900&q=85',
+  walkthru:   'https://images.unsplash.com/photo-1560184897-ae75f418493e?w=900&q=85',
+  keys:       'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+};
+
+window.SCENES = [
+// 0 — OFFER ACCEPTED
+{
+  bg:PHOTOS.contract,
+  george:'serious',
+  room:'Day Zero',
+  title:'Your offer was accepted.',
+  sub:'Now the adventure really starts.',
+  interrupt:{
+    title:'Your offer was accepted.',
+    text:'Now the adventure really starts. I\'m going to walk you through everything you need to know to make sure you get into that home.',
+    btnText:'Walk me through it',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'This is what I recommend for every client on Day 1.',
+  choices:[
+    {label:'Schedule your inspection',
+     response:'Book it for Day 3 or 4 — not Day 8. You need results back with time to make decisions. Your inspection period expires Day 10. Call before you do anything else.',
+     deep:{title:'Who to use and why it matters',body:'Most inspectors check what\'s visible. The one I refer uses a thermal imaging camera and a moisture meter as standard equipment on every inspection. Thermal shows temperature differentials behind walls that indicate moisture intrusion or missing insulation. Moisture meter confirms it. On a pre-1960 St. Louis home, these two tools have caught active leaks, wet basements, and failed roof penetrations that a standard visual inspection would have completely missed. I am not paid to refer them. I refer them because they show up prepared and they don\'t miss things. Ask me for the name before you book anyone.'}
+    },
+    {label:'Submit your earnest money',
+     response:'Five days from acceptance. It goes to the title company — not the seller, not the agent. Wire or certified funds only. Do not miss this window.',
+     deep:{title:'What happens if you\'re late on earnest money',body:'The contract specifies a delivery deadline — typically 5 days from acceptance. If earnest money isn\'t delivered on time, you are in default. The seller\'s options range from sending a cure notice giving you a short window to perform, to terminating the contract outright and pursuing damages. In practice, most sellers will give a 24-hour window if you\'re close — but that depends entirely on how motivated they are and whether they have backup offers. Do not assume goodwill. Wire or certified funds by Day 2, not Day 5. The deadline is Day 5 because the contract allows it. The smart move is Day 2.'}
+    },
+    {label:'Call your insurance provider',
+     response:'You have a 10-day insurability window. Call today. Get a quote — not just a verbal. Federal Pacific panels, old roofs, and flood zones can make a home uninsurable. You need to know that before Day 10, not Day 25.',
+     deep:{title:'Why this kills deals',body:'No insurance commitment means no mortgage. If you can\'t get homeowner\'s coverage, you have the right to walk and recover your earnest money — but only if you deliver written notice within the insurability window. After Day 10, that right is gone.'}
+    }
+  ]
+},
+// 1 — THE TWO TRACKS
+{
+  bg:PHOTOS.calendar,
+  george:'serious',
+  room:'Day 1\u201330',
+  title:'Two tracks. Running at the same time.',
+  sub:'Inspection track. Loan and appraisal track. Both have deadlines from Day 1.',
+  interrupt:{
+    title:'You have two tracks running simultaneously.',
+    text:'Inspection track protects your right to investigate the property. Loan track protects your financing. Most buyers focus on one. You need both.',
+    btnText:'Got it — show me the tracks',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'Here\'s how I manage both tracks.',
+  choices:[
+    {label:'The inspection track',
+     response:'Days 1\u201310 to inspect and deliver written notice. Days 10\u201320 to reach written resolution. Miss either window and that protection is waived permanently.',
+     deep:{title:'Why I start the inspection on Day 3',body:'You need results back with time to think, negotiate, and decide. An inspection booked on Day 8 leaves you 48 hours to make one of the biggest decisions of your purchase. I book it Day 3 or 4, results back by Day 5 or 6, and we have time to work.'}
+    },
+    {label:'The loan and appraisal track',
+     response:'Your lender orders the appraisal simultaneously — not after the inspection is done. Loan commitment due by Day 30. Appraisal contingency is waived if not delivered before that date.',
+     deep:{title:'Why they run at the same time',body:'Buyers who handle inspection first and plan to deal with the loan later run out of appraisal time. The lender needs 2\u20133 weeks to complete an appraisal. I push lenders to order it within 3 days of acceptance. Delays compound.'}
+    },
+    {label:'What happens if I miss a deadline?',
+     response:'When you work with me I set reminders on our shared calendar. You get an invite and reminders before each deadline is due. I\'m tracking them 3\u20134 days before they expire. You won\'t miss them with George.',
+     deep:{title:'If you don\'t respond to my calls, texts, or emails',body:'I track every deadline on my end. But the buyer is the decision maker. I can\'t submit a termination notice, sign an extension, or make a choice for you. If I\'m reaching out 3\u20134 days before a deadline and can\'t get a response, I cannot protect you from a waiver. I will always try. The rest is on you.'}
+    }
+  ]
+},
+// 2 — EARNEST MONEY
+{
+  bg:PHOTOS.money,
+  george:'serious',
+  room:'Day 1\u20135',
+  title:'Here\'s how earnest money works.',
+  sub:'Submitted by Day 5. Held in escrow. Not the seller\'s until closing.',
+  interrupt:{
+    title:'Let me explain earnest money.',
+    text:'Most buyers think it goes to the seller. It doesn\'t. It sits in escrow and it\'s yours — as long as you use your contingencies correctly.',
+    btnText:'Got it — break it down',
+    openDrawerOnDismiss:true
+  },
+  drawerLabel:'Here\'s how earnest money works.',
+  choices:[
+    {label:'Is it refundable?',
+     response:'Only the inspection contingency gives you a clean, no-cause exit — and it requires you to actually purchase a basic home inspection. I cover exactly how that works in the next section.',
+     deep:{title:'After the inspection contingency closes',body:'Once the inspection period is resolved, your earnest money is at risk if you walk without cause. The financing contingency gives you another exit — but only if the lender denies the loan, not if you change your mind. Understand your windows before they close.'}
+    },
+    {label:'How much is standard in St. Louis?',
+     response:'Typically 1% of purchase price — $2,800 on a $280,000 home. On competitive offers, 1\u20132%. Higher earnest money signals a serious buyer. It also raises your stakes if you miss a deadline.',
+     deep:{title:'Can the seller touch your earnest money?',body:'No. It sits in a trust account at the title company — completely separate from the seller\'s funds. The seller cannot access it during the transaction. If the contract terminates within a contingency window, the title company releases it back to you. If there\'s a dispute, the title company holds it until both parties agree in writing or a court orders the release. Avoid a dispute by using your contingencies correctly and delivering proper written notice.'}
+    },
+    {label:'How do I submit it?',
+     response:'Wire transfer or certified funds to the title company. Do not wire based on instructions from an email. Before you send a single dollar, call the title company directly — using a phone number you looked up yourself, not one from any document or email — and verify the account and amount. Wire fraud is real. It happens two days before closing. Verify before you wire. Every single time.',
+     deep:{title:'Top 3 reasons buyers forfeit their earnest money',body:'Over my career I have collected tens of thousands of dollars in earnest money. For my sellers. Here are the top three reasons buyers forfeit.\n\n1. Missed inspection contingency deadlines. The window expires, life got busy, and now they want out. Missing it by one day is the same as missing it by thirty.\n\n2. Waiving financing contingencies to win a bidding war. Legitimate strategy — but if your loan falls apart after you waived that contingency, the earnest money goes to the seller. They held the home for you and turned away other buyers.\n\n3. Failure to perform. Cold feet, a better house, a change of mind. None of those are contractual reasons to exit outside your contingency windows. The buyers who lose earnest money are almost always the ones nobody prepared.'}
+    }
+  ]
+},
+// 3 — BRIDGE TO DEADLINES
+{
+  bg:PHOTOS.calendar,
+  george:'serious',
+  room:'Day 1\u201330',
+  title:'Now the clock really runs.',
+  sub:'Loan. Appraisal. Title. Three parallel tracks, all with deadlines.',
+  interrupt:{
+    title:'Three tracks running simultaneously.',
+    text:'While you\'re handling the inspection, your lender is ordering the appraisal and the title company is researching ownership. All three have deadlines. Miss any one of them and that protection is gone permanently.',
+    btnText:'Walk me through the deadlines \u2192'
+  },
+  choices:[],
+  isLast:true,
+  nextLabel:'The Deadlines \u2192',
+  nextFile:'06b-deadlines.html',
+  nextChapter:6
+}
+];
+</script>
+<script src="shared.js"></script>
+</body>
+</html>
