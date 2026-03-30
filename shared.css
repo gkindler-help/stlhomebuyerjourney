@@ -1511,7 +1511,47 @@ svg {
 
   .gc-photo { width: 96px !important; height: 96px !important; }
 
-  .gc-stats     { padding: 16px 18px; }
+  .gc-stats     { padding: 16px 18px; }/* ============================================================
+   GLOBAL FIX: Prevent bottom nav (.bnav) from overlapping content cards
+   Added for pre-offer and similar chapters with tall question cards
+   ============================================================ */
+
+.stage,
+main,
+.content-area,
+.question-container,
+.card,
+details,
+.qna-section,
+.expandable-card {
+    padding-bottom: 110px !important;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+/* Extra breathing room for the very last card/section */
+details:last-of-type,
+.card:last-child,
+.qna-section:last-child {
+    margin-bottom: 140px;
+}
+
+/* Make the bottom navigation more visible and elevated */
+.bnav {
+    background: rgba(5, 5, 5, 0.98) !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);
+    z-index: 60;
+    border-top: 1px solid var(--line-2);
+}
+
+/* Optional: Slightly larger safe area for iPhone home indicator */
+@media (max-width: 480px) {
+    .stage,
+    main,
+    .content-area {
+        padding-bottom: 130px !important;
+    }
+}
   .gc-about     { padding: 16px 18px 0; }
   .gc-context-wrap { padding: 14px 18px 0; }
   .gc-call      { margin: 18px 18px 0; }
