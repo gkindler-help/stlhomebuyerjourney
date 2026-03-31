@@ -616,26 +616,42 @@ svg {
    11. DRAWER + CHOICE CARDS
    ============================================================ */
 
-.drawer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 15;
-  background: rgba(8,8,8,.97);
-  border-top: 1px solid var(--line-2);
-  padding: 14px 14px 18px;
-  transform: translateY(100%);
-  transition: transform .35s cubic-bezier(.32,.72,0,1);
-  box-shadow: 0 -14px 30px rgba(0,0,0,.3);
-  max-height: 55%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+.drawer{
+  position:relative;
+  right:auto;
+  bottom:auto;
+  left:auto;
+  z-index:15;
+  background:rgba(8,8,8,.97);
+  border-top:1px solid var(--line-2);
+  padding:0 14px;
+  transform:none;
+  box-shadow:none;
+  flex-shrink:0;
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .35s cubic-bezier(.32,.72,0,1), padding .25s ease;
 }
 
-.drawer::-webkit-scrollbar { display: none; }
+.drawer::-webkit-scrollbar{
+  display:none;
+}
 
-.drawer.open { transform: translateY(0); }
+.drawer.open{
+  max-height:min(42dvh, 360px);
+  padding:14px 14px 18px;
+  overflow:hidden;
+}
+
+.choices{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-bottom:4px;
+  max-height:calc(min(42dvh, 360px) - 56px);
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
 
 .drawer-label {
   font-family: var(--font-serif);
@@ -805,6 +821,42 @@ svg {
 .btn-n.gold {
   background: var(--gold);
   color: #080808;
+}
+.drawer{
+  position:relative;
+  right:auto;
+  bottom:auto;
+  left:auto;
+  z-index:15;
+  background:rgba(8,8,8,.97);
+  border-top:1px solid var(--line-2);
+  padding:0 14px;
+  transform:none;
+  box-shadow:none;
+  flex-shrink:0;
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .35s cubic-bezier(.32,.72,0,1), padding .25s ease;
+}
+
+.drawer::-webkit-scrollbar{
+  display:none;
+}
+
+.drawer.open{
+  max-height:min(42dvh, 360px);
+  padding:14px 14px 18px;
+  overflow:hidden;
+}
+
+.choices{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-bottom:4px;
+  max-height:calc(min(42dvh, 360px) - 56px);
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
 /* ============================================================
