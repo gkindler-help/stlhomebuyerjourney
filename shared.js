@@ -694,8 +694,19 @@
     track("choice_tap", { chapter: getChapterNumber(), card: idx });
   }
 
-function openDrawer() { var d = byId("drawer"); if (d) d.classList.add("open"); }
-function closeDrawer() { var d = byId("drawer"); if (d) d.classList.remove("open"); }
+function openDrawer() {
+  var d = byId("drawer");
+  var app = document.querySelector(".app");
+  if (d) d.classList.add("open");
+  if (app) app.classList.add("drawer-open");
+}
+
+function closeDrawer() {
+  var d = byId("drawer");
+  var app = document.querySelector(".app");
+  if (d) d.classList.remove("open");
+  if (app) app.classList.remove("drawer-open");
+}
   /* ============================================================
      INTERRUPT
      ============================================================ */
