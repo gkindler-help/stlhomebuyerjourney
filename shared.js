@@ -694,9 +694,8 @@
     track("choice_tap", { chapter: getChapterNumber(), card: idx });
   }
 
-  function openDrawer()  { var d = byId("drawer"); if (d) d.classList.add("open"); }
-  function closeDrawer() { var d = byId("drawer"); if (d) d.classList.remove("open"); }
-
+function openDrawer() { var d = byId("drawer"); if (d) d.classList.add("open"); }
+function closeDrawer() { var d = byId("drawer"); if (d) d.classList.remove("open"); }
   /* ============================================================
      INTERRUPT
      ============================================================ */
